@@ -5,18 +5,25 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+  static const _appTitle = 'Collect-app';
+  
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Collect-app',
+      debugShowCheckedModeBanner: false,
+      title: _appTitle,
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
-      home: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [Text('Olá flutter')],
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text(_appTitle),
+        ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [Text('Olá flutter')],
+          ),
         ),
       ),
     );
