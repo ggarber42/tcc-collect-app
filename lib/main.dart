@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import './widgets/app_drawer.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -25,6 +27,7 @@ class MyApp extends StatelessWidget {
             children: [Text('Olá flutter')],
           ),
         ),
+        drawer: AppDrawer(),
       ),
     );
   }
