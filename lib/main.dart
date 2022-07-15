@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../screens/models_screen.dart';
+import './screens/config_screen.dart';
+import './screens/list_models_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -17,7 +18,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
-      home: ModelsScreen(appTitle)
+      home: ListModelsScreen(),
+      routes: {
+        ListModelsScreen.routeName: (ctx) => ListModelsScreen(),
+        ConfigScreen.routeName: (_) => ConfigScreen()
+      },
     );
   }
 }
