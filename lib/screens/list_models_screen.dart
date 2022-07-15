@@ -1,6 +1,7 @@
-import 'package:collect_app/screens/create_models_screen.dart';
 import 'package:flutter/material.dart';
 
+import '../screens/create_models_screen.dart';
+import '../widgets/main_bar.dart';
 import '../widgets/main_drawer.dart';
 
 class ListModelsScreen extends StatelessWidget {
@@ -9,9 +10,7 @@ class ListModelsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Collect-app'),
-      ),
+      appBar: MainBar(),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
