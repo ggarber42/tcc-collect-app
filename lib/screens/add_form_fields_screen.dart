@@ -1,21 +1,33 @@
+import '../widgets/compose_widgets/new_field_dialog.dart';
 import 'package:flutter/material.dart';
 
-import '../widgets/main_bar.dart';
-import '../widgets/main_drawer.dart';
+import '../widgets/base_widgets/main_bar.dart';
+import '../widgets/base_widgets/main_drawer.dart';
 
-class AddModelsWidgetScreen extends StatefulWidget {
+class AddFormFieldsScreen extends StatefulWidget {
   static const routeName = '/add-fields';
 
   @override
-  _AddModelsWidgetScreenState createState() => _AddModelsWidgetScreenState();
+  _AddFormFieldsScreenState createState() => _AddFormFieldsScreenState();
 }
 
-class _AddModelsWidgetScreenState extends State<AddModelsWidgetScreen> {
-  var widgetList = [1,2,3,4,5,6,7,9,8,8,4,5,6,43,6];
+class _AddFormFieldsScreenState extends State<AddFormFieldsScreen> {
+  var widgetList = [];
+
+  Future<void> _showFieldDialog(BuildContext context){
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context){
+        return NewFieldDialog();
+      }
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MainBar(),
+      appBar: MainBar(windowTitle: 'Novo modelo',),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -47,7 +59,7 @@ class _AddModelsWidgetScreenState extends State<AddModelsWidgetScreen> {
       floatingActionButton: FloatingActionButton.extended(
         label: Text("Campo de entrada"),
         icon: Icon(Icons.add),
-        onPressed: () {},
+        onPressed: () => _showFieldDialog(context)
       ),
     );
   }

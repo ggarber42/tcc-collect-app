@@ -1,28 +1,23 @@
-import 'package:collect_app/screens/add_models_widgets_screen.dart';
+import '../screens/add_form_fields_screen.dart';
+import '../widgets/base_widgets/form_input.dart';
 import 'package:flutter/material.dart';
 
-import '../widgets/main_bar.dart';
-import '../widgets/main_drawer.dart';
+import '../widgets/base_widgets/main_bar.dart';
+import '../widgets/base_widgets/main_drawer.dart';
 
 class CreateModelsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double appHeight = MediaQuery.of(context).size.height;
     return Scaffold(
-      appBar: MainBar(),
+      appBar: MainBar(windowTitle: 'Modelos'),
       body: Center(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Padding(
+            Padding(
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-              child: TextField(
-                decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.search),
-                  border: OutlineInputBorder(),
-                  hintText: 'Pesquise por modelos prontos',
-                ),
-              ),
+              child: FormInput(placeHolder: 'Pesquise por modelos prontos'),
             ),
             SizedBox(height: appHeight / 3),
             Container(
@@ -31,8 +26,7 @@ class CreateModelsScreen extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                          builder: (_) => AddModelsWidgetScreen()),
+                      MaterialPageRoute(builder: (_) => AddFormFieldsScreen()),
                     );
                   },
                   child: Text('Criar Modelo'),

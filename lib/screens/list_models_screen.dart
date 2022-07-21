@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../screens/create_models_screen.dart';
-import '../widgets/main_bar.dart';
-import '../widgets/main_drawer.dart';
+import '../widgets/base_widgets/main_bar.dart';
+import '../widgets/base_widgets/main_drawer.dart';
 
 class ListModelsScreen extends StatelessWidget {
   static const routeName = '/list_models';
