@@ -1,6 +1,6 @@
-import '../widgets/compose_widgets/new_field_dialog.dart';
 import 'package:flutter/material.dart';
 
+import '../widgets/compose_widgets/new_field_dialog.dart';
 import '../widgets/base_widgets/main_bar.dart';
 import '../widgets/base_widgets/main_drawer.dart';
 
@@ -12,6 +12,7 @@ class AddFormFieldsScreen extends StatefulWidget {
 }
 
 class _AddFormFieldsScreenState extends State<AddFormFieldsScreen> {
+  var selectedField;
   var widgetList = [];
 
   Future<void> _showFieldDialog(BuildContext context){
@@ -19,9 +20,18 @@ class _AddFormFieldsScreenState extends State<AddFormFieldsScreen> {
       context: context,
       barrierDismissible: true,
       builder: (BuildContext context){
-        return NewFieldDialog();
+        return NewFieldDialog(updateSelectedField);
       }
     );
+  }
+
+  void updateSelectedField(value){
+    selectedField = value;
+  }
+
+  _handleFieldDialog(BuildContext context) async{
+    await _showFieldDialog(context);
+    print(selectedField);
   }
 
   @override
@@ -59,7 +69,7 @@ class _AddFormFieldsScreenState extends State<AddFormFieldsScreen> {
       floatingActionButton: FloatingActionButton.extended(
         label: Text("Campo de entrada"),
         icon: Icon(Icons.add),
-        onPressed: () => _showFieldDialog(context)
+        onPressed: () => _handleFieldDialog(context)
       ),
     );
   }
