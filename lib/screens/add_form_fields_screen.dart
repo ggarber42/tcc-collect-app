@@ -1,9 +1,10 @@
-import 'package:collect_app/widgets/form_field_widgets/form_field_factory.dart';
 import 'package:flutter/material.dart';
 
-import '../widgets/dialog_widgets/new_field_dialog.dart';
 import '../widgets/base_widgets/main_bar.dart';
 import '../widgets/base_widgets/main_drawer.dart';
+import '../widgets/dialog_widgets/new_field_dialog.dart';
+import '../widgets/form_widgets/form_widget_factory.dart';
+import '../widgets/form_widgets/form_widget_interface.dart';
 
 class AddFormFieldsScreen extends StatefulWidget {
   static const routeName = '/add-fields';
@@ -32,9 +33,11 @@ class _AddFormFieldsScreenState extends State<AddFormFieldsScreen> {
 
   _handleFieldDialog(BuildContext context) async{
     await _showFieldDialog(context);
-    // print(selectedField);
-    var factory = new FormFieldFactory();
-    factory.createFormField(selectedField);
+    var factory = new FormWidgetFactory();
+    FormWidget newFormField = factory.createFormField(selectedField);
+    setState(() {
+      widgetList.add(newFormField.getWidgetBody());
+    });
   }
 
   @override
@@ -60,9 +63,7 @@ class _AddFormFieldsScreenState extends State<AddFormFieldsScreen> {
               child: ListView.builder(
                   itemCount: widgetList.length,
                   itemBuilder: (ctx, index) {
-                    return ListTile(
-                      title: Text('kkk')
-                    );
+                    return widgetList[index];
                   }),
             ),
           )
