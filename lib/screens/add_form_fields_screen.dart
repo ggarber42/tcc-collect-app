@@ -17,22 +17,18 @@ class _AddFormFieldsScreenState extends State<AddFormFieldsScreen> {
   var selectedField;
   var widgetList = [];
 
-  Future<void> _showFieldDialog(BuildContext context){
-    return showDialog<void>(
+  Future _showFieldDialog(BuildContext context){
+    return showDialog(
       context: context,
       barrierDismissible: true,
       builder: (BuildContext context){
-        return NewFieldDialog(updateSelectedField);
+        return NewFieldDialog();
       }
     );
   }
 
-  void updateSelectedField(value){
-    selectedField = value;
-  }
-
   _handleFieldDialog(BuildContext context) async{
-    await _showFieldDialog(context);
+    selectedField = await _showFieldDialog(context);
     var factory = new FormWidgetFactory();
     FormWidget newFormField = factory.createFormField(selectedField);
     setState(() {

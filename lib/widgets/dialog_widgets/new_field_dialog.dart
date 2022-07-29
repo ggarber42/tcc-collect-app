@@ -4,9 +4,7 @@ import '../../utils/constants.dart';
 import '../base_widgets/form_input.dart';
 
 class NewFieldDialog extends StatefulWidget {
-  Function updateValue;
 
-  NewFieldDialog(this.updateValue);
 
   @override
   _NewFieldDialogState createState() => _NewFieldDialogState();
@@ -14,11 +12,6 @@ class NewFieldDialog extends StatefulWidget {
 
 class _NewFieldDialogState extends State<NewFieldDialog> {
   var selectedValue;
-
-  void _submitHanlder(){
-    Navigator.of(context).pop();
-    widget.updateValue(selectedValue);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,13 +47,11 @@ class _NewFieldDialogState extends State<NewFieldDialog> {
       ),
       actions: [
         TextButton(
-          onPressed: () {
-            Navigator.pop(context, 'Cancel');
-          },
+          onPressed: () => Navigator.pop(context, false),
           child: const Text('Cancel'),
         ),
         TextButton(
-          onPressed: () => _submitHanlder(),
+          onPressed: () => Navigator.pop(context, selectedValue),
           child: const Text('Edit'),
         ),
       ],
