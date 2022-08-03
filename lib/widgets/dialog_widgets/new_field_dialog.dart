@@ -4,14 +4,13 @@ import '../../utils/constants.dart';
 import '../base_widgets/form_input.dart';
 
 class NewFieldDialog extends StatefulWidget {
-
-
   @override
   _NewFieldDialogState createState() => _NewFieldDialogState();
 }
 
 class _NewFieldDialogState extends State<NewFieldDialog> {
   var selectedValue;
+  final TextEditingController nameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +19,18 @@ class _NewFieldDialogState extends State<NewFieldDialog> {
       content: SingleChildScrollView(
         child: ListBody(
           children: <Widget>[
-            FormInput(placeHolder: 'Nome do campo'),
+            TextFormField(
+              decoration: const InputDecoration(
+                labelText: 'Nome do campo',
+              ),
+              controller: nameController,
+              validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter some text';
+              }
+              return null;
+            },
+            ),
             SizedBox(
               height: 10,
             ),
@@ -51,7 +61,8 @@ class _NewFieldDialogState extends State<NewFieldDialog> {
           child: const Text('Cancel'),
         ),
         TextButton(
-          onPressed: () => Navigator.pop(context, selectedValue),
+          onPressed: () => Navigator.pop(context,
+              {"selectedValue": selectedValue, "name": nameController.text}),
           child: const Text('Edit'),
         ),
       ],
