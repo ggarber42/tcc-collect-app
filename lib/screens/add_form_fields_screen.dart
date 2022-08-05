@@ -42,30 +42,33 @@ class _AddFormFieldsScreenState extends State<AddFormFieldsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MainBar(windowTitle: 'Novo modelo',),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 25),
-            child: TextField(
-              obscureText: true,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Nome do Modelo',
+      body: SingleChildScrollView(
+        physics: NeverScrollableScrollPhysics(),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 25),
+              child: TextField(
+                obscureText: true,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Nome do Modelo',
+                ),
               ),
             ),
-          ),
-          SingleChildScrollView(
-            child: Container(
-              height: 400,
-              child: ListView.builder(
-                  itemCount: widgetList.length,
-                  itemBuilder: (ctx, index) {
-                    return widgetList[index];
-                  }),
-            ),
-          )
-        ],
+            SingleChildScrollView(
+              child: Container(
+                height: 400,
+                child: ListView.builder(
+                    itemCount: widgetList.length,
+                    itemBuilder: (ctx, index) {
+                      return widgetList[index];
+                    }),
+              ),
+            )
+          ],
+        ),
       ),
       drawer: MainDrawer(),
       floatingActionButton: FloatingActionButton.extended(
