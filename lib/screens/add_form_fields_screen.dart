@@ -14,17 +14,16 @@ class AddFormFieldsScreen extends StatefulWidget {
 }
 
 class _AddFormFieldsScreenState extends State<AddFormFieldsScreen> {
-  var res;
+  var selectedValue;
   var widgetList = [];
 
-  Future _showFieldDialog(BuildContext context){
+  Future _showFieldDialog(BuildContext context) {
     return showDialog(
-      context: context,
-      barrierDismissible: true,
-      builder: (BuildContext context){
-        return NewFieldDialog();
-      }
-    );
+        context: context,
+        barrierDismissible: true,
+        builder: (BuildContext context) {
+          return NewFieldDialog();
+        });
   }
 
   _handleFieldDialog(BuildContext context) async{
@@ -41,7 +40,9 @@ class _AddFormFieldsScreenState extends State<AddFormFieldsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MainBar(windowTitle: 'Novo modelo',),
+      appBar: MainBar(
+        windowTitle: 'Novo modelo',
+      ),
       body: SingleChildScrollView(
         physics: NeverScrollableScrollPhysics(),
         child: Column(
