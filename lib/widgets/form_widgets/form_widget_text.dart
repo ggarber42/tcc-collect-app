@@ -15,6 +15,7 @@ class FormWidgetText implements FormWidget {
   @override
   Widget getWidgetBody() {
     return TextFormField(
+      readOnly: true,
       decoration: InputDecoration(
         labelText: '$_name',
       ),
@@ -51,8 +52,7 @@ class FormWidgetText implements FormWidget {
               FlatButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
-                    _name = _textEditingController.value.text;
-                    return Navigator.pop(context, true);
+                    return Navigator.pop(context, _textEditingController.value.text);
                   }
                   return;
                 },
