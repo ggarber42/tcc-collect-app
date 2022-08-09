@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../utils/constants.dart';
-import '../base_widgets/form_input.dart';
-
 class NewFieldDialog extends StatefulWidget {
   @override
   _NewFieldDialogState createState() => _NewFieldDialogState();
@@ -19,21 +17,6 @@ class _NewFieldDialogState extends State<NewFieldDialog> {
       content: SingleChildScrollView(
         child: ListBody(
           children: <Widget>[
-            TextFormField(
-              decoration: const InputDecoration(
-                labelText: 'Nome do campo',
-              ),
-              controller: nameController,
-              validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Please enter some text';
-              }
-              return null;
-            },
-            ),
-            SizedBox(
-              height: 10,
-            ),
             Container(
               decoration:
                   BoxDecoration(color: Color.fromRGBO(194, 194, 194, .5)),
@@ -61,8 +44,7 @@ class _NewFieldDialogState extends State<NewFieldDialog> {
           child: const Text('Cancel'),
         ),
         TextButton(
-          onPressed: () => Navigator.pop(context,
-              {"selectedValue": selectedValue, "name": nameController.text}),
+          onPressed: () => Navigator.pop(context,selectedValue),
           child: const Text('Edit'),
         ),
       ],
