@@ -60,6 +60,8 @@ class _AddFormFieldsScreenState extends State<AddFormFieldsScreen> {
             SingleChildScrollView(
               child: Container(
                 height: 400,
+                width: double.infinity,
+                margin: EdgeInsets.symmetric(vertical: 10, horizontal: 50),
                 child: ListView.builder(
                     itemCount: widgetList.length,
                     itemBuilder: (ctx, index) {
