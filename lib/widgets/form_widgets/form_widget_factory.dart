@@ -13,7 +13,8 @@ class FormWidgetFactory {
       return radio;
     } else if(selectedValue == 'text'){
       var text = new FormWidgetText();
-      await text.showCreateDialog(context);
+      var res = await text.showCreateDialog(context);
+      text.name = res;
       return text;
     }
     return new FormWidgetRadio();
