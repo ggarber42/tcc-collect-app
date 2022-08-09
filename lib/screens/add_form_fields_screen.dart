@@ -26,12 +26,12 @@ class _AddFormFieldsScreenState extends State<AddFormFieldsScreen> {
         });
   }
 
-  _handleFieldDialog(BuildContext context) async{
-    res = await _showFieldDialog(context);
-    if(res == 'none') return;
-    print(res);
+  _handleFieldDialog(BuildContext context) async {
+    selectedValue = await _showFieldDialog(context);
+    if (selectedValue == 'none') return;
     var factory = new FormWidgetFactory();
-    FormWidget newFormField = factory.createFormField(context, res);
+    FormWidget newFormField =
+        await factory.createFormField(context, selectedValue);
     setState(() {
       widgetList.add(newFormField.getWidgetBody());
     });
@@ -75,10 +75,9 @@ class _AddFormFieldsScreenState extends State<AddFormFieldsScreen> {
       ),
       drawer: MainDrawer(),
       floatingActionButton: FloatingActionButton.extended(
-        label: Text("Campo de entrada"),
-        icon: Icon(Icons.add),
-        onPressed: () => _handleFieldDialog(context)
-      ),
+          label: Text("Campo de entrada"),
+          icon: Icon(Icons.add),
+          onPressed: () => _handleFieldDialog(context)),
     );
   }
 }
