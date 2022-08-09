@@ -5,13 +5,15 @@ import 'form_widget_interface.dart';
 import 'form_widget_radio.dart';
 
 class FormWidgetFactory {
-  FormWidget createFormField(BuildContext context, Map<dynamic, dynamic> res){
-    if(res['selectedValue'] == 'radio'){
+
+  Future<FormWidget> createFormField(BuildContext context, String selectedValue) async{
+    if(selectedValue == 'radio'){
       FormWidgetRadio radio = new FormWidgetRadio();
       radio.showCreateDialog(context);
       return radio;
-    } else if(res['selectedValue'] == 'text'){
-      FormWidgetText text = new FormWidgetText(res['name']);
+    } else if(selectedValue == 'text'){
+      var text = new FormWidgetText();
+      await text.showCreateDialog(context);
       return text;
     }
     return new FormWidgetRadio();
