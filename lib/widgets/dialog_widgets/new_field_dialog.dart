@@ -41,11 +41,11 @@ class _NewFieldDialogState extends State<NewFieldDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context, 'none'),
-          child: const Text('Cancel'),
+          child: const Text('Cancelar'),
         ),
         TextButton(
           onPressed: () => Navigator.pop(context,selectedValue),
-          child: const Text('Edit'),
+          child: const Text('Ok'),
         ),
       ],
     );
