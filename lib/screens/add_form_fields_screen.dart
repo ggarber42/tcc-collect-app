@@ -29,8 +29,7 @@ class _AddFormFieldsScreenState extends State<AddFormFieldsScreen> {
   _handleFieldDialog(BuildContext context) async {
     selectedValue = await _showFieldDialog(context);
     if (selectedValue == null) return;
-    var factory = FormWidgetFactory();
-    var newFormField = await factory.createFormField(context, selectedValue);
+    var newFormField = await FormWidgetFactory().createFormField(context, selectedValue);
     if (newFormField == null) return;
     setState(() {
       widgetList.add(newFormField.getWidgetBody());
