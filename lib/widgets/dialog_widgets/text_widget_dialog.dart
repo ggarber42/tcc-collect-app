@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
 
-import 'form_dialog_interface.dart';
-
-class TextWidgetFormDialog implements FormWidgetDialog {
+import '../dialog_widgets/form_dialog_interface.dart';
+class TextWidgetFormDialog extends StatelessWidget{
   final TextEditingController _textEditingController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
-  Future<dynamic> showCreateDialog(BuildContext context) {
-    return showDialog(
-        context: context,
-        builder: (_) {
-          return AlertDialog(
+  Widget build(BuildContext context) {
+    return AlertDialog(
             title: Text('Nome do campo'),
             content: Form(
               key: _formKey,
@@ -43,7 +39,6 @@ class TextWidgetFormDialog implements FormWidgetDialog {
                 child: Text('Ok'),
               ),
             ],
-          );
-        });
+          ); 
   }
 }
