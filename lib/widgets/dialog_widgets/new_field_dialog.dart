@@ -40,7 +40,7 @@ class _NewFieldDialogState extends State<NewFieldDialog> {
       ),
       actions: [
         TextButton(
-          onPressed: () => Navigator.pop(context, 'none'),
+          onPressed: () => Navigator.pop(context, null),
           child: const Text('Cancelar'),
         ),
         TextButton(
