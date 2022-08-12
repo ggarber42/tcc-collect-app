@@ -17,7 +17,7 @@ class WidgetDialogFactory {
         dialog = TextWidgetFormDialog();
         break;
       case 'radio':
-        dialog = AlertWidgetFormDialog();
+        dialog = RadioWidgetFormDialog();
         break;
       default:
         dialog = AlertWidgetFormDialog();
