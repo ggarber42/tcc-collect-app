@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../dialog_widgets/alert_widget_dialog.dart';
 import '../dialog_widgets/widget_dialog_factory.dart';
+import '../form_widgets/form_widget_radio.dart';
+import '../form_widgets/form_widget_text.dart';
 
 class FormWidgetFactory {
 
@@ -12,10 +15,22 @@ class FormWidgetFactory {
           return WidgetDialogFactory(selectedValue).makeWidget();
         });
   }
-
+  
 
   Future<dynamic> createFormField(BuildContext context, String selectedValue) async {
-    var newField = await _showCreateDialog(context, selectedValue);
+    var inputValues = await _showCreateDialog(context, selectedValue);
+    var newField;
+    switch(selectedValue){
+      case 'text':
+        newField = FormWidgetText(inputValues);
+        break;
+      case 'radio':
+        newField = FormWidgetRadio();
+        break;
+      default:
+        newField = AlertWidgetFormDialog();
+        break;
+    }
     return newField;
   }
 }
