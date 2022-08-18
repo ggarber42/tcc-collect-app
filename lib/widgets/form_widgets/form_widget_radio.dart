@@ -23,23 +23,7 @@ class FormWidgetRadio extends FormWidget {
   }
 
   @override
-  Future<dynamic> showCreateDialog(BuildContext context) {
-    return showDialog(
-        context: context,
-        builder: (_) {
-          return AlertDialog(
-            title: Text('Wanna Exit?'),
-            actions: [
-              FlatButton(
-                onPressed: () => Navigator.pop(context, false), // passing false
-                child: Text('No'),
-              ),
-              FlatButton(
-                onPressed: () => Navigator.pop(context, true), // passing true
-                child: Text('Yes'),
-              ),
-            ],
-          );
-        });
+  void init(value) {
+    // TODO: implement init
   }
 }

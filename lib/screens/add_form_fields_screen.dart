@@ -13,7 +13,6 @@ class AddFormFieldsScreen extends StatefulWidget {
 }
 
 class _AddFormFieldsScreenState extends State<AddFormFieldsScreen> {
-  var selectedValue;
   var widgetList = [];
 
   Future _showFieldDialog(BuildContext context) {
@@ -26,7 +25,7 @@ class _AddFormFieldsScreenState extends State<AddFormFieldsScreen> {
   }
 
   _handleFieldDialog(BuildContext context) async {
-    selectedValue = await _showFieldDialog(context);
+    var selectedValue = await _showFieldDialog(context);
     if (selectedValue == null) return;
     var newFormField = await FormWidgetFactory().createFormField(context, selectedValue);
     if (newFormField == null) return;
