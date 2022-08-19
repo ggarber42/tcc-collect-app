@@ -24,7 +24,7 @@ class RadioItemDialog extends StatelessWidget {
       ),
       actions: [
         FlatButton(
-          onPressed: () => Navigator.pop(context, false),
+          onPressed: () => Navigator.pop(context, null),
           child: Text('Cancel'),
         ),
         FlatButton(
