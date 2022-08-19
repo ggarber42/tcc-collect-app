@@ -1,5 +1,7 @@
+import 'package:collect_app/widgets/dialog_widgets/alert_widget_dialog.dart';
 import 'package:flutter/material.dart';
 
+import '../base_widgets/radio_dummy_item.dart';
 import 'radio_item_dialog.dart';
 
 class RadioWidgetFormDialog extends StatefulWidget {
@@ -20,6 +22,14 @@ class _RadioWidgetFormDialogState extends State<RadioWidgetFormDialog> {
         barrierDismissible: true,
         builder: (BuildContext context) {
           return RadioItemDialog();
+        });
+  }
+
+  _showWarningDialog(BuildContext context) {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertWidgetFormDialog('Adicione pelo menos um campo!');
         });
   }
 
@@ -61,18 +71,25 @@ class _RadioWidgetFormDialogState extends State<RadioWidgetFormDialog> {
               height: 20,
             ),
             Container(
+              padding: EdgeInsets.symmetric(vertical: 15),
+              decoration: BoxDecoration(
+                border: Border.symmetric(
+                  horizontal: BorderSide(color: Colors.grey),
+                ),
+              ),
               width: double.infinity,
-              height: 100,
-              child: ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: _options.length,
-                  itemBuilder: (ctx, index) => Container(
-                        margin: EdgeInsets.symmetric(vertical: 5),
-                        child: Text(
-                          'Item $index: ${_options[index]}',
-                          textAlign: TextAlign.center,
-                        ),
-                      )),
+              height: 200,
+              child: Scrollbar(
+                child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: _options.length,
+                    itemBuilder: (ctx, index) => Container(
+                        margin: EdgeInsets.symmetric(vertical: 1.5),
+                        child: RadioDummyItem(_options[index]))),
+              ),
+            ),
+            SizedBox(
+              height: 20,
             ),
             SizedBox(
               width: double.infinity,
@@ -89,7 +106,11 @@ class _RadioWidgetFormDialogState extends State<RadioWidgetFormDialog> {
                   ),
                   FlatButton(
                     onPressed: () {
-                      if (_formKey.currentState!.validate()) {
+                      if (_options.length == 0) {
+                        _showWarningDialog(context);
+                      }
+                      if (_formKey.currentState!.validate() &&
+                          _options.length > 0) {
                         return Navigator.pop(
                             context, _textEditingController.value.text);
                       }
