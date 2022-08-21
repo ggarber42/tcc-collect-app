@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-class TextWidgetFormDialog extends StatelessWidget{
+
+import 'dialog_widget_interface.dart';
+
+class DialogWidgetText extends StatelessWidget implements DialogWidgetForm{
   final TextEditingController _textEditingController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 

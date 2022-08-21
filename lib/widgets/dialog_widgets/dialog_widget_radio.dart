@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import '../base_widgets/radio_dummy_item.dart';
 import 'radio_item_dialog.dart';
 
-class RadioWidgetFormDialog extends StatefulWidget {
+class DialogWidgetRadio extends StatefulWidget {
   @override
-  _RadioWidgetFormDialogState createState() => _RadioWidgetFormDialogState();
+  _DialogWidgetRadioState createState() => _DialogWidgetRadioState();
 }
 
-class _RadioWidgetFormDialogState extends State<RadioWidgetFormDialog> {
+class _DialogWidgetRadioState extends State<DialogWidgetRadio> {
   final TextEditingController _textEditingController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   var _selectedValue;
