@@ -1,50 +1,31 @@
 import 'package:flutter/material.dart';
 
-
-import '../dialog_widgets/radio_widget_dialog.dart';
-import '../dialog_widgets/text_widget_dialog.dart';
-
 import '../form_widgets/form_widget_radio.dart';
 import '../form_widgets/form_widget_text.dart';
+import 'form_widget_interface.dart';
 
 class FormWidgetFactory {
 
-  Map<String, dynamic> _getSelectedWidget(String selectedValue){
-    var formWidget;
-    var dialog;
+  FormWidget _getSelectedWidget(String selectedValue) {
+    FormWidget formWidget;
     switch(selectedValue){
       case 'text':
         formWidget = FormWidgetText();
-        dialog = TextWidgetFormDialog();
         break;
       case 'radio':
         formWidget = FormWidgetRadio();
-        dialog = RadioWidgetFormDialog();
         break;
+      default: // TO FIX
+        formWidget = FormWidgetText();
     }
-    return {
-      'dialog': dialog,
-      'formWidget': formWidget
-    };
+    return formWidget;
   }
 
-  _getInputValues(BuildContext context, dialog){
-    return showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return dialog;
-        });
-  }
-  
 
-  Future<dynamic> createFormField(BuildContext context, String selectedValue) async {
-    var selectedWidgets = _getSelectedWidget(selectedValue);
-    var selectedDialog = selectedWidgets['dialog'];
-    var selectedFormWidget = selectedWidgets['formWidget'];
 
-    var inputValues = await _getInputValues(context, selectedDialog);
-    selectedFormWidget.init(inputValues);
+  FormWidget createFormField(BuildContext context, String selectedValue) {
+    FormWidget selectedFormWidget = _getSelectedWidget(selectedValue);
+    selectedFormWidget.init(context);
     return selectedFormWidget;
   }
 }
