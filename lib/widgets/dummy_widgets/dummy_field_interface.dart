@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-abstract class FormWidget{
+abstract class DummyField{
   var dialog;
   var _widgetIcon;
   late String _name;

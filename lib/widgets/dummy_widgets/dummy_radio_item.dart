@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class RadioDummyItem extends StatelessWidget {
+class DummyRadioItem extends StatelessWidget {
   final String name;
 
-  RadioDummyItem(this.name);
+  DummyRadioItem(this.name);
 
   @override
   Widget build(BuildContext context) {

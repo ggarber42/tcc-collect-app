@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import 'form_widget_interface.dart';
-import '../base_widgets/radio_dummy_item.dart';
+import 'dummy_field_interface.dart';
+import 'dummy_radio_item.dart';
 import '../dialog_widgets/dialog_widget_radio.dart';
 
-class FormWidgetRadio implements FormWidget {
+class DummyFieldRadio implements DummyField {
   var dialog = DialogWidgetRadio();
   var _name;
   dynamic _options;
@@ -18,7 +18,7 @@ class FormWidgetRadio implements FormWidget {
         itemCount: _options.length,
         itemBuilder: (ctx, index) => Container(
           margin: EdgeInsets.symmetric(vertical: 1.5),
-          child: RadioDummyItem(_options[index]),
+          child: DummyRadioItem(_options[index]),
         ),
       )
     ]);

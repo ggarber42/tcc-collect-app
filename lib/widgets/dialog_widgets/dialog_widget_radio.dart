@@ -1,7 +1,7 @@
 import 'package:collect_app/widgets/dialog_widgets/alert_widget_dialog.dart';
 import 'package:flutter/material.dart';
 
-import '../base_widgets/radio_dummy_item.dart';
+import '../dummy_widgets/dummy_radio_item.dart';
 import 'radio_item_dialog.dart';
 
 class DialogWidgetRadio extends StatefulWidget {
@@ -84,7 +84,7 @@ class _DialogWidgetRadioState extends State<DialogWidgetRadio> {
                     itemCount: _options.length,
                     itemBuilder: (ctx, index) => Container(
                         margin: EdgeInsets.symmetric(vertical: 1.5),
-                        child: RadioDummyItem(_options[index]))),
+                        child: DummyRadioItem(_options[index]))),
               ),
             ),
             SizedBox(

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-import 'form_widget_interface.dart';
+import 'dummy_field_interface.dart';
 import '../dialog_widgets/dialog_widget_text.dart';
 
-class FormWidgetGPS implements FormWidget {
+class DummyFieldText implements DummyField {
   var dialog = DialogWidgetText();
   late String _name;
-  var _widgetIcon = Icon(Icons.gps_fixed_sharp);
+  var _widgetIcon = Icon(Icons.text_fields);
 
 
   Future<dynamic> showInitDialog(BuildContext context){

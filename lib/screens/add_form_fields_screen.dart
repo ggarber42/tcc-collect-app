@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../widgets/base_widgets/main_bar.dart';
 import '../widgets/base_widgets/main_drawer.dart';
 import '../widgets/dialog_widgets/new_field_dialog.dart';
-import '../widgets/form_widgets/form_widget_factory.dart';
+import '../widgets/dummy_widgets/dummy_field_factory.dart';
 
 class AddFormFieldsScreen extends StatefulWidget {
   static const routeName = '/add-fields';
@@ -27,7 +27,7 @@ class _AddFormFieldsScreenState extends State<AddFormFieldsScreen> {
   _handleFieldDialog(BuildContext context) async {
     var selectedValue = await _showFieldDialog(context);
     if (selectedValue == null) return;
-    var newFormField = await FormWidgetFactory().createFormField(context, selectedValue);
+    var newFormField = await DummyFactoryField().createFormField(context, selectedValue);
     setState(() {
       widgetList.add(newFormField.getWidgetBody());
     });
