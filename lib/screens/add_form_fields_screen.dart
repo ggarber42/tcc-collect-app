@@ -27,7 +27,8 @@ class _AddFormFieldsScreenState extends State<AddFormFieldsScreen> {
   _handleFieldDialog(BuildContext context) async {
     var selectedValue = await _showFieldDialog(context);
     if (selectedValue == null) return;
-    var newFormField = await DummyFactoryField().createFormField(context, selectedValue);
+    var newFormField =
+        await DummyFactoryField().createFormField(context, selectedValue);
     setState(() {
       widgetList.add(newFormField.getWidgetBody());
     });
@@ -70,10 +71,24 @@ class _AddFormFieldsScreenState extends State<AddFormFieldsScreen> {
         ),
       ),
       drawer: MainDrawer(),
-      floatingActionButton: FloatingActionButton.extended(
-          label: Text("Campo de entrada"),
-          icon: Icon(Icons.add),
-          onPressed: () => _handleFieldDialog(context)),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 50),
+        child: FloatingActionButton.extended(
+            label: Text("Campo de entrada"),
+            icon: Icon(Icons.add),
+            onPressed: () => _handleFieldDialog(context)),
+      ),
+      bottomSheet: Container(
+        width: MediaQuery.of(context).size.width,
+        child: RaisedButton(
+          color: Theme.of(context).colorScheme.primary,
+          textColor: Colors.white,
+          elevation :0,
+          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          child: Text('Salvar Modelo' , style:  TextStyle(fontSize: 20)),
+          onPressed: () {},
+        ),
+      ),
     );
   }
 }
