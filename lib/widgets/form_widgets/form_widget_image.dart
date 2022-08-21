@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'form_widget_interface.dart';
 import '../dialog_widgets/dialog_widget_text.dart';
 
-class FormWidgetText implements FormWidget {
+class FormWidgetImage implements FormWidget {
   var dialog = DialogWidgetText();
   late String _name;
-  var _widgetIcon = Icon(Icons.text_fields);
+  var _widgetIcon = Icon(Icons.image);
 
 
   Future<dynamic> showInitDialog(BuildContext context){

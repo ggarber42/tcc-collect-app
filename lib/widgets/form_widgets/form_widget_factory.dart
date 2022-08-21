@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../form_widgets/form_widget_gps.dart';
 import '../form_widgets/form_widget_radio.dart';
 import '../form_widgets/form_widget_text.dart';
+import '../form_widgets/form_widget_image.dart';
 import 'form_widget_interface.dart';
 
 class FormWidgetFactory {
@@ -14,6 +16,12 @@ class FormWidgetFactory {
         break;
       case 'radio':
         formWidget = FormWidgetRadio();
+        break;
+      case 'gps':
+        formWidget = FormWidgetGPS();
+        break;
+      case 'img':
+        formWidget = FormWidgetImage();
         break;
       default: // TO FIX
         formWidget = FormWidgetText();
