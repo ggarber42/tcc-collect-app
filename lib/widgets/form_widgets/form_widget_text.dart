@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 
 import 'form_widget_interface.dart';
@@ -37,10 +35,5 @@ class FormWidgetText implements FormWidget {
       onSaved: (_) {},
     );
   }
-
-  // @override
-  // void init(dynamic value) {
-  //   _name = value;
-  // }
 
 }
