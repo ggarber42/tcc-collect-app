@@ -1,25 +1,30 @@
 import 'package:flutter/material.dart';
 
 import 'form_widget_interface.dart';
+import '../base_widgets/radio_dummy_item.dart';
 import '../dialog_widgets/dialog_widget_radio.dart';
+
 class FormWidgetRadio implements FormWidget {
   var dialog = DialogWidgetRadio();
+  var _name;
   dynamic _options;
 
   @override
   Widget getWidgetBody() {
-    return ListTile(
-      title: Text('Misha'),
-      leading: Radio(
-          value: 1,
-          groupValue: 1,
-          onChanged: (value) {
-            print(value);
-          }),
-    );
+    return Column(children: [
+      Text(_name as String),
+      ListView.builder(
+        shrinkWrap: true,
+        itemCount: _options.length,
+        itemBuilder: (ctx, index) => Container(
+          margin: EdgeInsets.symmetric(vertical: 1.5),
+          child: RadioDummyItem(_options[index]),
+        ),
+      )
+    ]);
   }
 
-   Future<dynamic> showInitDialog(BuildContext context){
+  Future<dynamic> showInitDialog(BuildContext context) {
     return showDialog(
         context: context,
         barrierDismissible: false,
@@ -28,14 +33,13 @@ class FormWidgetRadio implements FormWidget {
         });
   }
 
-  @override 
-  void init(BuildContext context) async{
+  @override
+  void init(BuildContext context) async {
     var inputValues = await showInitDialog(context);
-    if(inputValues != null){
-      _options = inputValues;
-      print(inputValues);
+    if (inputValues != null) {
+      var selectedValues = inputValues;
+      _name = selectedValues['name'];
+      _options = selectedValues['options'];
     }
-
   }
-
 }

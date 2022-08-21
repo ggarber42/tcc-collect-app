@@ -13,7 +13,6 @@ class _DialogWidgetRadioState extends State<DialogWidgetRadio> {
   final TextEditingController _textEditingController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   var _selectedValue;
-  var optionQuantity = 1;
   var _options = [];
 
   Future _showAddFieldDialog(BuildContext context) {
@@ -111,8 +110,12 @@ class _DialogWidgetRadioState extends State<DialogWidgetRadio> {
                       }
                       if (_formKey.currentState!.validate() &&
                           _options.length > 0) {
+                        var selectedValues = {
+                          'name': _textEditingController.value.text,
+                          'options': _options
+                        };
                         return Navigator.pop(
-                            context, _textEditingController.value.text);
+                            context, selectedValues);
                       }
                       return;
                     },

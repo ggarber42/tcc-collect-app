@@ -17,7 +17,7 @@ class FormWidgetText implements FormWidget {
   }
 
   @override 
-  void init(BuildContext context) async{
+  init(BuildContext context) async{
     var inputValue = await showInitDialog(context);
     if(inputValue != null){
       _name = inputValue;
@@ -30,6 +30,7 @@ class FormWidgetText implements FormWidget {
     return TextFormField(
       readOnly: true,
       decoration: InputDecoration(
+        icon: Icon(Icons.text_fields),
         labelText: '$_name',
       ),
       onSaved: (_) {},

@@ -23,9 +23,9 @@ class FormWidgetFactory {
 
 
 
-  FormWidget createFormField(BuildContext context, String selectedValue) {
+  Future<FormWidget> createFormField(BuildContext context, String selectedValue) async{
     FormWidget selectedFormWidget = _getSelectedWidget(selectedValue);
-    selectedFormWidget.init(context);
+    await selectedFormWidget.init(context);
     return selectedFormWidget;
   }
 }
