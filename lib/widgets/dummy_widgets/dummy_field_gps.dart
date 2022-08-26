@@ -5,8 +5,12 @@ import '../dialog_widgets/dialog_widget_text.dart';
 
 class DummyFieldGPS implements DummyField {
   var dialog = DialogWidgetText();
-  late String _name;
   var _widgetIcon = Icon(Icons.gps_fixed_sharp);
+  late String _name;
+  String _type = 'gps';
+  
+  String get name => _name;
+  String get type => _type;
 
 
   Future<dynamic> showInitDialog(BuildContext context){
@@ -37,6 +41,12 @@ class DummyFieldGPS implements DummyField {
       ),
       onSaved: (_) {},
     );
+  }
+  
+  @override
+  String getQuery() {
+    // TODO: implement getQuery
+    throw UnimplementedError();
   }
 
  

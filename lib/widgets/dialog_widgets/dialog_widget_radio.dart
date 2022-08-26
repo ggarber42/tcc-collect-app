@@ -76,7 +76,7 @@ class _DialogWidgetRadioState extends State<DialogWidgetRadio> {
                   horizontal: BorderSide(color: Colors.grey),
                 ),
               ),
-              width: double.infinity,
+              width: double.maxFinite,
               height: 200,
               child: Scrollbar(
                 child: ListView.builder(

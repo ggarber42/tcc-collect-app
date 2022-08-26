@@ -1,9 +1,11 @@
+import 'package:collect_app/dao/model_form_dao.dart';
+import 'package:collect_app/models/model_form.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/base_widgets/main_bar.dart';
 import '../widgets/base_widgets/main_drawer.dart';
 import '../widgets/dialog_widgets/alert_widget_dialog.dart';
-import '../widgets/dialog_widgets/new_field_dialog.dart';
+import '../widgets/dialog_widgets/dialog_new_field.dart';
 import '../widgets/dummy_widgets/dummy_field_factory.dart';
 
 class AddFormFieldsScreen extends StatefulWidget {
@@ -23,7 +25,7 @@ class _AddFormFieldsScreenState extends State<AddFormFieldsScreen> {
         context: context,
         barrierDismissible: true,
         builder: (BuildContext context) {
-          return NewFieldDialog();
+          return DialogNewField();
         });
   }
 
@@ -41,7 +43,7 @@ class _AddFormFieldsScreenState extends State<AddFormFieldsScreen> {
     var newFormField =
         await DummyFactoryField().createFormField(context, selectedValue);
     setState(() {
-      fieldList.add(newFormField.getWidgetBody());
+      fieldList.add(newFormField);
     });
   }
 
@@ -51,7 +53,11 @@ class _AddFormFieldsScreenState extends State<AddFormFieldsScreen> {
       _showWarningDialog(context);
     }
     if (_formKey.currentState!.validate() && hasFieldAdded) {
-      print('KkkKKkk');
+      var modelName = _textEditingController.value.text;
+      var modelForm = ModelForm(modelName);
+      modelForm.addFields(fieldList);
+      ModelFormDAO modelFormDao = ModelFormDAO();
+      modelFormDao.add(modelForm);
     }
   }
 
@@ -90,7 +96,7 @@ class _AddFormFieldsScreenState extends State<AddFormFieldsScreen> {
                 child: ListView.builder(
                     itemCount: fieldList.length,
                     itemBuilder: (ctx, index) {
-                      return fieldList[index];
+                      return fieldList[index].getWidgetBody();
                     }),
               ),
             )

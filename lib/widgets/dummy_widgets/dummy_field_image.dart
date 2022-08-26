@@ -5,8 +5,12 @@ import '../dialog_widgets/dialog_widget_text.dart';
 
 class DummyFieldImage implements DummyField {
   var dialog = DialogWidgetText();
-  late String _name;
   var _widgetIcon = Icon(Icons.image);
+  late String _name;
+  String _type = 'image';
+  
+  String get name => _name;
+  String get type => _type;
 
 
   Future<dynamic> showInitDialog(BuildContext context){
@@ -37,6 +41,12 @@ class DummyFieldImage implements DummyField {
       ),
       onSaved: (_) {},
     );
+  }
+  
+  @override
+  String getQuery() {
+    // TODO: implement getQuery
+    throw UnimplementedError();
   }
 
  

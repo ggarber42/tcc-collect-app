@@ -5,11 +5,14 @@ import '../dialog_widgets/dialog_widget_text.dart';
 
 class DummyFieldText implements DummyField {
   var dialog = DialogWidgetText();
-  late String _name;
   var _widgetIcon = Icon(Icons.text_fields);
+  late String _name;
+  String _type = 'text';
+  
+  String get name => _name;
+  String get type => _type;
 
-
-  Future<dynamic> showInitDialog(BuildContext context){
+  Future<dynamic> showInitDialog(BuildContext context) {
     return showDialog(
         context: context,
         barrierDismissible: false,
@@ -18,13 +21,12 @@ class DummyFieldText implements DummyField {
         });
   }
 
-  @override 
-  init(BuildContext context) async{
+  @override
+  init(BuildContext context) async {
     var inputValue = await showInitDialog(context);
-    if(inputValue != null){
+    if (inputValue != null) {
       _name = inputValue;
     }
-
   }
 
   @override
@@ -39,5 +41,11 @@ class DummyFieldText implements DummyField {
     );
   }
 
- 
+  @override
+  String getQuery() {
+    return '''
+      $_name TEXT NOT NULL
+      $_type TEXT NOT NULL
+    ''';
+  }
 }

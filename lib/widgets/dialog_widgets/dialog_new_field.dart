@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 
 import '../../utils/constants.dart';
-class NewFieldDialog extends StatefulWidget {
+
+class DialogNewField extends StatefulWidget {
   @override
-  _NewFieldDialogState createState() => _NewFieldDialogState();
+  _DialogNewFieldState createState() => _DialogNewFieldState();
 }
 
-class _NewFieldDialogState extends State<NewFieldDialog> {
+class _DialogNewFieldState extends State<DialogNewField> {
   var selectedValue;
   final TextEditingController nameController = TextEditingController();
 
@@ -44,7 +45,7 @@ class _NewFieldDialogState extends State<NewFieldDialog> {
           child: const Text('Cancelar'),
         ),
         TextButton(
-          onPressed: () => Navigator.pop(context,selectedValue),
+          onPressed: () => Navigator.pop(context, selectedValue),
           child: const Text('Ok'),
         ),
       ],
