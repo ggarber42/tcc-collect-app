@@ -9,7 +9,9 @@ class ModelFormDAO implements DAO<ModelForm> {
 
   void _createModelFormTable() async {
     final db = await DataBaseConnector.instance.database;
-    await db.execute(ModelForm.createTableQuery);
+    for (var i = 0; i < ModelForm.createTableQuerys.length; i++) {
+      await db.execute(ModelForm.createTableQuerys[i]);
+    }
   }
 
   @override

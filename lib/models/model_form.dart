@@ -1,17 +1,30 @@
 class ModelForm {
   late String modelName;
-  static String createTableQuery = '''
-    CREATE TABLE IF NOT EXISTS FormModel ( 
-      modelId INTEGER PRIMARY KEY AUTOINCREMENT,
-      modelName TEXT NOT NULL
+  static List<String> createTableQuerys = [
+    '''
+      CREATE TABLE IF NOT EXISTS FormModel ( 
+        modelId INTEGER PRIMARY KEY AUTOINCREMENT,
+        modelName TEXT NOT NULL
+      );
+    ''',
+    '''
+      CREATE TABLE IF NOT EXISTS FormWidget ( 
+        widgetId INTEGER PRIMARY KEY AUTOINCREMENT,
+        widgetName TEXT NOT NULL,
+        type TEXT NOT NULL,
+        modelId INTEGER,
+        FOREIGN KEY (modelId) REFERENCES FormModel (modelId)
     );
-  CREATE TABLE IF NOT EXISTS FormWidget ( 
-      widgetId INTEGER PRIMARY KEY AUTOINCREMENT,
-      widgetName TEXT NOT NULL,
-      type TEXT NOT NULL,
-      FOREIGN KEY(modelId) REFERENCES FormModel(modelId)
-    );
-  ''';
+    '''
+  ];
+  static List<String> createTableQuerysx = [
+    ''' 
+      DROP TABLE IF EXISTS FormModel
+    ''',
+    '''
+      DROP TABLE IF EXISTS FormWidget;
+    '''
+  ];
   var _fieldList = <Map<String, String>>[];
 
   ModelForm(this.modelName);
@@ -23,7 +36,6 @@ class ModelForm {
         'type': fieldList[i].type,
       });
     }
-    print(_fieldList);
   }
 
   Map<String, Object?> getFormModelData() {
