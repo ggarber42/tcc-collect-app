@@ -41,4 +41,18 @@ class ModelFormDAO implements DAO<ModelForm> {
     // TODO: implement update
     throw UnimplementedError();
   }
+
+  @override
+  Future<List<ModelForm>> readAll() async {
+    final db = await DataBaseConnector.instance.database;
+    List<ModelForm> models = [];
+    List<Map> queryResult = await db.query(
+      ModelForm.tableName,
+      columns: ['modelId', 'modelName'],
+    );
+    for (int i = 0; i < queryResult.length; i++) {
+      models.add(ModelForm.fromDB(queryResult[i]));
+    }
+    return models;
+  }
 }

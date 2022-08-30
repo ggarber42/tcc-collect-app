@@ -1,5 +1,7 @@
 class ModelForm {
+  late int modelId;
   late String modelName;
+  static final tableName = 'FormModel';
   static List<String> createTableQuerys = [
     '''
       CREATE TABLE IF NOT EXISTS FormModel ( 
@@ -29,6 +31,11 @@ class ModelForm {
 
   ModelForm(this.modelName);
 
+  ModelForm.fromDB(Map data) {
+    modelId = data['modelId'];
+    modelName = data['modelName'];
+  }
+
   void addFields(List<dynamic> fieldList) {
     for (var i = 0; i < fieldList.length; i++) {
       _fieldList.add({
@@ -47,11 +54,5 @@ class ModelForm {
   List<Map<String, String>> getFieldList() {
     return _fieldList;
   }
-  // Map<String, Object?> makeFormWidgetData(int id) {
-  //   return {
-  //     'widgetName': modelName,
-  //     'type': modelName,
-  //     'modelName': modelName,
-  //   };
-  // }
+ 
 }
