@@ -19,14 +19,21 @@ class ModelFormDAO implements DAO<ModelForm> {
     final db = await DataBaseConnector.instance.database;
     int modelId = await db.insert('FormModel', model.getFormModelData());
     var fieldList = model.getFieldList();
-    var idd;
+    int widgetId;
     for (var i = 0; i < fieldList.length; i++) {
-      idd = await db.insert('FormWidget', {
+      widgetId = await db.insert('FormWidget', {
         'widgetName': fieldList[i]['widgetName'],
         'type': fieldList[i]['type'],
         'modelId': modelId
       });
-    }
+      if (fieldList[i]['type'] == 'radio') {
+        var optionList = model.getOptionList();
+        for (var i = 0; i < optionList.length; i++) {
+          await db.insert('RadioOptions', {
+            'optionName': optionList[i]['optionName'],
+            'widgetId': widgetId,
+          });
+        }
     print(idd);
   }
 

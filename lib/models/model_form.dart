@@ -8,7 +8,7 @@ class ModelForm {
         modelId INTEGER PRIMARY KEY AUTOINCREMENT,
         modelName TEXT NOT NULL
       );
-    ''',
+      ''',
     '''
       CREATE TABLE IF NOT EXISTS FormWidget ( 
         widgetId INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -16,6 +16,14 @@ class ModelForm {
         type TEXT NOT NULL,
         modelId INTEGER,
         FOREIGN KEY (modelId) REFERENCES FormModel (modelId)
+    );
+    ''',
+    '''
+    CREATE TABLE IF NOT EXISTS RadioOptions ( 
+        optionId INTEGER PRIMARY KEY AUTOINCREMENT,
+        optionName TEXT NOT NULL,
+        widgetId INTEGER,
+        FOREIGN KEY (widgetId) REFERENCES FormWidget (widgetId)
     );
     '''
   ];
@@ -28,6 +36,7 @@ class ModelForm {
     '''
   ];
   var _fieldList = <Map<String, String>>[];
+  var _optionList = <Map<String, String>>[];
 
   ModelForm(this.modelName);
 
@@ -42,6 +51,13 @@ class ModelForm {
         'widgetName': fieldList[i].name,
         'type': fieldList[i].type,
       });
+      if (fieldList[i].type == 'radio') {
+        for (var j = 0; j < fieldList[i].options.length; j++) {
+          _optionList.add({
+            'optionName': fieldList[i].options[j],
+          });
+        }
+      }
     }
   }
 
