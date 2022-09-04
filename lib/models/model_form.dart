@@ -71,4 +71,7 @@ class ModelForm {
     return _fieldList;
   }
  
+  List<Map<String, String>> getOptionList() {
+    return _optionList;
+  }
 }
