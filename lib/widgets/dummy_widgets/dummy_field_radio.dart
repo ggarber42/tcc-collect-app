@@ -6,14 +6,18 @@ import '../dialog_widgets/dialog_widget_radio.dart';
 
 class DummyFieldRadio implements DummyField {
   var dialog = DialogWidgetRadio();
-  String? _name;
-  dynamic? _options;
-  String? _type = 'radio';
+  late String _name;
+  late dynamic _options;
+  String _type = 'radio';
+
+  String get name => _name;
+  String get type => _type;
+  dynamic get options => _options;
 
   @override
   Widget getWidgetBody() {
     return Column(children: [
-      Text(_name as String),
+      Text(_name),
       ListView.builder(
         shrinkWrap: true,
         itemCount: _options.length,
@@ -43,7 +47,7 @@ class DummyFieldRadio implements DummyField {
       _options = selectedValues['options'];
     }
   }
-  
+
   @override
   String getQuery() {
     // TODO: implement getQuery
