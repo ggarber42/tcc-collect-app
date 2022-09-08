@@ -1,4 +1,5 @@
 import 'package:collect_app/screens/moldel_detail_screen.dart';
+import 'package:collect_app/utils/arguments.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/model_form.dart';
@@ -24,7 +25,10 @@ class ModelTile extends StatelessWidget {
         )),
         onTap: () => Navigator.of(context).pushNamed(
           ModelDetailScreen.routeName,
-          arguments: model.modelId,
+          arguments: ModelArguments(
+            model.modelId,
+            model.modelName,
+          ),
         ),
       ),
     );

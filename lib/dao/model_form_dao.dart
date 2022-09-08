@@ -54,7 +54,7 @@ class ModelFormDAO implements DAO<ModelForm> {
   Future<List<ModelForm>> readAll() async {
     final db = await DataBaseConnector.instance.database;
     List<ModelForm> models = [];
-    List<Map> queryResult = await db.query(
+    List<Map<String, Object?>> queryResult = await db.query(
       ModelForm.tableName,
       columns: ['modelId', 'modelName'],
     );

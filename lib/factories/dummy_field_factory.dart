@@ -1,39 +1,35 @@
 import 'package:flutter/material.dart';
 
-import '../interfaces/dummy_field_interface.dart';
-import '../widgets/dummy_widgets/dymmy_field_date.dart';
-import '../widgets/dummy_widgets/dummy_field_image.dart';
-import '../widgets/dummy_widgets/dummy_field_gps.dart';
-import '../widgets/dummy_widgets/dummy_field_text.dart';
+import '../interfaces/dummy_interface.dart';
+import '../widgets/dummy_widgets/dummy_field.dart';
 import '../widgets/dummy_widgets/dummy_field_radio.dart';
-
 class DummyFactoryField {
 
-  DummyField _getSelectedWidget(String selectedValue) {
-    DummyField dummyField;
+  Dummy _getSelectedWidget(String selectedValue) {
+    Dummy dummyField;
     switch(selectedValue){
       case 'date':
-        dummyField = DummyFieldDate();
+        dummyField = DummyField(selectedValue, Icons.date_range);
         break;
       case 'radio':
         dummyField = DummyFieldRadio();
         break;
       case 'gps':
-        dummyField = DummyFieldGPS();
+        dummyField = DummyField(selectedValue, Icons.gps_fixed_sharp);
         break;
       case 'img':
-        dummyField = DummyFieldImage();
+        dummyField = DummyField(selectedValue, Icons.image);
         break;
       default:
-        dummyField = DummyFieldText();
+        dummyField = DummyField(selectedValue, Icons.text_fields);
     }
     return dummyField;
   }
 
 
 
-  Future<DummyField> createFormField(BuildContext context, String selectedValue) async{
-    DummyField selectedField = _getSelectedWidget(selectedValue);
+  Future<Dummy> createFormField(BuildContext context, String selectedValue) async{
+    Dummy selectedField = _getSelectedWidget(selectedValue);
     await selectedField.init(context);
     return selectedField;
   }
