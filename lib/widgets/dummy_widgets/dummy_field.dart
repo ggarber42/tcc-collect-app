@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 
-import 'dummy_field_interface.dart';
-import '../dialog_widgets/dialog_widget_text.dart';
+import '../../interfaces/dummy_interface.dart';
+import '../dialog_widgets/dialog_dummy.dart';
 
-class DummyFieldText implements DummyField {
-  var dialog = DialogWidgetText();
-  var _widgetIcon = Icon(Icons.text_fields);
-  late String _name;
-  String _type = 'text';
-  
-  String get name => _name;
-  String get type => _type;
+class DummyField implements Dummy {
+  late final String name;
+  final String type;
+  final IconData widgetIcon;
+
+  get typeValue => type;
+
+  var dialog = DialogDummy();
+
+  DummyField(this.type, this.widgetIcon);
 
   Future<dynamic> showInitDialog(BuildContext context) {
     return showDialog(
@@ -25,7 +27,7 @@ class DummyFieldText implements DummyField {
   init(BuildContext context) async {
     var inputValue = await showInitDialog(context);
     if (inputValue != null) {
-      _name = inputValue;
+      name = inputValue;
     }
   }
 
@@ -34,18 +36,10 @@ class DummyFieldText implements DummyField {
     return TextFormField(
       readOnly: true,
       decoration: InputDecoration(
-        icon: _widgetIcon,
-        labelText: '$_name',
+        icon: Icon(widgetIcon),
+        labelText: '$name',
       ),
       onSaved: (_) {},
     );
-  }
-
-  @override
-  String getQuery() {
-    return '''
-      $_name TEXT NOT NULL
-      $_type TEXT NOT NULL
-    ''';
   }
 }

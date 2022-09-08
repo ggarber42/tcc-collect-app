@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 
-import 'dummy_field_interface.dart';
-import 'dummy_radio_item.dart';
+import '../../interfaces/dummy_interface.dart';
 import '../dialog_widgets/dialog_widget_radio.dart';
+import 'dummy_radio_item.dart';
 
-class DummyFieldRadio implements DummyField {
-  var dialog = DialogWidgetRadio();
+class DummyFieldRadio implements Dummy {
   late String _name;
   late dynamic _options;
-  String _type = 'radio';
 
-  String get name => _name;
-  String get type => _type;
-  dynamic get options => _options;
+  var dialog = DialogWidgetRadio();
+
+  get name => _name;
+  get options => _options;
+  get typeValue => 'radio';
 
   @override
   Widget getWidgetBody() {
@@ -46,11 +46,5 @@ class DummyFieldRadio implements DummyField {
       _name = selectedValues['name'];
       _options = selectedValues['options'];
     }
-  }
-
-  @override
-  String getQuery() {
-    // TODO: implement getQuery
-    throw UnimplementedError();
   }
 }

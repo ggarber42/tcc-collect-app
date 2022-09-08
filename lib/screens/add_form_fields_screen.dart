@@ -6,7 +6,7 @@ import '../widgets/base_widgets/main_bar.dart';
 import '../widgets/base_widgets/main_drawer.dart';
 import '../widgets/dialog_widgets/alert_widget_dialog.dart';
 import '../widgets/dialog_widgets/dialog_new_field.dart';
-import '../widgets/dummy_widgets/dummy_field_factory.dart';
+import '../factories/dummy_field_factory.dart';
 
 class AddFormFieldsScreen extends StatefulWidget {
   static const routeName = '/add-fields';

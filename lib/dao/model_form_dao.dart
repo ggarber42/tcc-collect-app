@@ -1,4 +1,4 @@
-import 'interface_dao.dart';
+import '../interfaces/dao_interface.dart';
 import '../models/model_form.dart';
 import '../services/db_connector.dart';
 
@@ -12,6 +12,9 @@ class ModelFormDAO implements DAO<ModelForm> {
     for (var i = 0; i < ModelForm.createTableQuerys.length; i++) {
       await db.execute(ModelForm.createTableQuerys[i]);
     }
+    final tables =
+        await db.rawQuery('SELECT * FROM sqlite_master ORDER BY name;');
+    // print(tables);
   }
 
   @override

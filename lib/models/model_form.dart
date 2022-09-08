@@ -29,10 +29,13 @@ class ModelForm {
   ];
   static List<String> createTableQuerysx = [
     ''' 
-      DROP TABLE IF EXISTS FormModel
+      DROP TABLE IF EXISTS FormModel;
     ''',
     '''
       DROP TABLE IF EXISTS FormWidget;
+    ''',
+    '''
+      DROP TABLE IF EXISTS RadioOptions;
     '''
   ];
   var _fieldList = <Map<String, String>>[];
@@ -49,9 +52,9 @@ class ModelForm {
     for (var i = 0; i < fieldList.length; i++) {
       _fieldList.add({
         'widgetName': fieldList[i].name,
-        'type': fieldList[i].type,
+        'type': fieldList[i].typeValue,
       });
-      if (fieldList[i].type == 'radio') {
+      if (fieldList[i].typeValue == 'radio') {
         for (var j = 0; j < fieldList[i].options.length; j++) {
           _optionList.add({
             'optionName': fieldList[i].options[j],
@@ -70,7 +73,7 @@ class ModelForm {
   List<Map<String, String>> getFieldList() {
     return _fieldList;
   }
- 
+
   List<Map<String, String>> getOptionList() {
     return _optionList;
   }
