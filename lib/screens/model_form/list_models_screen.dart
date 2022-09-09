@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../dao/model_form_dao.dart';
-import '../models/model_form.dart';
-import '../screens/create_models_screen.dart';
-import '../widgets/base_widgets/main_bar.dart';
-import '../widgets/base_widgets/main_drawer.dart';
-import '../widgets/custom_widgets/model_tile.dart';
+import '../../dao/model_form_dao.dart';
+import '../../models/model_form.dart';
+import 'create_models_screen.dart';
+import '../../widgets/base_widgets/main_bar.dart';
+import '../../widgets/base_widgets/main_drawer.dart';
+import '../../widgets/custom_widgets/model_tile.dart';
 
 class ListModelsScreen extends StatefulWidget {
   static const routeName = '/list_models';

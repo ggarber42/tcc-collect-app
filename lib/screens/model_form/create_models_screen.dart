@@ -1,9 +1,9 @@
-import '../screens/add_form_fields_screen.dart';
-import '../widgets/base_widgets/form_input.dart';
+import 'add_form_fields_screen.dart';
+import '../../widgets/base_widgets/form_input.dart';
 import 'package:flutter/material.dart';
 
-import '../widgets/base_widgets/main_bar.dart';
-import '../widgets/base_widgets/main_drawer.dart';
+import '../../widgets/base_widgets/main_bar.dart';
+import '../../widgets/base_widgets/main_drawer.dart';
 
 class CreateModelsScreen extends StatelessWidget {
   @override

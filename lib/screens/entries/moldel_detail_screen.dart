@@ -2,7 +2,7 @@ import 'package:collect_app/utils/arguments.dart';
 import 'package:collect_app/widgets/form_widgets/form_body.dart';
 import 'package:flutter/material.dart';
 
-import '../widgets/base_widgets/main_bar.dart';
+import '../../widgets/base_widgets/main_bar.dart';
 
 class ModelDetailScreen extends StatelessWidget {
   static const routeName = '/model_detail';

@@ -2,11 +2,11 @@ import 'package:collect_app/dao/model_form_dao.dart';
 import 'package:collect_app/models/model_form.dart';
 import 'package:flutter/material.dart';
 
-import '../widgets/base_widgets/main_bar.dart';
-import '../widgets/base_widgets/main_drawer.dart';
-import '../widgets/dialog_widgets/alert_widget_dialog.dart';
-import '../widgets/dialog_widgets/dialog_new_field.dart';
-import '../factories/dummy_field_factory.dart';
+import '../../widgets/base_widgets/main_bar.dart';
+import '../../widgets/base_widgets/main_drawer.dart';
+import '../../widgets/dialog_widgets/alert_widget_dialog.dart';
+import '../../widgets/dialog_widgets/dialog_new_field.dart';
+import '../../factories/dummy_field_factory.dart';
 
 class AddFormFieldsScreen extends StatefulWidget {
   static const routeName = '/add-fields';
