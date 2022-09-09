@@ -47,17 +47,35 @@ class _AddFormFieldsScreenState extends State<AddFormFieldsScreen> {
     });
   }
 
+  _showSnackbar(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
+      content: new Text(
+        'Modelo criado',
+        style: TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+        ),
+        textAlign: TextAlign.center,
+      ),
+    ));
+  }
+
   _handleSubmit() {
     var hasFieldAdded = fieldList.length > 0;
     if (!hasFieldAdded) {
       _showWarningDialog(context);
+      return;
     }
     if (_formKey.currentState!.validate() && hasFieldAdded) {
       var modelName = _textEditingController.value.text;
       var modelForm = ModelForm(modelName);
+
       modelForm.addFields(fieldList);
       ModelFormDAO modelFormDao = ModelFormDAO();
+
       modelFormDao.add(modelForm);
+      _showSnackbar(context);
+      Navigator.pop(context);
     }
   }
 
