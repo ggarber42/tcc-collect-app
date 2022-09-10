@@ -17,6 +17,7 @@ class FormBody extends StatefulWidget {
 class _FormBodyState extends State<FormBody> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   late Widget formBody;
+  var fields;
 
   Future<List<dynamic>> _getFormBody() async {
     var _fields = [];
@@ -64,13 +65,12 @@ class _FormBodyState extends State<FormBody> {
               future: _getFormBody(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  var fields = snapshot.data as List;
+                  fields = snapshot.data as List;
                   return Form(
                     key: _formKey,
                     child: ListView.builder(
                       itemCount: fields.length,
-                      itemBuilder: (ctx, index) =>
-                          fields[index],
+                      itemBuilder: (ctx, index) => fields[index],
                     ),
                   );
                 }
@@ -86,7 +86,16 @@ class _FormBodyState extends State<FormBody> {
             alignment: Alignment.bottomCenter,
             child: Container(
               width: MediaQuery.of(context).size.width,
-              child: BottomButton('Salvar entrada', () {}),
+              child: BottomButton('Salvar entrada', () {
+                for (var i = 0; i < fields.length; i++) {
+                  print(fields[i].getInputValue());
+                }
+                if (_formKey.currentState!.validate()) {
+                  print('pode');
+                } else {
+                  print('nao podeee');
+                }
+              }),
             ),
           ),
         ),

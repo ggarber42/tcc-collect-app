@@ -6,6 +6,10 @@ class FieldText extends StatelessWidget {
 
   FieldText(this.name);
 
+  dynamic getInputValue() {
+    return _textEditingController.value.text;
+  }
+
   @override
   Widget build(BuildContext context) {
     return TextFormField(
