@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 
 import 'field_text_factory.dart';
 import 'field_date_factory.dart';
+import 'field_radio_factory.dart';
+
 
 class FormFactory {
 
@@ -11,6 +13,9 @@ class FormFactory {
       case 'date':
         selectedFactory = FieldDateFactory();
         break;
+      case 'radio':
+        selectedFactory = FieldRadioFactory();
+        break;
       default:
         selectedFactory = FieldTextFactory();
         break;
@@ -19,9 +24,6 @@ class FormFactory {
   }
 
   Future<Widget> makeFormWidget(int widgetId, String type) async {
-    // Field selectedField = _selectField(type);
-    // await selectedField.init(widgetId);
-    // return selectedField;
     var selectedFactory = _selectFactory(type);
     var field = await selectedFactory.makeWidget(widgetId);
     return field;
