@@ -1,12 +1,14 @@
+import 'package:collect_app/interfaces/field_interface.dart';
 import 'package:flutter/material.dart';
 
-class FieldText extends StatelessWidget {
+class FieldText extends StatelessWidget implements Field {
   final String name;
   final TextEditingController _textEditingController = TextEditingController();
 
   FieldText(this.name);
 
-  dynamic getInputValue() {
+  @override
+  String getInputValue() {
     return _textEditingController.value.text;
   }
 

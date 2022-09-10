@@ -1,23 +1,28 @@
 import 'package:flutter/material.dart';
 
+import '../../interfaces/field_interface.dart';
 import '../custom_widgets/radio_item.dart';
 
-class FieldRadio extends StatefulWidget {
+class FieldRadio extends StatefulWidget implements Field {
   final String name;
   final List<dynamic> options;
+  int selectedValue = 0;
 
   FieldRadio(this.name, this.options);
 
   @override
   State<FieldRadio> createState() => _FieldRadioState();
+
+  @override
+  String getInputValue() {
+    return options[selectedValue]['optionName'];
+  }
 }
 
 class _FieldRadioState extends State<FieldRadio> {
-  var _selectedValue;
-
   updateSelected(value) {
     setState(() {
-      _selectedValue = value;
+      widget.selectedValue = value;
     });
   }
 
@@ -32,7 +37,7 @@ class _FieldRadioState extends State<FieldRadio> {
           margin: EdgeInsets.symmetric(vertical: 1.5),
           child: RadioItem(
             index,
-            _selectedValue,
+            widget.selectedValue,
             widget.options[index]['optionName'],
             updateSelected,
           ),
