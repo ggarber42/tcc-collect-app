@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../factories/form_factory.dart';
 import '../../services/db_connector.dart';
+import '../base_widgets/bottom_button.dart';
 
 class FormBody extends StatefulWidget {
   final int modelId;
@@ -14,6 +15,7 @@ class FormBody extends StatefulWidget {
 }
 
 class _FormBodyState extends State<FormBody> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   late Widget formBody;
 
   Future<List<dynamic>> _getFormBody() async {
@@ -30,7 +32,7 @@ class _FormBodyState extends State<FormBody> {
     List<Map<String, Object?>> queryResult = await db.rawQuery(query);
     var formFactory = FormFactory();
     for (var i = 0; i < queryResult.length; i++) {
-      var newField = await formFactory.makeField(
+      var newField = await formFactory.makeFormWidget(
         queryResult[i]['widgetId'] as int,
         queryResult[i]['type'] as String,
       );
@@ -47,27 +49,48 @@ class _FormBodyState extends State<FormBody> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      margin: EdgeInsets.symmetric(
-        vertical: 10,
-        horizontal: 20,
-      ),
-      child: FutureBuilder(
-        future: _getFormBody(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            var fields = snapshot.data as List;
-            return ListView.builder(
-              itemCount: fields.length,
-              itemBuilder: (ctx, index) => fields[index],
-            );
-          }
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        },
-      ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        SingleChildScrollView(
+          child: Container(
+            height: 400,
+            width: double.infinity,
+            margin: EdgeInsets.symmetric(
+              vertical: 10,
+              horizontal: 35,
+            ),
+            child: FutureBuilder(
+              future: _getFormBody(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  var fields = snapshot.data as List;
+                  return Form(
+                    key: _formKey,
+                    child: ListView.builder(
+                      itemCount: fields.length,
+                      itemBuilder: (ctx, index) =>
+                          fields[index],
+                    ),
+                  );
+                }
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              },
+            ),
+          ),
+        ),
+        Expanded(
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              child: BottomButton('Salvar entrada', () {}),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

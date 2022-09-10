@@ -1,22 +1,29 @@
 import 'package:flutter/cupertino.dart';
 
-import '../interfaces/field_interface.dart';
-import '../widgets/form_widgets/field_text.dart';
+import 'field_text_factory.dart';
+import 'field_date_factory.dart';
 
 class FormFactory {
-  Field _selectField(String type) {
-    Field field;
+
+  dynamic _selectFactory(String type) {
+    var selectedFactory;
     switch (type) {
+      case 'date':
+        selectedFactory = FieldDateFactory();
+        break;
       default:
-        field = FieldText();
+        selectedFactory = FieldTextFactory();
         break;
     }
-    return field;
+    return selectedFactory;
   }
 
-  Future<Widget> makeField(int widgetId, String type) async {
-    Field selectedField = _selectField(type);
-    await selectedField.init(widgetId);
-    return selectedField.getWidgetBody();
+  Future<Widget> makeFormWidget(int widgetId, String type) async {
+    // Field selectedField = _selectField(type);
+    // await selectedField.init(widgetId);
+    // return selectedField;
+    var selectedFactory = _selectFactory(type);
+    var field = await selectedFactory.makeWidget(widgetId);
+    return field;
   }
 }

@@ -1,33 +1,20 @@
 import 'package:flutter/material.dart';
 
-import '../../interfaces/field_interface.dart';
-import '../../services/db_connector.dart';
-
-class FieldText implements Field {
-  late final String _name;
-
+class FieldText extends StatelessWidget {
+  final String name;
   final TextEditingController _textEditingController = TextEditingController();
 
-  Future init(int widgetId) async {
-    final db = await DataBaseConnector.instance.database;
-    final query = '''
-        SELECT widgetName
-        FROM FormWidget
-        WHERE widgetId = $widgetId;
-    ''';
+  FieldText(this.name);
 
-    List<Map<String, Object?>> queryResult = await db.rawQuery(query);
-    for (var results in queryResult) {
-      if (results.containsKey("widgetName")) {
-        _name = results['widgetName'] as String;
-      }
-    }
-  }
-
-  Widget getWidgetBody() {
+  @override
+  Widget build(BuildContext context) {
     return TextFormField(
       controller: _textEditingController,
-      decoration: InputDecoration(labelText: _name),
+      decoration: InputDecoration(
+          labelText: name,
+          icon: Icon(
+            Icons.text_fields,
+          )),
       textInputAction: TextInputAction.done,
       validator: (String? value) {
         if (value == null || value.isEmpty) {
