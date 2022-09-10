@@ -1,5 +1,6 @@
 import 'package:collect_app/dao/model_form_dao.dart';
 import 'package:collect_app/models/model_form.dart';
+import 'package:collect_app/widgets/base_widgets/bottom_button.dart';
 import 'package:flutter/material.dart';
 
 import '../../widgets/base_widgets/main_bar.dart';
@@ -130,16 +131,8 @@ class _AddFormFieldsScreenState extends State<AddFormFieldsScreen> {
             onPressed: () => _handleFieldDialog(context)),
       ),
       bottomSheet: Container(
-        width: MediaQuery.of(context).size.width,
-        child: RaisedButton(
-          color: Theme.of(context).colorScheme.primary,
-          textColor: Colors.white,
-          elevation: 0,
-          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          child: Text('Salvar Modelo', style: TextStyle(fontSize: 20)),
-          onPressed: _handleSubmit,
-        ),
-      ),
+          width: MediaQuery.of(context).size.width,
+          child: BottomButton('Salvar Modelo', _handleSubmit)),
     );
   }
 }
