@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../screens/config_screen.dart';
-import '../../screens/list_models_screen.dart';
+import '../../screens/config/config_screen.dart';
+import '../../screens/model_form/list_models_screen.dart';
 
 class MainDrawer extends StatelessWidget {
   @override
