@@ -1,4 +1,4 @@
-import 'package:collect_app/screens/moldel_detail_screen.dart';
+import 'package:collect_app/screens/entries/moldel_detail_screen.dart';
 import 'package:collect_app/utils/arguments.dart';
 import 'package:flutter/material.dart';
 
