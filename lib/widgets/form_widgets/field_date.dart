@@ -1,8 +1,14 @@
+import 'package:collect_app/interfaces/field_interface.dart';
 import 'package:flutter/material.dart';
 
-class FieldDate extends StatelessWidget {
+class FieldDate extends StatelessWidget implements Field {
   final String name;
   final TextEditingController _textEditingController = TextEditingController();
+
+  @override
+  String getInputValue() {
+    return _textEditingController.value.text;
+  }
 
   FieldDate(this.name);
   @override
