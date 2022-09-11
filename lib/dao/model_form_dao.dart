@@ -12,9 +12,6 @@ class ModelFormDAO implements DAO<ModelForm> {
     for (var i = 0; i < ModelForm.createTableQuerys.length; i++) {
       await db.execute(ModelForm.createTableQuerys[i]);
     }
-    final tables =
-        await db.rawQuery('SELECT * FROM sqlite_master ORDER BY name;');
-    // print(tables);
   }
 
   @override
@@ -35,17 +32,13 @@ class ModelFormDAO implements DAO<ModelForm> {
       if (fieldList[i]['type'] == 'radio') {
         var optionList = model.getOptionList();
         for (var i = 0; i < optionList.length; i++) {
-          await db.insert('RadioOptions', {
+          await db.insert('RadioOption', {
             'optionName': optionList[i]['optionName'],
             'widgetId': widgetId,
           });
         }
       }
     }
-    await db.insert('EntryModel', {
-      'entryModelName': model.modelNameValue,
-      'modelId': modelId,
-    });
   }
 
   @override

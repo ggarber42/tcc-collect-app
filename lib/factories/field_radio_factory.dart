@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../../services/db_connector.dart';
 import '../widgets/form_widgets/field_radio.dart';
-import '../widgets/form_widgets/field_text.dart';
 
 class FieldRadioFactory {
   late final String _name;
@@ -30,7 +29,7 @@ class FieldRadioFactory {
         _name = nameResult['widgetName'] as String;
       }
     }
-
+    print(widgetId);
     for (var optionResult in queryOptionResult) {
       _options.add(optionResult);
     }

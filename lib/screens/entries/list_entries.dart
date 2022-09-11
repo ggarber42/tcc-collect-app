@@ -50,9 +50,7 @@ class _ListEntriesScreenState extends State<ListEntriesScreen> {
                 itemBuilder: (ctx, index) => Text('oi'),
               );
             }
-            return Center(
-              child: CircularProgressIndicator(),
-            );
+            return Center(child: Text('Nao existem entradas'));
           },
         ),
       ),
@@ -63,7 +61,8 @@ class _ListEntriesScreenState extends State<ListEntriesScreen> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (_) => ModelDetailScreen(widget.modelId)),
+            MaterialPageRoute(
+                builder: (_) => ModelDetailScreen(widget.modelId)),
           );
         },
       ),

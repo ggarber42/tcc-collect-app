@@ -20,12 +20,12 @@ class EntryDAO implements DAO<Entry> {
     List<Entry> entries = [];
     final query = '''
       SELECT entryModelId, entryModelName
-        FROM EntryModel
+        FROM Entry
         WHERE modelId = $modelId;
       ''';
     List<Map<String, Object?>> queryResult = await db.rawQuery(query);
     for (int i = 0; i < queryResult.length; i++) {
-      var entryModelName = queryResult[i]['entryModelName'] as String;
+      var entryModelName = queryResult[i]['name'] as String;
       var entryModelId = queryResult[i]['entryModelId'] as int;
       entries.add(Entry(entryModelId, entryModelName));
     }

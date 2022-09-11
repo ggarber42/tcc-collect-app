@@ -27,9 +27,9 @@ class ModelForm {
     );
     ''',
     '''
-    CREATE TABLE IF NOT EXISTS EntryModel ( 
-        entryModelId INTEGER PRIMARY KEY AUTOINCREMENT,
-        entryModelName TEXT NOT NULL,
+    CREATE TABLE IF NOT EXISTS Entry ( 
+        entryId INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
         modelId INTEGER,
         FOREIGN KEY (modelId) REFERENCES FormModel (modelId)
     );
@@ -37,10 +37,10 @@ class ModelForm {
     '''
     CREATE TABLE IF NOT EXISTS EntryValue ( 
         entryValueId INTEGER PRIMARY KEY AUTOINCREMENT,
-        entryValueName TEXT NOT NULL,
-        entryValue TEXT NOT NULL,
-        entryModelId INTEGER,
-        FOREIGN KEY (entryModelId) REFERENCES FormModel (entryModelId)
+        name TEXT NOT NULL,
+        value TEXT NOT NULL,
+        entryId INTEGER,
+        FOREIGN KEY (entryId) REFERENCES FormModel (entryId)
     );
     '''
   ];
@@ -62,6 +62,9 @@ class ModelForm {
     ''',
     '''
       DROP TABLE IF EXISTS EntryModel;
+    ''',
+    '''
+      DROP TABLE IF EXISTS Entry;
     ''',
   ];
   var _fieldList = <Map<String, String>>[];
