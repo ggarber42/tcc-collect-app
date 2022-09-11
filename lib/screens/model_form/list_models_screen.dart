@@ -15,16 +15,16 @@ class ListModelsScreen extends StatefulWidget {
 }
 
 class _ListModelsScreenState extends State<ListModelsScreen> {
+  Future<List<ModelForm>> _fetchModels() async {
+    ModelFormDAO modelDao = ModelFormDAO();
+    List<ModelForm> models = [...await modelDao.readAll(null)];
+    return models;
+  }
+
   @override
   void initState() {
     super.initState();
-    fetchModels();
-  }
-
-  fetchModels() async {
-    var modelDao = ModelFormDAO();
-    var models = [...await modelDao.readAll()];
-    return models;
+    _fetchModels();
   }
 
   @override
@@ -38,14 +38,13 @@ class _ListModelsScreenState extends State<ListModelsScreen> {
           horizontal: 10,
         ),
         child: FutureBuilder(
-          future: fetchModels(),
+          future: _fetchModels(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               List<ModelForm> models = snapshot.data as List<ModelForm>;
               return ListView.builder(
                 itemCount: models.length,
-                itemBuilder: (ctx, index) =>
-                    ModelTile(models[index]),
+                itemBuilder: (ctx, index) => ModelTile(models[index]),
               );
             }
             return Center(

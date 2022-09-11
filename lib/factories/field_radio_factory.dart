@@ -17,7 +17,7 @@ class FieldRadioFactory {
     ''';
     final fetchOptionsQuery = '''
       SELECT optionId, optionName
-        FROM RadioOptions
+        FROM RadioOption
         WHERE widgetId = $widgetId;
       ''';
     List<Map<String, Object?>> queryNameResult =
