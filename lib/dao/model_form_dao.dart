@@ -20,9 +20,12 @@ class ModelFormDAO implements DAO<ModelForm> {
   @override
   void add(ModelForm model) async {
     final db = await DataBaseConnector.instance.database;
+
     int modelId = await db.insert('FormModel', model.getFormModelData());
+
     var fieldList = model.getFieldList();
     int widgetId;
+
     for (var i = 0; i < fieldList.length; i++) {
       widgetId = await db.insert('FormWidget', {
         'widgetName': fieldList[i]['widgetName'],
@@ -39,6 +42,10 @@ class ModelFormDAO implements DAO<ModelForm> {
         }
       }
     }
+    await db.insert('EntryModel', {
+      'entryModelName': model.modelNameValue,
+      'modelId': modelId,
+    });
   }
 
   @override
@@ -54,7 +61,7 @@ class ModelFormDAO implements DAO<ModelForm> {
   }
 
   @override
-  Future<List<ModelForm>> readAll() async {
+  Future<List<ModelForm>> readAll(_) async {
     final db = await DataBaseConnector.instance.database;
     List<ModelForm> models = [];
     List<Map<String, Object?>> queryResult = await db.query(

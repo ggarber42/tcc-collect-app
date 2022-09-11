@@ -19,11 +19,28 @@ class ModelForm {
     );
     ''',
     '''
-    CREATE TABLE IF NOT EXISTS RadioOptions ( 
+    CREATE TABLE IF NOT EXISTS RadioOption ( 
         optionId INTEGER PRIMARY KEY AUTOINCREMENT,
         optionName TEXT NOT NULL,
         widgetId INTEGER,
         FOREIGN KEY (widgetId) REFERENCES FormWidget (widgetId)
+    );
+    ''',
+    '''
+    CREATE TABLE IF NOT EXISTS EntryModel ( 
+        entryModelId INTEGER PRIMARY KEY AUTOINCREMENT,
+        entryModelName TEXT NOT NULL,
+        modelId INTEGER,
+        FOREIGN KEY (modelId) REFERENCES FormModel (modelId)
+    );
+    ''',
+    '''
+    CREATE TABLE IF NOT EXISTS EntryValue ( 
+        entryValueId INTEGER PRIMARY KEY AUTOINCREMENT,
+        entryValueName TEXT NOT NULL,
+        entryValue TEXT NOT NULL,
+        entryModelId INTEGER,
+        FOREIGN KEY (entryModelId) REFERENCES FormModel (entryModelId)
     );
     '''
   ];
@@ -36,7 +53,16 @@ class ModelForm {
     ''',
     '''
       DROP TABLE IF EXISTS RadioOptions;
+    ''',
     '''
+      DROP TABLE IF EXISTS RadioOption;
+    ''',
+    '''
+      DROP TABLE IF EXISTS EntryValue;
+    ''',
+    '''
+      DROP TABLE IF EXISTS EntryModel;
+    ''',
   ];
   var _fieldList = <Map<String, String>>[];
   var _optionList = <Map<String, String>>[];
@@ -63,6 +89,8 @@ class ModelForm {
       }
     }
   }
+
+  String get modelNameValue => modelName;
 
   Map<String, Object?> getFormModelData() {
     return {

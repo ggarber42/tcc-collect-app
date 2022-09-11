@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
+import 'screens/entries/list_entries.dart';
 import 'screens/config/config_screen.dart';
 import 'screens/model_form/list_models_screen.dart';
-import 'screens/entries/moldel_detail_screen.dart';
+import 'utils/arguments.dart';
 
 void main() {
   runApp(MyApp());
@@ -10,7 +11,7 @@ void main() {
 
 class MyApp extends StatelessWidget {
   static const appTitle = 'Collect-app';
-  
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -23,7 +24,19 @@ class MyApp extends StatelessWidget {
       routes: {
         ListModelsScreen.routeName: (ctx) => ListModelsScreen(),
         ConfigScreen.routeName: (_) => ConfigScreen(),
-        ModelDetailScreen.routeName: (_) => ModelDetailScreen(),
+      },
+      onGenerateRoute: (settings) {
+        if (settings.name == ListEntriesScreen.routeName) {
+          final args = settings.arguments as ModelArguments;
+          return MaterialPageRoute(builder: (context) {
+            return ListEntriesScreen(
+              args.modelId,
+              args.modelName,
+            );
+          });
+        }
+        assert(false, 'Need to implement ${settings.name}');
+        return null;
       },
     );
   }
