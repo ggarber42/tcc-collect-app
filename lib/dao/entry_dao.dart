@@ -4,8 +4,12 @@ import '../services/db_connector.dart';
 
 class EntryDAO implements DAO<Entry> {
   @override
-  void add(Entry t) {
-    // TODO: implement add
+  Future<void> add(Entry entry) async {
+    final db = await DataBaseConnector.instance.database;
+    final int entryId = await db.insert(
+      '${Entry.tableName}',
+      entry.getData(),
+    );
   }
 
   @override
@@ -19,15 +23,16 @@ class EntryDAO implements DAO<Entry> {
     final db = await DataBaseConnector.instance.database;
     List<Entry> entries = [];
     final query = '''
-      SELECT entryModelId, entryModelName
-        FROM Entry
+      SELECT ${Entry.tableColumns['id']}, ${Entry.tableColumns['name']}
+        FROM ${Entry.tableName}
         WHERE modelId = $modelId;
       ''';
     List<Map<String, Object?>> queryResult = await db.rawQuery(query);
+    print(queryResult);
     for (int i = 0; i < queryResult.length; i++) {
-      var entryModelName = queryResult[i]['name'] as String;
-      var entryModelId = queryResult[i]['entryModelId'] as int;
-      entries.add(Entry(entryModelId, entryModelName));
+      var entryModelName = queryResult[i][Entry.tableColumns['name']] as String;
+      var entryId = queryResult[i][Entry.tableColumns['id']] as int;
+      entries.add(Entry.withId(entryId, entryModelName));
     }
     return entries;
   }

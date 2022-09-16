@@ -6,8 +6,11 @@ class FieldDate extends StatelessWidget implements Field {
   final TextEditingController _textEditingController = TextEditingController();
 
   @override
-  String getInputValue() {
-    return _textEditingController.value.text;
+  Map<String, String> getInputValue() {
+    return {
+      'name': name,
+      'value': _textEditingController.value.text
+    };
   }
 
   FieldDate(this.name);

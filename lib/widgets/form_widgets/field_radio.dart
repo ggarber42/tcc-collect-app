@@ -1,3 +1,4 @@
+import 'package:collect_app/models/radio_option.dart';
 import 'package:flutter/material.dart';
 
 import '../../interfaces/field_interface.dart';
@@ -14,8 +15,11 @@ class FieldRadio extends StatefulWidget implements Field {
   State<FieldRadio> createState() => _FieldRadioState();
 
   @override
-  String getInputValue() {
-    return options[selectedValue]['optionName'];
+  Map<String, String> getInputValue() {
+    return {
+      'name': name,
+      'value': options[selectedValue][RadioOption.tableColumns['name']],
+    };
   }
 }
 
@@ -38,7 +42,8 @@ class _FieldRadioState extends State<FieldRadio> {
           child: RadioItem(
             index,
             widget.selectedValue,
-            widget.options[index]['optionName'],
+            // widget.options[index]['optionName'],
+            widget.options[index][RadioOption.tableColumns['name']],
             updateSelected,
           ),
         ),

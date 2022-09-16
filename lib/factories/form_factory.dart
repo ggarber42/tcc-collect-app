@@ -23,9 +23,9 @@ class FormFactory {
     return selectedFactory;
   }
 
-  Future<Widget> makeFormWidget(int widgetId, String type) async {
+  Future<Widget> makeFormWidget(int widgetId, String type, TextEditingController controller) async {
     var selectedFactory = _selectFactory(type);
-    var field = await selectedFactory.makeWidget(widgetId);
+    var field = await selectedFactory.makeWidget(widgetId, controller);
     return field;
   }
 }

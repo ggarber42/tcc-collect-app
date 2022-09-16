@@ -8,7 +8,8 @@ class DummyField implements Dummy {
   final String type;
   final IconData widgetIcon;
 
-  get typeValue => type;
+@override
+  get getType => type;
 
   var dialog = DialogDummy();
 

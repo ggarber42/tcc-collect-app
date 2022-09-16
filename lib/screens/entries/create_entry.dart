@@ -1,45 +1,73 @@
+import 'package:collect_app/dao/entry_dao.dart';
+import 'package:collect_app/models/form_widget.dart';
 import 'package:flutter/material.dart';
 
 import '../../factories/form_factory.dart';
+import '../../models/entry.dart';
+import '../../models/form_model.dart';
 import '../../services/db_connector.dart';
 import '../../widgets/base_widgets/bottom_button.dart';
 import '../../widgets/base_widgets/main_bar.dart';
 
-class ModelDetailScreen extends StatefulWidget {
+class CreateEntryScreen extends StatefulWidget {
   final int modelId;
 
-  ModelDetailScreen(this.modelId);
+  CreateEntryScreen(this.modelId);
 
   @override
-  State<ModelDetailScreen> createState() => _ModelDetailScreenState();
+  State<CreateEntryScreen> createState() => _CreateEntryScreenState();
 }
 
-class _ModelDetailScreenState extends State<ModelDetailScreen> {
+class _CreateEntryScreenState extends State<CreateEntryScreen> {
+  final EntryDAO entryDAO = EntryDAO();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   late Widget formBody;
   var fields;
+  var _controllers = [];
 
   Future<List<dynamic>> _getFormBody() async {
     var _fields = [];
     final db = await DataBaseConnector.instance.database;
+    var formWidgetTableName = FormWidget.tableName;
+    var formWidgetTableId = FormWidget.tableColumns['id'];
+    var formWidgetTableType = FormWidget.tableColumns['type'];
+    var formModelTableName = FormModel.tableName;
+    var formModelTableId = FormModel.tableColumns['id'];
+
     var query = '''
-      SELECT FormWidget.widgetId, type
-      FROM FormModel
-      INNER JOIN FormWidget
-      ON FormModel.modelId = FormWidget.modelId
-      WHERE FormWidget.modelId = ${widget.modelId};
+      SELECT  $formWidgetTableName.$formWidgetTableId, $formWidgetTableType
+      FROM $formModelTableName
+      INNER JOIN $formWidgetTableName
+      ON $formModelTableName.$formModelTableId = $formWidgetTableName.$formModelTableId
+      WHERE $formWidgetTableName.$formModelTableId =
+      ${widget.modelId};
     ''';
 
     List<Map<String, Object?>> queryResult = await db.rawQuery(query);
+
     var formFactory = FormFactory();
     for (var i = 0; i < queryResult.length; i++) {
+      _controllers.add(TextEditingController());
       var newField = await formFactory.makeFormWidget(
-        queryResult[i]['widgetId'] as int,
-        queryResult[i]['type'] as String,
-      );
+          queryResult[i][formWidgetTableId] as int,
+          queryResult[i][formWidgetTableType] as String,
+          _controllers[i] as TextEditingController);
       _fields.add(newField);
     }
     return _fields;
+  }
+
+  _showSnackbar(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
+      content: new Text(
+        'Entrada criada',
+        style: TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+        ),
+        textAlign: TextAlign.center,
+      ),
+    ));
   }
 
   @override
@@ -51,6 +79,7 @@ class _ModelDetailScreenState extends State<ModelDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: MainBar(),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -89,13 +118,15 @@ class _ModelDetailScreenState extends State<ModelDetailScreen> {
                 child: Container(
                   width: MediaQuery.of(context).size.width,
                   child: BottomButton('Salvar entrada', () {
-                    for (var i = 0; i < fields.length; i++) {
-                      print(fields[i].getInputValue());
-                    }
                     if (_formKey.currentState!.validate()) {
-                      print('pode');
-                    } else {
-                      print('nao podeee');
+                      for (var i = 0; i < fields.length; i++) {
+                        var fieldValue = fields[i].getInputValue();
+                        entryDAO.add(Entry.withForeignKey(
+                          fieldValue['name'],
+                          widget.modelId,
+                        ));
+                      }
+                      _showSnackbar(context);
                     }
                   }),
                 ),

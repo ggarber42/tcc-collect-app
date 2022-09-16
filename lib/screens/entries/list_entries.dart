@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import '../../dao/entry_dao.dart';
 import '../../widgets/base_widgets/main_bar.dart';
 import '../../widgets/base_widgets/main_drawer.dart';
-import 'moldel_detail_screen.dart';
+import 'create_entry.dart';
 
 class ListEntriesScreen extends StatefulWidget {
   static const routeName = '/list_entries';
@@ -19,14 +19,15 @@ class ListEntriesScreen extends StatefulWidget {
 
 class _ListEntriesScreenState extends State<ListEntriesScreen> {
   _fetchEntries() async {
-    EntryDAO entrieDao = EntryDAO();
-    var entrys = [...await entrieDao.readAll(widget.modelId)];
-    return entrys;
+    EntryDAO entryDao = EntryDAO();
+    var entries = [...await entryDao.readAll(widget.modelId)];
+    return entries;
   }
 
   @override
   void initState() {
     super.initState();
+    print('oiii');
     _fetchEntries();
   }
 
@@ -47,7 +48,10 @@ class _ListEntriesScreenState extends State<ListEntriesScreen> {
               var entries = snapshot.data as List<Entry>;
               return ListView.builder(
                 itemCount: entries.length,
-                itemBuilder: (ctx, index) => Text('oi'),
+                itemBuilder: (ctx, i) => ListTile(
+                  leading: Icon(Icons.article_sharp),
+                  title: Text(entries[i].getName),
+                ),
               );
             }
             return Center(child: Text('Nao existem entradas'));
@@ -62,7 +66,7 @@ class _ListEntriesScreenState extends State<ListEntriesScreen> {
           Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (_) => ModelDetailScreen(widget.modelId)),
+                builder: (_) => CreateEntryScreen(widget.modelId)),
           );
         },
       ),

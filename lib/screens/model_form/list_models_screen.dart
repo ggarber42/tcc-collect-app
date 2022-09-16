@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../dao/model_form_dao.dart';
-import '../../models/model_form.dart';
+import '../../dao/form_model_dao.dart';
+import '../../models/form_model.dart';
 import 'create_models_screen.dart';
 import '../../widgets/base_widgets/main_bar.dart';
 import '../../widgets/base_widgets/main_drawer.dart';
@@ -15,9 +15,10 @@ class ListModelsScreen extends StatefulWidget {
 }
 
 class _ListModelsScreenState extends State<ListModelsScreen> {
-  Future<List<ModelForm>> _fetchModels() async {
-    ModelFormDAO modelDao = ModelFormDAO();
-    List<ModelForm> models = [...await modelDao.readAll(null)];
+  Future<List<FormModel>> _fetchModels() async {
+    FormModelDAO modelDao = FormModelDAO();
+    var _;
+    List<FormModel> models = [...await modelDao.readAll(_)];
     return models;
   }
 
@@ -41,7 +42,7 @@ class _ListModelsScreenState extends State<ListModelsScreen> {
           future: _fetchModels(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              List<ModelForm> models = snapshot.data as List<ModelForm>;
+              List<FormModel> models = snapshot.data as List<FormModel>;
               return ListView.builder(
                 itemCount: models.length,
                 itemBuilder: (ctx, index) => ModelTile(models[index]),

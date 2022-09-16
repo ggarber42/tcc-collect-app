@@ -2,10 +2,10 @@ import 'package:collect_app/screens/entries/list_entries.dart';
 import 'package:collect_app/utils/arguments.dart';
 import 'package:flutter/material.dart';
 
-import '../../models/model_form.dart';
+import '../../models/form_model.dart';
 
 class ModelTile extends StatelessWidget {
-  final ModelForm model;
+  final FormModel model;
 
   ModelTile(this.model);
 
@@ -19,7 +19,7 @@ class ModelTile extends StatelessWidget {
             children: <Widget>[
               ListTile(
                 leading: Icon(Icons.article_sharp),
-                title: Text(model.modelName),
+                title: Text(model.getName),
               ),
             ],
           )),
@@ -28,7 +28,7 @@ class ModelTile extends StatelessWidget {
                 ListEntriesScreen.routeName,
                 arguments: ModelArguments(
                   model.modelId,
-                  model.modelName,
+                  model.getName,
                 ),
               )),
     );

@@ -1,5 +1,5 @@
-import 'package:collect_app/dao/model_form_dao.dart';
-import 'package:collect_app/models/model_form.dart';
+import 'package:collect_app/dao/form_model_dao.dart';
+import 'package:collect_app/models/form_model.dart';
 import 'package:collect_app/widgets/base_widgets/bottom_button.dart';
 import 'package:flutter/material.dart';
 
@@ -39,10 +39,10 @@ class _AddFormFieldsScreenState extends State<AddFormFieldsScreen> {
   }
 
   _handleFieldDialog(BuildContext context) async {
-    var selectedValue = await _showFieldDialog(context);
-    if (selectedValue == null) return;
+    var selectedType = await _showFieldDialog(context);
+    if (selectedType == null) return;
     var newFormField =
-        await DummyFactoryField().createFormField(context, selectedValue);
+        await DummyFactoryField().createFormField(context, selectedType);
     setState(() {
       fieldList.add(newFormField);
     });
@@ -69,14 +69,14 @@ class _AddFormFieldsScreenState extends State<AddFormFieldsScreen> {
     }
     if (_formKey.currentState!.validate() && hasFieldAdded) {
       var modelName = _textEditingController.value.text;
-      var modelForm = ModelForm(modelName);
+      var modelForm = FormModel(modelName);
 
       modelForm.addFields(fieldList);
-      ModelFormDAO modelFormDao = ModelFormDAO();
+      FormModelDAO modelFormDao = FormModelDAO();
 
       modelFormDao.add(modelForm);
       _showSnackbar(context);
-      Navigator.pop(context);
+      // Navigator.pop(context);
     }
   }
 

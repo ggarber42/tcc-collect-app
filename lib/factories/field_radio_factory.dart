@@ -1,3 +1,5 @@
+import 'package:collect_app/models/form_widget.dart';
+import 'package:collect_app/models/radio_option.dart';
 import 'package:flutter/material.dart';
 
 import '../../services/db_connector.dart';
@@ -10,14 +12,15 @@ class FieldRadioFactory {
   Future<Widget> makeWidget(int widgetId) async {
     final db = await DataBaseConnector.instance.database;
     final fetchNameQuery = '''
-        SELECT widgetName
-        FROM FormWidget
-        WHERE widgetId = $widgetId;
+        SELECT ${FormWidget.tableColumns['name']}
+        FROM ${FormWidget.tableName}
+        WHERE ${FormWidget.tableColumns['id']} = $widgetId;
     ''';
     final fetchOptionsQuery = '''
-      SELECT optionId, optionName
-        FROM RadioOption
-        WHERE widgetId = $widgetId;
+      SELECT ${RadioOption.tableColumns['id']}, 
+        ${RadioOption.tableColumns['name']}
+        FROM ${RadioOption.tableName}
+        WHERE ${FormWidget.tableColumns['id']} = $widgetId;
       ''';
     List<Map<String, Object?>> queryNameResult =
         await db.rawQuery(fetchNameQuery);
@@ -25,11 +28,10 @@ class FieldRadioFactory {
         await db.rawQuery(fetchOptionsQuery);
 
     for (var nameResult in queryNameResult) {
-      if (nameResult.containsKey("widgetName")) {
-        _name = nameResult['widgetName'] as String;
+      if (nameResult.containsKey(RadioOption.tableColumns['name'])) {
+        _name = nameResult[RadioOption.tableColumns['name']] as String;
       }
     }
-    print(widgetId);
     for (var optionResult in queryOptionResult) {
       _options.add(optionResult);
     }

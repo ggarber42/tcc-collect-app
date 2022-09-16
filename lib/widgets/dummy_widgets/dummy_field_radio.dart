@@ -12,7 +12,8 @@ class DummyFieldRadio implements Dummy {
 
   get name => _name;
   get options => _options;
-  get typeValue => 'radio';
+  @override
+  get getType => 'radio';
 
   @override
   Widget getWidgetBody() {
