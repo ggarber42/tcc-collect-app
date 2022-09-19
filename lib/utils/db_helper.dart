@@ -1,5 +1,5 @@
 import '../models/entry.dart';
-import '../models/entry_values.dart';
+import '../models/entry_value.dart';
 import '../models/form_model.dart';
 import '../models/form_widget.dart';
 import '../models/radio_option.dart';

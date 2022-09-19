@@ -1,11 +1,13 @@
-import 'package:collect_app/dao/entry_dao.dart';
-import 'package:collect_app/models/form_widget.dart';
 import 'package:flutter/material.dart';
 
+import '../../dao/entry_dao.dart';
 import '../../factories/form_factory.dart';
+import '../../models/entry_value.dart';
+import '../../models/form_widget.dart';
 import '../../models/entry.dart';
 import '../../models/form_model.dart';
 import '../../services/db_connector.dart';
+import '../../widgets/base_widgets/name_input.dart';
 import '../../widgets/base_widgets/bottom_button.dart';
 import '../../widgets/base_widgets/main_bar.dart';
 
@@ -19,6 +21,7 @@ class CreateEntryScreen extends StatefulWidget {
 }
 
 class _CreateEntryScreenState extends State<CreateEntryScreen> {
+  final TextEditingController _nameController = TextEditingController();
   final EntryDAO entryDAO = EntryDAO();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   late Widget formBody;
@@ -84,32 +87,40 @@ class _CreateEntryScreenState extends State<CreateEntryScreen> {
         body: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            SingleChildScrollView(
-              child: Container(
-                height: 400,
-                width: double.infinity,
-                margin: EdgeInsets.symmetric(
-                  vertical: 10,
-                  horizontal: 35,
-                ),
-                child: FutureBuilder(
-                  future: _getFormBody(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      fields = snapshot.data as List;
-                      return Form(
-                        key: _formKey,
-                        child: ListView.builder(
-                          itemCount: fields.length,
-                          itemBuilder: (ctx, index) => fields[index],
-                        ),
-                      );
-                    }
-                    return Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  },
-                ),
+            Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  NameInput(
+                    'Nome da entrada*',
+                    _nameController,
+                  ),
+                  SingleChildScrollView(
+                    child: Container(
+                      height: 400,
+                      width: double.infinity,
+                      margin: EdgeInsets.symmetric(
+                        vertical: 10,
+                        horizontal: 35,
+                      ),
+                      child: FutureBuilder(
+                        future: _getFormBody(),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            fields = snapshot.data;
+                            return ListView.builder(
+                              itemCount: fields.length,
+                              itemBuilder: (ctx, index) => fields[index],
+                            );
+                          }
+                          return Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
             Expanded(
@@ -119,13 +130,20 @@ class _CreateEntryScreenState extends State<CreateEntryScreen> {
                   width: MediaQuery.of(context).size.width,
                   child: BottomButton('Salvar entrada', () {
                     if (_formKey.currentState!.validate()) {
+                      List<EntryValue> values = [];
                       for (var i = 0; i < fields.length; i++) {
                         var fieldValue = fields[i].getInputValue();
-                        entryDAO.add(Entry.withForeignKey(
+                        EntryValue entryValue = EntryValue.fromField(
                           fieldValue['name'],
-                          widget.modelId,
-                        ));
+                          fieldValue['value'],
+                        );
+                        values.add(entryValue);
                       }
+                      entryDAO.add(Entry.withValues(
+                        _nameController.value.text,
+                        widget.modelId,
+                        values as List<EntryValue>,
+                      ));
                       _showSnackbar(context);
                     }
                   }),

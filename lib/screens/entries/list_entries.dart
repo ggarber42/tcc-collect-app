@@ -1,4 +1,5 @@
 import 'package:collect_app/models/entry.dart';
+import 'package:collect_app/widgets/custom_widgets/entry_tile.dart';
 import 'package:flutter/material.dart';
 
 import '../../dao/entry_dao.dart';
@@ -27,7 +28,6 @@ class _ListEntriesScreenState extends State<ListEntriesScreen> {
   @override
   void initState() {
     super.initState();
-    print('oiii');
     _fetchEntries();
   }
 
@@ -48,10 +48,7 @@ class _ListEntriesScreenState extends State<ListEntriesScreen> {
               var entries = snapshot.data as List<Entry>;
               return ListView.builder(
                 itemCount: entries.length,
-                itemBuilder: (ctx, i) => ListTile(
-                  leading: Icon(Icons.article_sharp),
-                  title: Text(entries[i].getName),
-                ),
+                itemBuilder: (ctx, i) => EntryTile(entries[i]),
               );
             }
             return Center(child: Text('Nao existem entradas'));

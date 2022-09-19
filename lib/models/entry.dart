@@ -1,15 +1,18 @@
+import 'entry_value.dart';
 import 'form_model.dart';
 
 class Entry {
   final String name;
   int? entryId;
   int? modelId;
+  List<EntryValue>? values;
+
   static final tableName = 'Entry';
   static final tableColumns = {
     'id': 'entryId',
     'name': 'name',
   };
-  static final String dropTableQuery = 'DROP TABLE IF EXISTS $tableName';
+  static final dropTableQuery = 'DROP TABLE IF EXISTS $tableName';
   static final createTableQuery = '''
         CREATE TABLE IF NOT EXISTS $tableName ( 
           ${tableColumns['id']} INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -24,9 +27,14 @@ class Entry {
 
   Entry.withId(this.entryId, this.name);
 
-  Entry.withForeignKey(this.name, this.modelId);
+  Entry.withValues(this.name, this.modelId, this.values);
 
-  String get getName => name;
+  get getName => name;
+
+  get getId => entryId as int;
+
+  get getValues => values as List<EntryValue>;
+  
 
   Map<String, Object?> getData() {
     return {

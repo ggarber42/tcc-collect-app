@@ -1,7 +1,8 @@
 import 'entry.dart';
 
 class EntryValue {
-  final int entryValueId;
+  int? entryValueId;
+  int? entryId;
   final String name;
   final String value;
 
@@ -9,8 +10,7 @@ class EntryValue {
   static final tableColumns = {
     'id': 'entryValueId',
     'name': 'name',
-    'value': 'value',
-    'foreignKey': 'entryValueId'
+    'value': 'value'
   };
   static final dropTableQuery = 'DROP TABLE IF EXISTS $tableName';
   static final createTableQuery = '''
@@ -25,4 +25,22 @@ class EntryValue {
   ''';
 
   EntryValue(this.entryValueId, this.name, this.value);
+
+  EntryValue.fromField(this.name, this.value);
+
+  get getName => name;
+
+  get getValue => value;
+
+  set setEntryId(int id) => entryId = id;
+
+  get getEntryId => entryId;
+
+  Map<String, Object?> getData() {
+    return {
+      tableColumns['name'] as String: name,
+      tableColumns['value'] as String: value,
+      Entry.tableColumns['id'] as String: entryId
+    };
+  }
 }

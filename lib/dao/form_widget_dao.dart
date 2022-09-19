@@ -16,7 +16,6 @@ class FormWidgetDAO implements DAO<FormWidget> {
 
     if (formWidget.getType == 'radio') {
       var optionList = formWidget.getOptionList();
-      print(widgetId);
       final radioName = RadioOption.tableColumns['name'];
       for (var i = 0; i < optionList.length; i++) {
         RadioOptionDAO radioDao = RadioOptionDAO();
