@@ -3,21 +3,18 @@ import 'package:flutter/material.dart';
 
 class FieldDate extends StatelessWidget implements Field {
   final String name;
-  final TextEditingController _textEditingController = TextEditingController();
+  final TextEditingController textEditingController;
 
   @override
   Map<String, String> getInputValue() {
-    return {
-      'name': name,
-      'value': _textEditingController.value.text
-    };
+    return {'name': name, 'value': textEditingController.value.text};
   }
 
-  FieldDate(this.name);
+  FieldDate(this.name, this.textEditingController);
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      controller: _textEditingController,
+      controller: textEditingController,
       decoration: InputDecoration(
         icon: Icon(Icons.date_range),
         labelText: name,
@@ -40,7 +37,7 @@ class FieldDate extends StatelessWidget implements Field {
           if (pickedDate == null) {
             return;
           }
-          _textEditingController.text = pickedDate.toIso8601String();
+          textEditingController.text = pickedDate.toIso8601String();
         });
       },
     );

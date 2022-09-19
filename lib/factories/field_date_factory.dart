@@ -7,13 +7,8 @@ import '../widgets/form_widgets/field_date.dart';
 class FieldDateFactory {
   late final String _name;
 
-  Future<Widget> makeWidget(int widgetId) async {
+  Future<Widget> makeWidget(int widgetId,TextEditingController controller) async {
     final db = await DataBaseConnector.instance.database;
-    // final query = '''
-    //     SELECT widgetName
-    //     FROM FormWidget
-    //     WHERE widgetId = $widgetId;
-    // ''';
     final query = '''
         SELECT ${FormWidget.tableColumns['name']}
         FROM ${FormWidget.tableName}
@@ -21,14 +16,11 @@ class FieldDateFactory {
     ''';
     List<Map<String, Object?>> queryResult = await db.rawQuery(query);
     for (var results in queryResult) {
-      // if (results.containsKey("widgetName")) {
-      //   _name = results['widgetName'] as String;
-      // }
       if (results.containsKey(FormWidget.tableColumns['name'])) {
         _name = results[FormWidget.tableColumns['name']] as String;
       }
     }
 
-    return FieldDate(_name);
+    return FieldDate(_name, controller);
   }
 }
