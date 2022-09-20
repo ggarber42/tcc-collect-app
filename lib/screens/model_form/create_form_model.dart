@@ -9,14 +9,14 @@ import '../../widgets/dialog_widgets/alert_widget_dialog.dart';
 import '../../widgets/dialog_widgets/dialog_new_field.dart';
 import '../../factories/dummy_field_factory.dart';
 
-class AddFormFieldsScreen extends StatefulWidget {
+class CreateFormModelsScreen extends StatefulWidget {
   static const routeName = '/add-fields';
 
   @override
-  _AddFormFieldsScreenState createState() => _AddFormFieldsScreenState();
+  _CreateFormModelsScreenState createState() => _CreateFormModelsScreenState();
 }
 
-class _AddFormFieldsScreenState extends State<AddFormFieldsScreen> {
+class _CreateFormModelsScreenState extends State<CreateFormModelsScreen> {
   final TextEditingController _textEditingController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   var fieldList = [];

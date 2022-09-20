@@ -1,4 +1,4 @@
-import 'add_form_fields_screen.dart';
+import 'create_form_model.dart';
 import '../../widgets/base_widgets/form_input.dart';
 import 'package:flutter/material.dart';
 
@@ -26,7 +26,8 @@ class CreateModelsScreen extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (_) => AddFormFieldsScreen()),
+                      MaterialPageRoute(
+                          builder: (_) => CreateFormModelsScreen()),
                     );
                   },
                   child: Text('Criar Modelo'),

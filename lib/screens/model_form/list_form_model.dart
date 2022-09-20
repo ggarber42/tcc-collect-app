@@ -2,19 +2,19 @@ import 'package:flutter/material.dart';
 
 import '../../dao/form_model_dao.dart';
 import '../../models/form_model.dart';
-import 'create_models_screen.dart';
 import '../../widgets/base_widgets/main_bar.dart';
 import '../../widgets/base_widgets/main_drawer.dart';
 import '../../widgets/custom_widgets/model_tile.dart';
+import 'create_form_model.dart';
 
-class ListModelsScreen extends StatefulWidget {
+class ListFormModelsScreen extends StatefulWidget {
   static const routeName = '/list_models';
 
   @override
-  State<ListModelsScreen> createState() => _ListModelsScreenState();
+  State<ListFormModelsScreen> createState() => _ListFormModelsScreenState();
 }
 
-class _ListModelsScreenState extends State<ListModelsScreen> {
+class _ListFormModelsScreenState extends State<ListFormModelsScreen> {
   Future<List<FormModel>> _fetchModels() async {
     FormModelDAO modelDao = FormModelDAO();
     var _;
@@ -61,7 +61,7 @@ class _ListModelsScreenState extends State<ListModelsScreen> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (_) => CreateModelsScreen()),
+            MaterialPageRoute(builder: (_) => CreateFormModelsScreen()),
           );
         },
       ),
