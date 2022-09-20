@@ -9,7 +9,7 @@ class FieldRadioFactory {
   late final String _name;
   final _options = [];
 
-  Future<Widget> makeWidget(int widgetId) async {
+  Future<Widget> makeWidget(int widgetId, _) async {
     final db = await DataBaseConnector.instance.database;
     final fetchNameQuery = '''
         SELECT ${FormWidget.tableColumns['name']}
