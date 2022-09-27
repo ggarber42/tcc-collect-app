@@ -3,9 +3,10 @@ import 'package:collect_app/models/radio_option.dart';
 import 'package:flutter/material.dart';
 
 import '../../services/db_connector.dart';
+import '../interfaces/field_factory.dart';
 import '../widgets/form_widgets/field_radio.dart';
 
-class FieldRadioFactory {
+class FieldRadioFactory implements FieldFactory {
   late final String _name;
   final _options = [];
 

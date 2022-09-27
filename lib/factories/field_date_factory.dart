@@ -1,10 +1,11 @@
-import 'package:collect_app/models/form_widget.dart';
 import 'package:flutter/material.dart';
 
-import '../../services/db_connector.dart';
+import '../models/form_widget.dart';
+import '../interfaces/field_factory.dart';
 import '../widgets/form_widgets/field_date.dart';
+import '../../services/db_connector.dart';
 
-class FieldDateFactory {
+class FieldDateFactory implements FieldFactory {
   late final String _name;
 
   Future<Widget> makeWidget(int widgetId,TextEditingController controller) async {
