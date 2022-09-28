@@ -19,9 +19,10 @@ class FormModelDAO implements DAO<FormModel> {
     final formWidgetType = FormWidget.tableColumns['type'];
     for (var i = 0; i < fieldList.length; i++) {
       FormWidget formWidget = FormWidget.withModel(
-          fieldList[i][formWidgetName] as String,
-          fieldList[i][formWidgetType] as String,
-          model);
+        fieldList[i][formWidgetName] as String,
+        fieldList[i][formWidgetType] as String,
+        model,
+      );
       FormWidgetDAO formWidgetDao = FormWidgetDAO();
       formWidgetDao.add(formWidget);
     }

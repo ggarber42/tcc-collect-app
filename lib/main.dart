@@ -43,9 +43,9 @@ class _MyAppState extends State<MyApp> {
         theme: ThemeData(
           primarySwatch: Colors.green,
         ),
-        home: ListModelsScreen(),
+        home: ListFormModelsScreen(),
         routes: {
-          ListModelsScreen.routeName: (ctx) => ListModelsScreen(),
+          ListFormModelsScreen.routeName: (ctx) => ListFormModelsScreen(),
           ConfigScreen.routeName: (_) => ConfigScreen(),
         },
         onGenerateRoute: (settings) {

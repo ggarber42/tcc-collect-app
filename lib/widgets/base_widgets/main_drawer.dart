@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../screens/config/config_screen.dart';
-import '../../screens/model_form/list_models_screen.dart';
+import '../../screens/model_form/list_form_model.dart';
 
 class MainDrawer extends StatelessWidget {
   @override
@@ -19,7 +19,7 @@ class MainDrawer extends StatelessWidget {
             title: Text('Modelos'),
             onTap: () {
               Navigator.of(context)
-                  .pushReplacementNamed(ListModelsScreen.routeName);
+                  .pushReplacementNamed(ListFormModelsScreen.routeName);
             },
           ),
           Divider(),

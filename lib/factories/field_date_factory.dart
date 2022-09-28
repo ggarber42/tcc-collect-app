@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../models/form_widget.dart';
 import '../interfaces/field_factory.dart';
-import '../widgets/form_widgets/field_date.dart';
+import '../widgets/field_widgets/field_date.dart';
 import '../../services/db_connector.dart';
 
 class FieldDateFactory implements FieldFactory {

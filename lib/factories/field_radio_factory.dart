@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../../services/db_connector.dart';
 import '../interfaces/field_factory.dart';
-import '../widgets/form_widgets/field_radio.dart';
+import '../widgets/field_widgets/field_radio.dart';
 
 class FieldRadioFactory implements FieldFactory {
   late final String _name;
