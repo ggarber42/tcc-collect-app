@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../dao/entry_dao.dart';
-import '../../factories/form_factory.dart';
+import '../../factories/field_factory.dart';
 import '../../models/entry_value.dart';
 import '../../models/form_widget.dart';
 import '../../models/entry.dart';
@@ -48,10 +48,10 @@ class _CreateEntryScreenState extends State<CreateEntryScreen> {
 
     List<Map<String, Object?>> queryResult = await db.rawQuery(query);
 
-    var formFactory = FormFactory();
+    var fieldFactory = FieldFactory();
     for (var i = 0; i < queryResult.length; i++) {
       _controllers.add(TextEditingController());
-      var newField = await formFactory.makeFormWidget(
+      var newField = await fieldFactory.makeFormWidget(
           queryResult[i][formWidgetTableId] as int,
           queryResult[i][formWidgetTableType] as String,
           _controllers[i] as TextEditingController);
