@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart'; //rever
 
 import 'field_date_factory.dart';
-import 'field_img_factory.dart';
 import 'field_gps_factory.dart';
 import 'field_text_factory.dart';
 import 'field_radio_factory.dart';
@@ -18,9 +17,6 @@ class FieldFactory {
         break;
       case 'gps':
         selectedFactory = FieldGPSFactory();
-        break;
-      case 'img':
-        selectedFactory = FieldImgFactory();
         break;
       default:
         selectedFactory = FieldTextFactory();

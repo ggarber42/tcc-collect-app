@@ -76,7 +76,7 @@ class _CreateFormModelsScreenState extends State<CreateFormModelsScreen> {
 
       modelFormDao.add(modelForm);
       _showSnackbar(context);
-      // Navigator.pop(context);
+      Navigator.popUntil(context, (Route<dynamic> route) => route.isFirst);
     }
   }
 

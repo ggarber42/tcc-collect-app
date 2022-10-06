@@ -5,36 +5,27 @@ import 'package:flutter/material.dart';
 import '../../dao/entry_dao.dart';
 import '../../widgets/base_widgets/main_bar.dart';
 import '../../widgets/base_widgets/main_drawer.dart';
-import 'create_entry.dart';
+import 'entry_name.dart';
 
-class ListEntriesScreen extends StatefulWidget {
+class ListEntriesScreen extends StatelessWidget {
   static const routeName = '/list_entries';
   final int modelId;
   final String modelName;
 
   ListEntriesScreen(this.modelId, this.modelName);
 
-  @override
-  State<ListEntriesScreen> createState() => _ListEntriesScreenState();
-}
-
-class _ListEntriesScreenState extends State<ListEntriesScreen> {
+ 
   _fetchEntries() async {
     EntryDAO entryDao = EntryDAO();
-    var entries = [...await entryDao.readAll(widget.modelId)];
+    var entries = [...await entryDao.readAll(modelId)];
     return entries;
   }
 
-  @override
-  void initState() {
-    super.initState();
-    _fetchEntries();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MainBar(windowTitle: widget.modelName),
+      appBar: MainBar(windowTitle: modelName),
       body: Container(
         width: double.infinity,
         margin: EdgeInsets.symmetric(
@@ -63,7 +54,8 @@ class _ListEntriesScreenState extends State<ListEntriesScreen> {
           Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (_) => CreateEntryScreen(widget.modelId)),
+              builder: (_) => EntryNameScreen(modelId),
+            ),
           );
         },
       ),

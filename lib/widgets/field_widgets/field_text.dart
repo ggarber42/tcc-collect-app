@@ -1,7 +1,6 @@
-// import 'package:collect_app/interfaces/field_interface.dart';
-import 'package:collect_app/interfaces/field_interface.dart';
 import 'package:flutter/material.dart';
 
+import '../../interfaces/field_interface.dart';
 class FieldText extends StatelessWidget implements Field {
   final String name;
   final TextEditingController controller;

@@ -1,3 +1,5 @@
+import 'package:collect_app/models/entry_image.dart';
+
 import 'entry_value.dart';
 import 'form_model.dart';
 
@@ -6,6 +8,7 @@ class Entry {
   int? entryId;
   int? modelId;
   List<EntryValue>? values;
+  List<EntryImage>? images;
 
   static final tableName = 'Entry';
   static final tableColumns = {
@@ -27,14 +30,15 @@ class Entry {
 
   Entry.withId(this.entryId, this.name);
 
-  Entry.withValues(this.name, this.modelId, this.values);
+  Entry.withValues(this.name, this.modelId, this.values, this.images);
 
   get getName => name;
 
   get getId => entryId as int;
 
   get getValues => values as List<EntryValue>;
-  
+
+  get getImages => images as List<EntryImage>;
 
   Map<String, Object?> getData() {
     return {

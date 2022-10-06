@@ -28,18 +28,15 @@ class EntryValueDAO implements DAO<EntryValue> {
         FROM ${EntryValue.tableName}
         WHERE ${Entry.tableColumns['id']} = $entryId;
       ''';
-    List<Map<String, Object?>> queryResult = await db.rawQuery(query);
+    var queryResult = await db.rawQuery(query);
     for (int i = 0; i < queryResult.length; i++) {
-      var entryValueId = queryResult[i][EntryValue.tableColumns['id']] as int;
-      var entryValueName =
-          queryResult[i][EntryValue.tableColumns['name']] as String;
-      var entryValue =
-          queryResult[i][EntryValue.tableColumns['value']] as String;
-      values.add(EntryValue(
-        entryValueId,
-        entryValueName,
-        entryValue,
-      ));
+      values.add(
+        EntryValue(
+          queryResult[i][EntryValue.tableColumns['id']] as int,
+          queryResult[i][EntryValue.tableColumns['name']] as String,
+          queryResult[i][EntryValue.tableColumns['value']] as String,
+        ),
+      );
     }
     return values;
   }

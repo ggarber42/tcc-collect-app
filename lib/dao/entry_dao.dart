@@ -1,8 +1,12 @@
+import 'dart:convert';
+
+import 'package:collect_app/dao/entry_image_dao.dart';
 import 'package:collect_app/dao/entry_value_dao.dart';
-import 'package:collect_app/models/entry_value.dart';
 
 import '../interfaces/dao_interface.dart';
 import '../models/entry.dart';
+import '../models/entry_image.dart';
+import '../models/entry_value.dart';
 import '../services/db_connector.dart';
 
 class EntryDAO implements DAO<Entry> {
@@ -10,6 +14,8 @@ class EntryDAO implements DAO<Entry> {
   Future<void> add(Entry entry) async {
     final db = await DataBaseConnector.instance.database;
     EntryValueDAO valueDao = EntryValueDAO();
+    EntryImageDAO imageDao = EntryImageDAO();
+
     final int entryId = await db.insert(
       '${Entry.tableName}',
       entry.getData(),
@@ -18,6 +24,14 @@ class EntryDAO implements DAO<Entry> {
     for (var i = 0; i < values.length; i++) {
       values[i].setEntryId = entryId;
       valueDao.add(values[i]);
+    }
+    List<EntryImage> images = entry.getImages;
+    for (var i = 0; i < images.length; i++) {
+      var bytes = await images[i].getImageFile.readAsBytes();
+      var encondedImage = base64Encode(bytes);
+      images[i].setValue = encondedImage;
+      images[i].setEntryId = entryId;
+      imageDao.add(images[i]);
     }
   }
 

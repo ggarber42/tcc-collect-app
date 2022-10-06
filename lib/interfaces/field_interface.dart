@@ -1,3 +1,3 @@
 abstract class Field {
-  Map<String, String> getInputValue();
+  Map<String, dynamic> getInputValue();
 }

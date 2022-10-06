@@ -1,7 +1,9 @@
+import 'package:collect_app/models/entry_image.dart';
 import 'package:collect_app/models/entry_value.dart';
 import 'package:collect_app/widgets/base_widgets/main_bar.dart';
 import 'package:flutter/material.dart';
 
+import '../../dao/entry_image_dao.dart';
 import '../../dao/entry_value_dao.dart';
 
 class EntryDetailScreen extends StatefulWidget {
@@ -21,41 +23,78 @@ class _EntryDetailScreenState extends State<EntryDetailScreen> {
     return values;
   }
 
+  _fetchImages() async {
+    EntryImageDAO imageDao = EntryImageDAO();
+    var images = [...await imageDao.readAll(widget.entryId)];
+    return images;
+  }
+
   @override
   void initState() {
     super.initState();
-    _fetchValues();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MainBar(),
-      body: Container(
-        width: double.infinity,
-        margin: EdgeInsets.symmetric(
-          vertical: 15,
-          horizontal: 10,
-        ),
-        child: FutureBuilder(
-          future: _fetchValues(),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              var values = snapshot.data as List<EntryValue>;
-              return ListView.builder(
-                itemCount: values.length,
-                itemBuilder: (ctx, i) => Row(
-                  children: [
-                    Text(values[i].getName),
-                    Text(' : '),
-                    Text(values[i].getValue),
-                  ],
+      body: Column(
+        children: [
+          Container(
+            width: double.infinity,
+            margin: EdgeInsets.symmetric(
+              vertical: 15,
+              horizontal: 10,
+            ),
+            child: Column(
+              children: [
+                FutureBuilder(
+                  future: _fetchValues(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      var values = snapshot.data as List<EntryValue>;
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: values.length,
+                        itemBuilder: (ctx, i) => Row(
+                          children: [
+                            Text(values[i].getName),
+                            Text(' : '),
+                            Text(values[i].getValue),
+                          ],
+                        ),
+                      );
+                    }
+                    return Center(child: Text('Nao existem entradas'));
+                  },
                 ),
-              );
-            }
-            return Center(child: Text('Nao existem entradas'));
-          },
-        ),
+                FutureBuilder(
+                  future: _fetchImages(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      var entryImages = snapshot.data as List<EntryImage>;
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: entryImages.length,
+                        itemBuilder: (ctx, i) => Column(
+                          children: [
+                            Text(entryImages[i].getName),
+                            Container(
+                              height: 250.0,
+                              alignment: Alignment.center,
+                              child: entryImages[i].getImage,
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+                    return Center(child: Text('Nao existem entradas'));
+                  },
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
