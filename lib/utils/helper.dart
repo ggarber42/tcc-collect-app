@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
+import '../../widgets/dialog_widgets/alert_widget_dialog.dart';
+
 class Helper {
   static showSnack(BuildContext context, String text) {
     return ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
@@ -18,6 +20,14 @@ class Helper {
   static String getUuid() {
     var uuid = Uuid();
     return uuid.v4();
+  }
+
+  static showWarningDialog(BuildContext context, String warning) {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertWidgetFormDialog('Adicione pelo menos um campo!');
+        });
   }
 }
 
