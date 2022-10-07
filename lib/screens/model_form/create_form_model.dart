@@ -1,16 +1,21 @@
-import 'package:collect_app/dao/form_model_dao.dart';
-import 'package:collect_app/models/form_model.dart';
-import 'package:collect_app/widgets/base_widgets/bottom_button.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../../dao/form_model_dao.dart';
+import '../../factories/dummy_field_factory.dart';
+import '../../models/form_model.dart';
+import '../../providers/form_models.dart';
 import '../../widgets/base_widgets/main_bar.dart';
+import '../../widgets/base_widgets/bottom_button.dart';
 import '../../widgets/base_widgets/main_drawer.dart';
 import '../../widgets/dialog_widgets/alert_widget_dialog.dart';
 import '../../widgets/dialog_widgets/dialog_new_field.dart';
-import '../../factories/dummy_field_factory.dart';
+import '../../utils/helper.dart';
 
 class CreateFormModelsScreen extends StatefulWidget {
   static const routeName = '/add-fields';
+
+  CreateFormModelsScreen();
 
   @override
   _CreateFormModelsScreenState createState() => _CreateFormModelsScreenState();
@@ -30,15 +35,7 @@ class _CreateFormModelsScreenState extends State<CreateFormModelsScreen> {
         });
   }
 
-  _showWarningDialog(BuildContext context) {
-    return showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertWidgetFormDialog('Adicione pelo menos um campo!');
-        });
-  }
-
-  _handleFieldDialog(BuildContext context) async {
+  _handleClick(BuildContext context) async {
     var selectedType = await _showFieldDialog(context);
     if (selectedType == null) return;
     var newFormField =
@@ -48,23 +45,10 @@ class _CreateFormModelsScreenState extends State<CreateFormModelsScreen> {
     });
   }
 
-  _showSnackbar(BuildContext context) {
-    ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
-      content: new Text(
-        'Modelo criado',
-        style: TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-        ),
-        textAlign: TextAlign.center,
-      ),
-    ));
-  }
-
-  _handleSubmit() {
+  _handleSubmit(models) async {
     var hasFieldAdded = fieldList.length > 0;
     if (!hasFieldAdded) {
-      _showWarningDialog(context);
+      Helper.showWarningDialog(context, 'Adicione pelo menos um campo!');
       return;
     }
     if (_formKey.currentState!.validate() && hasFieldAdded) {
@@ -74,14 +58,16 @@ class _CreateFormModelsScreenState extends State<CreateFormModelsScreen> {
       modelForm.addFields(fieldList);
       FormModelDAO modelFormDao = FormModelDAO();
 
-      modelFormDao.add(modelForm);
-      _showSnackbar(context);
+      await modelFormDao.add(modelForm);
+      await models.updateModels();
+      Helper.showSnack(context, 'Modelo criado');
       Navigator.popUntil(context, (Route<dynamic> route) => route.isFirst);
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final models = Provider.of<FormModels>(context, listen: false);
     return Scaffold(
       appBar: MainBar(
         windowTitle: 'Novo modelo',
@@ -128,11 +114,12 @@ class _CreateFormModelsScreenState extends State<CreateFormModelsScreen> {
         child: FloatingActionButton.extended(
             label: Text("Campo de entrada"),
             icon: Icon(Icons.add),
-            onPressed: () => _handleFieldDialog(context)),
+            onPressed: () => _handleClick(context)),
       ),
       bottomSheet: Container(
           width: MediaQuery.of(context).size.width,
-          child: BottomButton('Salvar Modelo', _handleSubmit)),
+          child: BottomButton(
+              'Salvar Modelo', () => _handleSubmit(models))),
     );
   }
 }
