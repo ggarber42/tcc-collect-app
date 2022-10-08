@@ -26,7 +26,7 @@ class Helper {
     return showDialog(
         context: context,
         builder: (BuildContext context) {
-          return AlertWidgetFormDialog('Adicione pelo menos um campo!');
+          return AlertWidgetFormDialog(warning);
         });
   }
 }
