@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'providers/form_models.dart';
 import 'screens/entries/list_entries.dart';
 import 'screens/config/config_screen.dart';
-import 'screens/entries/entry_detail.dart';
+import 'screens/entries/entry_review.dart';
 import 'screens/model_form/list_form_model.dart';
 import 'utils/arguments.dart';
 import 'utils/db_helper.dart';
@@ -58,10 +58,10 @@ class _MyAppState extends State<MyApp> {
               );
             });
           }
-          if (settings.name == EntryDetailScreen.routeName) {
+          if (settings.name == EntryReviewScreen.routeName) {
             final args = settings.arguments as EntryArguments;
             return MaterialPageRoute(builder: (context) {
-              return EntryDetailScreen(
+              return EntryReviewScreen(
                 args.entryId,
               );
             });
