@@ -8,6 +8,7 @@ class EntryNameScreen extends StatelessWidget {
   final int modelId;
   final TextEditingController _nameController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final screenName = 'Nome entrada';
 
   EntryNameScreen(this.modelId);
 
@@ -15,14 +16,16 @@ class EntryNameScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomInset: false,
-        appBar: MainBar(),
+        appBar: MainBar(
+          windowTitle: screenName,
+        ),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Form(
               key: _formKey,
               child: NameInput(
-                'Nome da entrada*',
+                '$screenName*',
                 _nameController,
               ),
             ),
@@ -33,7 +36,8 @@ class EntryNameScreen extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => EntryDetailScreen(modelId, _nameController.value.text),
+                      builder: (context) => EntryDetailScreen(
+                          modelId, _nameController.value.text),
                     ),
                   );
                 }
