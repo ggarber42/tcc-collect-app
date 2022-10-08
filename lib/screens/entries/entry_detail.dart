@@ -158,10 +158,8 @@ class _EntryDetailScreenState extends State<EntryDetailScreen> {
                         ),
                       );
                       Helper.showSnack(context, 'Entrada salva');
-                      Navigator.popUntil(
-                        context,
-                        (Route<dynamic> route) => route.isFirst,
-                      );
+                      Navigator.of(context).pop();
+                      Navigator.of(context).pop();
                     } else {
                       Helper.showWarningDialog(
                         context,

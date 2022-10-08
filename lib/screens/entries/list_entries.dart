@@ -7,16 +7,21 @@ import '../../widgets/base_widgets/main_bar.dart';
 import '../../widgets/base_widgets/main_drawer.dart';
 import 'entry_name.dart';
 
-class ListEntriesScreen extends StatelessWidget {
+class ListEntriesScreen extends StatefulWidget {
   static const routeName = '/list_entries';
   final int modelId;
   final String modelName;
 
   ListEntriesScreen(this.modelId, this.modelName);
 
+  @override
+  State<ListEntriesScreen> createState() => _ListEntriesScreenState();
+}
+
+class _ListEntriesScreenState extends State<ListEntriesScreen> {
   _fetchEntries() async {
     EntryDAO entryDao = EntryDAO();
-    var entries = [...await entryDao.readAll(modelId)];
+    var entries = [...await entryDao.readAll(widget.modelId)];
     return entries;
   }
 
@@ -24,7 +29,7 @@ class ListEntriesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MainBar(
-        windowTitle: modelName,
+        windowTitle: widget.modelName,
         hasBackButton: true,
       ),
       body: Container(
@@ -51,13 +56,14 @@ class ListEntriesScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton.extended(
         label: Text("Entrada"),
         icon: Icon(Icons.add),
-        onPressed: () {
-          Navigator.push(
+        onPressed: () async {
+          await Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (_) => EntryNameScreen(modelId),
+              builder: (_) => EntryNameScreen(widget.modelId),
             ),
           );
+          setState(() {});
         },
       ),
     );
