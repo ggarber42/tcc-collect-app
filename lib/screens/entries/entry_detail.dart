@@ -1,6 +1,7 @@
-import 'package:collect_app/dao/entry_dao.dart';
+import 'package:collect_app/widgets/custom_widgets/input_tile.dart';
 import 'package:flutter/material.dart';
 
+import '../../dao/entry_dao.dart';
 import '../../models/entry.dart';
 import '../../models/entry_image.dart';
 import '../../models/entry_value.dart';
@@ -91,26 +92,7 @@ class _EntryDetailScreenState extends State<EntryDetailScreen> {
                       itemBuilder: (ctx, index) =>
                           ImageTile(imgFields[index], addValue),
                     ),
-                    Container(
-                      child: GestureDetector(
-                        child: Card(
-                            child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            ListTile(
-                              leading: Icon(Icons.file_copy),
-                              title: Text('Inputs'),
-                            ),
-                          ],
-                        )),
-                        onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  EntryInputsScreen(inputFields, addValue),
-                            )),
-                      ),
-                    ),
+                    InputTile(inputFields, addValue),
                   ],
                 );
               }
