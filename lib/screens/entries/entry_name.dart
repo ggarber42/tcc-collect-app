@@ -1,46 +1,15 @@
+import 'package:collect_app/screens/entries/entry_detail.dart';
 import 'package:flutter/material.dart';
 
-import 'entry_inputs.dart';
-import '../../services/db_connector.dart';
-import '../../utils/helper.dart';
-import '../../utils/queries.dart';
 import '../../widgets/base_widgets/main_bar.dart';
 import '../../widgets/base_widgets/name_input.dart';
 
-class EntryNameScreen extends StatefulWidget {
+class EntryNameScreen extends StatelessWidget {
   final int modelId;
-
-  EntryNameScreen(this.modelId);
-
-  @override
-  State<EntryNameScreen> createState() => _EntryNameScreenState();
-}
-
-class _EntryNameScreenState extends State<EntryNameScreen> {
   final TextEditingController _nameController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  var inputFields = [];
-  var imageFields = StackHelper();
 
-  void _getFieldsFromDB() async {
-    final db = await DataBaseConnector.instance.database;
-    List<Map<String, Object?>> queryResult = await db.rawQuery(
-      Queries.getFieldTypes(widget.modelId),
-    );
-    for (var i = 0; i < queryResult.length; i++) {
-      if (queryResult[i]['type'] == 'img') {
-        imageFields.push(queryResult[i]);
-      } else {
-        inputFields.add(queryResult[i]);
-      }
-    }
-  }
-
-  @override
-  void initState() {
-    _getFieldsFromDB();
-    super.initState();
-  }
+  EntryNameScreen(this.modelId);
 
   @override
   Widget build(BuildContext context) {
@@ -64,12 +33,7 @@ class _EntryNameScreenState extends State<EntryNameScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => EntryInputsScreen(
-                        widget.modelId,
-                        _nameController.value.text,
-                        inputFields,
-                        imageFields,
-                      ),
+                      builder: (context) => EntryDetailScreen(modelId, _nameController.value.text),
                     ),
                   );
                 }

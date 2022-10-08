@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../models/entry.dart';
-import '../../screens/entries/entry_detail.dart';
+import '../../screens/entries/entry_review.dart';
 import '../../utils/arguments.dart';
 
 class EntryTile extends StatelessWidget {
@@ -25,7 +25,7 @@ class EntryTile extends StatelessWidget {
           )),
           onTap: () => Navigator.pushNamed(
                 context,
-                EntryDetailScreen.routeName,
+                EntryReviewScreen.routeName,
                 arguments: EntryArguments(
                   entry.getId
                 ),

@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'dart:io';
@@ -135,7 +133,6 @@ class _CameraPreviewScreenState extends State<CameraPreviewScreen> {
 
   void _savePicture(BuildContext context) async {
     widget.printHandler(image);
-    Helper.showSnack(context, 'Imagem adicionada');
     Navigator.pop(context);
   }
 

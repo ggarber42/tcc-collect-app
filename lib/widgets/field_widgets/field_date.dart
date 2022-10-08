@@ -2,15 +2,22 @@ import 'package:collect_app/interfaces/field_interface.dart';
 import 'package:flutter/material.dart';
 
 class FieldDate extends StatelessWidget implements Field {
+  final int widgetId;
   final String name;
   final TextEditingController textEditingController;
 
+  FieldDate(this.widgetId, this.name, this.textEditingController);
+
   @override
-  Map<String, String> getInputValue() {
-    return {'name': name, 'value': textEditingController.value.text};
+  Map<String, dynamic> getInputValue() {
+    return {
+      'widgetId': widgetId,
+      'name': name,
+      'type': 'input',
+      'value': textEditingController.value.text
+    };
   }
 
-  FieldDate(this.name, this.textEditingController);
   @override
   Widget build(BuildContext context) {
     return TextFormField(

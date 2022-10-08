@@ -6,9 +6,14 @@ import '../widgets/field_widgets/field_date.dart';
 import '../../services/db_connector.dart';
 
 class FieldDateFactory implements FieldFactory {
-  late final String _name;
+  late int _widgetId;
+  late String _name;
 
-  Future<Widget> makeWidget(int widgetId,TextEditingController controller) async {
+  Future<Widget> makeWidget(
+    int widgetId,
+    TextEditingController controller,
+  ) async {
+    _widgetId = widgetId;
     final db = await DataBaseConnector.instance.database;
     final query = '''
         SELECT ${FormWidget.tableColumns['name']}
@@ -22,6 +27,6 @@ class FieldDateFactory implements FieldFactory {
       }
     }
 
-    return FieldDate(_name, controller);
+    return FieldDate(_widgetId, _name, controller);
   }
 }

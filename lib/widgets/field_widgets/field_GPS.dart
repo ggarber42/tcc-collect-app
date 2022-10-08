@@ -4,18 +4,23 @@ import 'package:location/location.dart';
 import '../../interfaces/field_interface.dart';
 
 class FieldGPS extends StatelessWidget implements Field {
+  final int widgetId;
   final String name;
   final TextEditingController controller;
 
-  FieldGPS(this.name, this.controller);
+  FieldGPS(this.widgetId, this.name, this.controller);
 
   @override
   Map<String, String> getInputValue() {
-    return {'name': name, 'value': controller.value.text};
+    return {
+      'name': name,
+      'type': 'input',
+      'value': controller.value.text,
+    };
   }
 
   dynamic _getLocation() async {
-    Location location =  Location();
+    Location location = Location();
 
     bool _serviceEnabled;
     PermissionStatus _permissionGranted;
@@ -43,29 +48,21 @@ class FieldGPS extends StatelessWidget implements Field {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        TextFormField(
-            controller: controller,
-            decoration: InputDecoration(
-                labelText: name,
-                icon: Icon(
-                  Icons.gps_fixed_sharp,
-                )),
-            textInputAction: TextInputAction.done,
-            validator: (String? text) {
-              if (text == null || text.isEmpty) {
-                return 'Esse campo não pode ser nulo';
-              }
-              return null;
-            }),
-        ElevatedButton(
-          child: Text(
-            'location',
-          ),
-          onPressed: _getLocation,
-        )
-      ],
+    return TextFormField(
+      controller: controller,
+      decoration: InputDecoration(
+          labelText: name,
+          icon: Icon(
+            Icons.gps_fixed_sharp,
+          )),
+      textInputAction: TextInputAction.done,
+      validator: (String? text) {
+        if (text == null || text.isEmpty) {
+          return 'Esse campo não pode ser nulo';
+        }
+        return null;
+      },
+      onTap: _getLocation,
     );
   }
 }

@@ -6,10 +6,15 @@ import '../widgets/field_widgets/field_GPS.dart';
 import '../../services/db_connector.dart';
 
 class FieldGPSFactory implements FieldFactory {
+  late int _widgetId;
   late String _name;
   late TextEditingController _controller;
 
-  Future<Widget> makeWidget(int widgetId, TextEditingController controller) async {
+  Future<Widget> makeWidget(
+    int widgetId,
+    TextEditingController controller,
+  ) async {
+    _widgetId = widgetId;
     _controller = controller;
     final db = await DataBaseConnector.instance.database;
     final query = '''
@@ -25,6 +30,6 @@ class FieldGPSFactory implements FieldFactory {
       }
     }
 
-    return FieldGPS(_name, _controller);
+    return FieldGPS(_widgetId, _name, _controller);
   }
 }

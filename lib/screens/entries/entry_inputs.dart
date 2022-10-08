@@ -1,21 +1,16 @@
-import 'package:collect_app/screens/entries/entry_confirmation.dart';
-import 'package:collect_app/screens/entries/entry_image.dart';
 import 'package:flutter/material.dart';
-import 'package:collect_app/factories/field_factory.dart';
-import 'package:collect_app/widgets/base_widgets/bottom_button.dart';
 
+import '../../factories/field_factory.dart';
 import '../../models/entry_value.dart';
 import '../../utils/helper.dart';
+import '../../widgets/base_widgets/bottom_button.dart';
 import '../../widgets/base_widgets/main_bar.dart';
 
 class EntryInputsScreen extends StatefulWidget {
-  final int modelId;
-  final String entryName;
   final List<dynamic> inputFields;
-  final StackHelper<dynamic> imageFields;
+  final Function addValue;
 
-  EntryInputsScreen(
-      this.modelId, this.entryName, this.inputFields, this.imageFields);
+  EntryInputsScreen(this.inputFields, this.addValue);
 
   @override
   State<EntryInputsScreen> createState() => _EntryInputsScreenState();
@@ -87,39 +82,16 @@ class _EntryInputsScreenState extends State<EntryInputsScreen> {
               child: Container(
                   width: MediaQuery.of(context).size.width,
                   child: BottomButton('Avançar', () {
+                    var newValues = [];
                     if (_formKey.currentState!.validate()) {
-                      List<EntryValue> values = [];
                       for (var i = 0; i < _inputFields.length; i++) {
-                        var fieldValue = _inputFields[i].getInputValue();
-                        values.add(
-                          EntryValue.fromField(
-                            fieldValue['name'],
-                            fieldValue['value'],
-                          ),
+                        newValues.add(
+                          _inputFields[i].getInputValue()
                         );
                       }
-                      if (widget.imageFields.isEmpty) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => EntryConfirmationScreen(
-                                widget.modelId, widget.entryName, values, []),
-                          ),
-                        );
-                      } else {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => EntryImageScreen(
-                              widget.modelId,
-                              widget.entryName,
-                              values,
-                              [],
-                              widget.imageFields,
-                            ),
-                          ),
-                        );
-                      }
+                      widget.addValue(newValues);
+                      Helper.showSnack(context, 'Valor adicionado');
+                      Navigator.pop(context);
                     }
                   })),
             ),

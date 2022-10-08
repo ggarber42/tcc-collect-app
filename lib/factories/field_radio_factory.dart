@@ -7,10 +7,12 @@ import '../interfaces/field_factory.dart';
 import '../widgets/field_widgets/field_radio.dart';
 
 class FieldRadioFactory implements FieldFactory {
+  late int _widgetId;
   late final String _name;
   final _options = [];
 
   Future<Widget> makeWidget(int widgetId, _) async {
+    _widgetId = widgetId;
     final db = await DataBaseConnector.instance.database;
     final fetchNameQuery = '''
         SELECT ${FormWidget.tableColumns['name']}
@@ -37,6 +39,6 @@ class FieldRadioFactory implements FieldFactory {
       _options.add(optionResult);
     }
 
-    return FieldRadio(_name, _options);
+    return FieldRadio(_widgetId, _name, _options);
   }
 }

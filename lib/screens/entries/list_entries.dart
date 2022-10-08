@@ -14,18 +14,19 @@ class ListEntriesScreen extends StatelessWidget {
 
   ListEntriesScreen(this.modelId, this.modelName);
 
- 
   _fetchEntries() async {
     EntryDAO entryDao = EntryDAO();
     var entries = [...await entryDao.readAll(modelId)];
     return entries;
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MainBar(windowTitle: modelName),
+      appBar: MainBar(
+        windowTitle: modelName,
+        hasBackButton: true,
+      ),
       body: Container(
         width: double.infinity,
         margin: EdgeInsets.symmetric(

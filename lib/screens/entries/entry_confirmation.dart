@@ -21,6 +21,7 @@ class EntryConfirmationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(images);
     return Scaffold(
         appBar: MainBar(
           windowTitle: 'Confirmação',
@@ -81,7 +82,8 @@ class EntryConfirmationScreen extends StatelessWidget {
                         ),
                       );
                       Helper.showSnack(context, 'Entrada salva');
-                      Navigator.popUntil(context, (Route<dynamic> route) => route.isFirst);
+                      Navigator.popUntil(
+                          context, (Route<dynamic> route) => route.isFirst);
                     })),
               ),
             )

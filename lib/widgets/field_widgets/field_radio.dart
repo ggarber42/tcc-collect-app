@@ -5,19 +5,22 @@ import '../../interfaces/field_interface.dart';
 import '../custom_widgets/radio_item.dart';
 
 class FieldRadio extends StatefulWidget implements Field {
+  final int widgetId;
   final String name;
   final List<dynamic> options;
   int selectedValue = 0;
 
-  FieldRadio(this.name, this.options);
+  FieldRadio(this.widgetId, this.name, this.options);
 
   @override
   State<FieldRadio> createState() => _FieldRadioState();
 
   @override
-  Map<String, String> getInputValue() {
+  Map<String, dynamic> getInputValue() {
     return {
+      'widgetId': widgetId,
       'name': name,
+      'type': 'input',
       'value': options[selectedValue][RadioOption.tableColumns['name']],
     };
   }
