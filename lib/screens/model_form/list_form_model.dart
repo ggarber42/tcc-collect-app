@@ -16,12 +16,13 @@ class ListFormModelsScreen extends StatefulWidget {
 }
 
 class _ListFormModelsScreenState extends State<ListFormModelsScreen> {
-
   @override
   Widget build(BuildContext context) {
     final models = Provider.of<FormModels>(context, listen: true);
     return Scaffold(
-      appBar: MainBar(),
+      appBar: MainBar(
+        windowTitle: 'Collect-app: Modelos',
+      ),
       body: Container(
         width: double.infinity,
         margin: EdgeInsets.symmetric(
@@ -52,7 +53,8 @@ class _ListFormModelsScreenState extends State<ListFormModelsScreen> {
           Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (_) => CreateFormModelsScreen()),
+              builder: (_) => CreateFormModelsScreen(),
+            ),
           );
         },
       ),
