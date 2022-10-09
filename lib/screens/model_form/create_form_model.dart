@@ -8,7 +8,6 @@ import '../../providers/form_models.dart';
 import '../../widgets/base_widgets/main_bar.dart';
 import '../../widgets/base_widgets/bottom_button.dart';
 import '../../widgets/base_widgets/main_drawer.dart';
-import '../../widgets/dialog_widgets/alert_widget_dialog.dart';
 import '../../widgets/dialog_widgets/dialog_new_field.dart';
 import '../../utils/helper.dart';
 
@@ -71,6 +70,7 @@ class _CreateFormModelsScreenState extends State<CreateFormModelsScreen> {
     return Scaffold(
       appBar: MainBar(
         windowTitle: 'Novo modelo',
+        hasBackButton: true,
       ),
       body: SingleChildScrollView(
         physics: NeverScrollableScrollPhysics(),
