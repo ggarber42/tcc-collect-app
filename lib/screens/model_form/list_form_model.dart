@@ -1,7 +1,9 @@
+import 'package:collect_app/dao/form_model_dao.dart';
 import 'package:collect_app/providers/form_models.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../utils/helper.dart';
 import './create_form_model.dart';
 import '../../models/form_model.dart';
 import '../../widgets/base_widgets/main_bar.dart';
@@ -16,6 +18,22 @@ class ListFormModelsScreen extends StatefulWidget {
 }
 
 class _ListFormModelsScreenState extends State<ListFormModelsScreen> {
+  final modelDao = FormModelDAO();
+
+  deleteModel(int modelId) async {
+    final result = await modelDao.delete(modelId);
+    if (result == 0) {
+      Helper.showWarningDialog(
+        context,
+        'Modelo possui entradas e não pode ser deletado!',
+      );
+    } else {
+      setState(() {
+        Helper.showSnack(context, 'Modelo deletado');
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final models = Provider.of<FormModels>(context, listen: true);
@@ -36,7 +54,8 @@ class _ListFormModelsScreenState extends State<ListFormModelsScreen> {
               List<FormModel> models = snapshot.data as List<FormModel>;
               return ListView.builder(
                 itemCount: models.length,
-                itemBuilder: (ctx, index) => ModelTile(models[index]),
+                itemBuilder: (ctx, index) =>
+                    ModelTile(models[index], deleteModel),
               );
             }
             return Center(

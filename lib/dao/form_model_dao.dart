@@ -4,8 +4,19 @@ import 'package:collect_app/models/form_widget.dart';
 import '../interfaces/dao_interface.dart';
 import '../models/form_model.dart';
 import '../services/db_connector.dart';
+import 'entry_dao.dart';
 
 class FormModelDAO implements DAO<FormModel> {
+  final entryDao = EntryDAO();
+
+  Future<bool> _hasEntries(int modelId) async {
+    var entries = await entryDao.readAll(modelId);
+    if (entries.length > 0) {
+      return true;
+    }
+    return false;
+  }
+
   @override
   Future<void> add(FormModel model) async {
     final db = await DataBaseConnector.instance.database;
@@ -29,9 +40,17 @@ class FormModelDAO implements DAO<FormModel> {
   }
 
   @override
-  Future<int> delete(int id) {
-    // TODO: implement delete
-    throw UnimplementedError();
+  Future<int> delete(int modelId) async {
+    final hasEntries = await _hasEntries(modelId);
+    if (hasEntries) {
+      return 0;
+    }
+    final db = await DataBaseConnector.instance.database;
+    return await db.delete(
+      FormModel.tableName,
+      where: '${FormModel.tableColumns['id'] as String}=?',
+      whereArgs: [modelId],
+    );
   }
 
   @override
@@ -55,5 +74,22 @@ class FormModelDAO implements DAO<FormModel> {
       models.add(FormModel.fromDB(queryResult[i]));
     }
     return models;
+  }
+
+  Future<FormModel> read(int modelId) async {
+    final db = await DataBaseConnector.instance.database;
+    var queryResult = await db.query(
+      FormModel.tableName,
+      where: '${FormModel.tableColumns['id'] as String}=?',
+      whereArgs: [modelId],
+      limit: 1,
+    );
+    var model;
+    queryResult.forEach(
+      (result) {
+        model = FormModel.fromDB(result);
+      },
+    );
+    return model as FormModel;
   }
 }

@@ -1,14 +1,18 @@
 import 'package:collect_app/screens/entries/list_entries.dart';
+import 'package:collect_app/screens/model_form/edit_form_model.dart';
 import 'package:collect_app/utils/arguments.dart';
 import 'package:collect_app/utils/helper.dart';
+import 'package:collect_app/widgets/dialog_widgets/delete_model_dialog.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/form_model.dart';
+import '../../utils/constants.dart';
 
 class ModelTile extends StatefulWidget {
   final FormModel model;
+  final Function deleteModel;
 
-  ModelTile(this.model);
+  ModelTile(this.model, this.deleteModel);
 
   @override
   State<ModelTile> createState() => _ModelTileState();
@@ -34,19 +38,34 @@ class _ModelTileState extends State<ModelTile> {
     );
   }
 
+  void _goToEditScreen(context) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => EditFormModelScreen(widget.model.modelId),
+        ));
+  }
+
+  _deleteModel(context) async{
+    final confirm = await showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (BuildContext context) {
+          return DeleteModelDialog(widget.model.modelId);
+        }) as bool;
+    if (!confirm) {
+      return;
+    }
+    widget.deleteModel(widget.model.modelId);
+  }
+
   _showContextMenu(context) async {
     final dx = _tapPosition.dx;
     final dy = _tapPosition.dy;
     final result = await showMenu(
       context: context,
       position: RelativeRect.fromLTRB(dx, dy, 0, 0),
-      items: [
-        PopupMenuItem<String>(child: const Text('Abrir'), value: 'open'),
-        PopupMenuItem<String>(child: const Text('Ver'), value: 'read'),
-        PopupMenuItem<String>(
-            child: const Text('Deletar', style: TextStyle(color: Colors.red)),
-            value: 'delete'),
-      ],
+      items: ModelTileMenuOptions,
       elevation: 8.0,
     );
     return result;
@@ -58,11 +77,11 @@ class _ModelTileState extends State<ModelTile> {
       case 'open':
         _goToEntriesScreen(context);
         break;
-      case 'read':
-        print('oi');
+      case 'edit':
+        _goToEditScreen(context);
         break;
       case 'delete':
-        print('delete');
+        _deleteModel(context);
         break;
       default:
         break;
