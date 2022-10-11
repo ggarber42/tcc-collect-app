@@ -10,6 +10,8 @@ import '../models/entry_value.dart';
 import '../services/db_connector.dart';
 
 class EntryDAO implements DAO<Entry> {
+  final valueDao = EntryValueDAO();
+
   @override
   Future<void> add(Entry entry) async {
     final db = await DataBaseConnector.instance.database;
@@ -36,9 +38,14 @@ class EntryDAO implements DAO<Entry> {
   }
 
   @override
-  Future<int> delete(int id) {
-    // TODO: implement delete
-    throw UnimplementedError();
+  Future<int> delete(int entryId) async {
+    final db = await DataBaseConnector.instance.database;
+    await valueDao.deleteAll(entryId);
+    return await db.delete(
+      Entry.tableName,
+      where: '${Entry.tableColumns['id'] as String}=?',
+      whereArgs: [entryId],
+    );
   }
 
   @override

@@ -41,6 +41,16 @@ class EntryValueDAO implements DAO<EntryValue> {
     return values;
   }
 
+  Future<dynamic> deleteAll(entryId) async {
+    final db = await DataBaseConnector.instance.database;
+    final query = '''
+      DELETE FROM ${EntryValue.tableName}
+        WHERE ${Entry.tableColumns['id']} = $entryId;
+      ''';
+    final result = await db.rawQuery(query);
+    return result;
+  }
+
   @override
   Future<int> update(EntryValue t) {
     // TODO: implement update

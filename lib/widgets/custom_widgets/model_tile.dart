@@ -51,7 +51,7 @@ class _ModelTileState extends State<ModelTile> {
         context: context,
         barrierDismissible: true,
         builder: (BuildContext context) {
-          return DeleteModelDialog(widget.model.modelId);
+          return DeleteModelDialog(widget.model.modelId, 'Deseja deletar a modelo?');
         }) as bool;
     if (!confirm) {
       return;

@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 
 class DeleteModelDialog extends StatefulWidget {
   final int modelId;
+  final String text;
 
-  DeleteModelDialog(this.modelId);
+  DeleteModelDialog(this.modelId, this.text);
 
   @override
   State<DeleteModelDialog> createState() => _DeleteModelDialogState();
@@ -13,8 +14,8 @@ class _DeleteModelDialogState extends State<DeleteModelDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      content: const Text(
-        'Deseja deletar o modelo?',
+      content: Text(
+        widget.text,
         style: TextStyle(
           color: Colors.red,
         ),
