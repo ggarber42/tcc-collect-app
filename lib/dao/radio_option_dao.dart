@@ -1,9 +1,10 @@
 import 'package:collect_app/models/radio_option.dart';
 
 import '../interfaces/dao_interface.dart';
+import '../models/form_widget.dart';
 import '../services/db_connector.dart';
 
-class RadioOptionDAO implements DAO<RadioOption>{
+class RadioOptionDAO  {
   @override
   Future<void> add(RadioOption radio) async {
     final db = await DataBaseConnector.instance.database;
@@ -17,9 +18,16 @@ class RadioOptionDAO implements DAO<RadioOption>{
   }
 
   @override
-  Future<List<RadioOption>> readAll(int? id) {
-    // TODO: implement readAll
-    throw UnimplementedError();
+  Future<List<Map<dynamic, dynamic>>> readAll(int? widgetId) async {
+    final db = await DataBaseConnector.instance.database;
+    final fetchOptionsQuery = '''
+      SELECT ${RadioOption.tableColumns['id']}, 
+        ${RadioOption.tableColumns['name']}
+        FROM ${RadioOption.tableName}
+        WHERE ${FormWidget.tableColumns['id']} = $widgetId;
+      ''';
+    final queryOptionResult = await db.rawQuery(fetchOptionsQuery);
+    return queryOptionResult;
   }
 
   @override
@@ -27,5 +35,4 @@ class RadioOptionDAO implements DAO<RadioOption>{
     // TODO: implement update
     throw UnimplementedError();
   }
-  
 }

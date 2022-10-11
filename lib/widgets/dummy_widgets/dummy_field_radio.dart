@@ -7,8 +7,11 @@ import 'dummy_radio_item.dart';
 class DummyFieldRadio implements Dummy {
   late String _name;
   late dynamic _options;
-
   var dialog = DialogWidgetRadio();
+
+  DummyFieldRadio();
+
+  DummyFieldRadio.fromEditScreen(this._name, this._options);
 
   get name => _name;
   get options => _options;
