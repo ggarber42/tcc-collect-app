@@ -6,9 +6,10 @@ import 'package:provider/provider.dart';
 import '../../utils/helper.dart';
 import './create_form_model.dart';
 import '../../models/form_model.dart';
-import '../../widgets/base_widgets/main_bar.dart';
+import '../../widgets/custom_widgets/main_bar.dart';
 import '../../widgets/base_widgets/main_drawer.dart';
 import '../../widgets/custom_widgets/model_tile.dart';
+import 'edit_form_model.dart';
 
 class ListFormModelsScreen extends StatefulWidget {
   static const routeName = '/list_models';
@@ -34,6 +35,16 @@ class _ListFormModelsScreenState extends State<ListFormModelsScreen> {
     }
   }
 
+  goToEditScreen(context, modelId, modelName) async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EditFormModelScreen(modelId, modelName),
+      ),
+    );
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     final models = Provider.of<FormModels>(context, listen: true);
@@ -55,7 +66,7 @@ class _ListFormModelsScreenState extends State<ListFormModelsScreen> {
               return ListView.builder(
                 itemCount: models.length,
                 itemBuilder: (ctx, index) =>
-                    ModelTile(models[index], deleteModel),
+                    ModelTile(models[index], deleteModel, goToEditScreen),
               );
             }
             return Center(

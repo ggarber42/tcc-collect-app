@@ -22,3 +22,18 @@ const ModelTileMenuOptions = const [
     value: 'delete',
   ),
 ];
+
+const EntrielTileMenuOptions = const [
+  PopupMenuItem<String>(
+    child: const Text('Ver'),
+    value: 'open',
+  ),
+  PopupMenuItem<String>(
+    child: const Text('Editar'),
+    value: 'edit',
+  ),
+  PopupMenuItem<String>(
+    child: const Text('Deletar', style: TextStyle(color: Colors.red)),
+    value: 'delete',
+  ),
+];

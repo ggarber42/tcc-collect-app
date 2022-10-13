@@ -1,4 +1,3 @@
-import 'package:collect_app/dao/radio_option_dao.dart';
 import 'package:flutter/material.dart';
 
 import '../interfaces/dummy_interface.dart';
@@ -18,6 +17,9 @@ class DummyFactoryField {
       case 'img':
         selectedIcon = Icons.image;
         break;
+      case 'radio':
+        selectedIcon = Icons.radio_button_checked_outlined;
+        break;
       default:
         selectedIcon = Icons.text_fields;
     }
@@ -31,7 +33,7 @@ class DummyFactoryField {
         dummyField = DummyField(selectedType, Icons.date_range);
         break;
       case 'radio':
-        dummyField = DummyFieldRadio();
+        dummyField = DummyFieldRadio(Icons.radio_button_checked);
         break;
       case 'gps':
         dummyField = DummyField(selectedType, Icons.gps_fixed_sharp);
@@ -46,7 +48,9 @@ class DummyFactoryField {
   }
 
   Future<Dummy> createFormField(
-      BuildContext context, String selectedType) async {
+    BuildContext context,
+    String selectedType,
+  ) async {
     Dummy selectedField = _getSelectedWidget(selectedType);
     await selectedField.init(context);
     return selectedField;
@@ -62,8 +66,14 @@ class DummyFactoryField {
       for (var option in options) {
         optionsName.add(option['name']);
       }
-      return DummyFieldRadio.fromEditScreen(name, optionsName);
+      return DummyFieldRadio.fromEditScreen(icon, name, optionsName);
     }
-    return DummyField.fromEditScreen(widgetId, type, name, icon);
+    // return DummyField.fromEditScreen(widgetId, type, name, icon);
+    return DummyField.fromEditScreen(
+      widgetId: widgetId,
+      type: type,
+      name: name,
+      widgetIcon: icon,
+    );
   }
 }

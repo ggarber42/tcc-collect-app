@@ -44,4 +44,14 @@ class FormWidgetDAO implements DAO<FormWidget> {
     // TODO: implement update
     throw UnimplementedError();
   }
+
+  Future<dynamic> deleteAll(int modelId) async {
+    final db = await DataBaseConnector.instance.database;
+    final query = '''
+      DELETE FROM ${FormWidget.tableName}
+        WHERE ${FormWidget.tableColumns['id']} = $modelId;
+      ''';
+    final result = await db.rawQuery(query);
+    return result;
+  }
 }

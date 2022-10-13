@@ -2,7 +2,7 @@ import 'create_form_model.dart';
 import '../../widgets/base_widgets/form_input.dart';
 import 'package:flutter/material.dart';
 
-import '../../widgets/base_widgets/main_bar.dart';
+import '../../widgets/custom_widgets/main_bar.dart';
 import '../../widgets/base_widgets/main_drawer.dart';
 
 class CreateModelsScreen extends StatelessWidget {

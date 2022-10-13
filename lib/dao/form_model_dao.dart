@@ -6,8 +6,9 @@ import '../models/form_model.dart';
 import '../services/db_connector.dart';
 import 'entry_dao.dart';
 
-class FormModelDAO implements DAO<FormModel> {
+class FormModelDAO  {
   final entryDao = EntryDAO();
+  final widgetDao = FormWidgetDAO();
 
   Future<bool> _hasEntries(int modelId) async {
     var entries = await entryDao.readAll(modelId);
@@ -46,6 +47,7 @@ class FormModelDAO implements DAO<FormModel> {
       return 0;
     }
     final db = await DataBaseConnector.instance.database;
+    await widgetDao.deleteAll(modelId);
     return await db.delete(
       FormModel.tableName,
       where: '${FormModel.tableColumns['id'] as String}=?',
@@ -53,10 +55,15 @@ class FormModelDAO implements DAO<FormModel> {
     );
   }
 
-  @override
-  Future<int> update(t) {
-    // TODO: implement update
-    throw UnimplementedError();
+
+   Future<int> update(FormModel model) async {
+    final db = await DataBaseConnector.instance.database;
+    return await db.update(
+      FormModel.tableName,
+      model.getData(),
+      where: '${FormModel.tableColumns['id'] as String}=?',
+      whereArgs: [model.getModelId],
+    );
   }
 
   @override

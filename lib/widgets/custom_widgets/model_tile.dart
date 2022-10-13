@@ -11,8 +11,9 @@ import '../../utils/constants.dart';
 class ModelTile extends StatefulWidget {
   final FormModel model;
   final Function deleteModel;
+  final Function goToEditScreen;
 
-  ModelTile(this.model, this.deleteModel);
+  ModelTile(this.model, this.deleteModel, this.goToEditScreen);
 
   @override
   State<ModelTile> createState() => _ModelTileState();
@@ -38,20 +39,13 @@ class _ModelTileState extends State<ModelTile> {
     );
   }
 
-  void _goToEditScreen(context) {
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => EditFormModelScreen(widget.model.modelId),
-        ));
-  }
-
-  _deleteModel(context) async{
+  _deleteModel(context) async {
     final confirm = await showDialog(
         context: context,
         barrierDismissible: true,
         builder: (BuildContext context) {
-          return DeleteModelDialog(widget.model.modelId, 'Deseja deletar a modelo?');
+          return DeleteModelDialog(
+              widget.model.modelId, 'Deseja deletar a modelo?');
         }) as bool;
     if (!confirm) {
       return;
@@ -78,7 +72,7 @@ class _ModelTileState extends State<ModelTile> {
         _goToEntriesScreen(context);
         break;
       case 'edit':
-        _goToEditScreen(context);
+        widget.goToEditScreen(context, widget.model.getModelId);
         break;
       case 'delete':
         _deleteModel(context);

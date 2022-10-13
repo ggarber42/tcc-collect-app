@@ -11,12 +11,14 @@ class DummyField implements Dummy {
 
   @override
   get getType => type;
+  get getId => widgetId;
 
   var dialog = DialogDummy();
 
   DummyField(this.type, this.widgetIcon);
 
-  DummyField.fromEditScreen(this.widgetId, this.name, this.type, this.widgetIcon);
+  DummyField.fromEditScreen(
+      this.widgetId, this.name, this.type, this.widgetIcon);
 
   Future<dynamic> showInitDialog(BuildContext context) {
     return showDialog(
@@ -37,13 +39,17 @@ class DummyField implements Dummy {
 
   @override
   Widget getWidgetBody() {
-    return TextFormField(
-      readOnly: true,
-      decoration: InputDecoration(
-        icon: Icon(widgetIcon),
-        labelText: '$name',
-      ),
-      onSaved: (_) {},
+    return Column(
+      children: [
+        TextFormField(
+          readOnly: true,
+          decoration: InputDecoration(
+            icon: Icon(widgetIcon),
+            labelText: '$name',
+          ),
+          onSaved: (_) {},
+        ),
+      ],
     );
   }
 }

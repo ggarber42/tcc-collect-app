@@ -5,7 +5,7 @@ import '../../dao/form_model_dao.dart';
 import '../../factories/dummy_field_factory.dart';
 import '../../models/form_model.dart';
 import '../../providers/form_models.dart';
-import '../../widgets/base_widgets/main_bar.dart';
+import '../../widgets/custom_widgets/main_bar.dart';
 import '../../widgets/base_widgets/bottom_button.dart';
 import '../../widgets/base_widgets/main_drawer.dart';
 import '../../widgets/dialog_widgets/dialog_new_field.dart';
@@ -23,6 +23,7 @@ class CreateFormModelsScreen extends StatefulWidget {
 class _CreateFormModelsScreenState extends State<CreateFormModelsScreen> {
   final TextEditingController _textEditingController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final modelFormDao = FormModelDAO();
   var fieldList = [];
 
   Future _showFieldDialog(BuildContext context) {
@@ -35,10 +36,12 @@ class _CreateFormModelsScreenState extends State<CreateFormModelsScreen> {
   }
 
   _handleClick(BuildContext context) async {
-    var selectedType = await _showFieldDialog(context);
+    final selectedType = await _showFieldDialog(context);
     if (selectedType == null) return;
-    var newFormField =
-        await DummyFactoryField().createFormField(context, selectedType);
+    final newFormField = await DummyFactoryField().createFormField(
+      context,
+      selectedType,
+    );
     setState(() {
       fieldList.add(newFormField);
     });
@@ -51,12 +54,10 @@ class _CreateFormModelsScreenState extends State<CreateFormModelsScreen> {
       return;
     }
     if (_formKey.currentState!.validate() && hasFieldAdded) {
-      var modelName = _textEditingController.value.text;
-      var modelForm = FormModel(modelName);
-
+      final modelForm = FormModel(
+        name: _textEditingController.value.text,
+      );
       modelForm.addFields(fieldList);
-      FormModelDAO modelFormDao = FormModelDAO();
-
       await modelFormDao.add(modelForm);
       await models.updateModels();
       Helper.showSnack(context, 'Modelo criado');
@@ -64,20 +65,41 @@ class _CreateFormModelsScreenState extends State<CreateFormModelsScreen> {
     }
   }
 
+  deleteField(index) {
+    fieldList.removeAt(index);
+    setState(() {});
+  }
+
+  backButtonClickHandler() async {
+    bool shouldPop = await Helper.shouldPopDialog(context);
+    if (shouldPop) {
+      Navigator.of(context).pop(false);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final models = Provider.of<FormModels>(context, listen: false);
-    return Scaffold(
-      appBar: MainBar(
-        windowTitle: 'Novo modelo',
-        hasBackButton: true,
-      ),
-      body: SingleChildScrollView(
-        physics: NeverScrollableScrollPhysics(),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
+    return WillPopScope(
+      onWillPop: () async {
+        bool shouldPop = await Helper.shouldPopDialog(context);
+        if (shouldPop) {
+          return true;
+        }
+        return false;
+      },
+      child: Scaffold(
+        appBar: MainBar(
+          windowTitle: 'Novo modelo',
+          hasBackButton: true,
+          clickHandler: backButtonClickHandler,
+        ),
+        body: SingleChildScrollView(
+          physics: NeverScrollableScrollPhysics(),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
                 padding: EdgeInsets.symmetric(vertical: 10, horizontal: 25),
                 child: Form(
                   key: _formKey,
@@ -92,34 +114,45 @@ class _CreateFormModelsScreenState extends State<CreateFormModelsScreen> {
                       return null;
                     },
                   ),
-                )),
-            SingleChildScrollView(
-              child: Container(
-                height: 400,
+                ),
+              ),
+              Container(
+                constraints: BoxConstraints(maxHeight: 500),
                 width: double.infinity,
                 margin: EdgeInsets.symmetric(vertical: 10, horizontal: 50),
-                child: ListView.builder(
-                    itemCount: fieldList.length,
-                    itemBuilder: (ctx, index) {
-                      return fieldList[index].getWidgetBody();
-                    }),
+                child: Scrollbar(
+                  child: Padding(
+                    padding: const EdgeInsets.all(3.0),
+                    child: ListView.builder(
+                        itemCount: fieldList.length,
+                        itemBuilder: (ctx, index) {
+                          return fieldList[index]
+                              .getWidgetBody(index, deleteField, context);
+                        }),
+                  ),
+                ),
               ),
-            )
-          ],
+            ],
+          ),
         ),
+        drawer: MainDrawer(),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        floatingActionButton: Padding(
+          padding: const EdgeInsets.only(bottom: 30),
+          child: FloatingActionButton.extended(
+              label: Text(
+                "Campo de entrada",
+                style: TextStyle(
+                  fontSize: 15,
+                ),
+              ),
+              icon: Icon(Icons.add),
+              onPressed: () => _handleClick(context)),
+        ),
+        bottomSheet: Container(
+            width: MediaQuery.of(context).size.width,
+            child: BottomButton('Salvar Modelo', () => _handleSubmit(models))),
       ),
-      drawer: MainDrawer(),
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.only(bottom: 50),
-        child: FloatingActionButton.extended(
-            label: Text("Campo de entrada"),
-            icon: Icon(Icons.add),
-            onPressed: () => _handleClick(context)),
-      ),
-      bottomSheet: Container(
-          width: MediaQuery.of(context).size.width,
-          child: BottomButton(
-              'Salvar Modelo', () => _handleSubmit(models))),
     );
   }
 }

@@ -28,6 +28,8 @@ class FormModel {
     name = data[tableColumns['name']];
   }
 
+  FormModel.fromEditScreen(this.modelId, this.name);
+
   get getModelId => modelId;
 
   set setModelId(int value) => modelId = value;

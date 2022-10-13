@@ -29,6 +29,19 @@ class Helper {
           return AlertWidgetFormDialog(warning);
         });
   }
+
+  static String getTypeNameForUser(String rawType) {
+    switch (rawType) {
+      case 'img':
+        return 'Foto';
+        case 'gps':
+        return 'GPS';
+        case 'date':
+        return 'Data';
+      default:
+        return 'Texto';
+    }
+  }
 }
 
 class StackHelper<E> {
