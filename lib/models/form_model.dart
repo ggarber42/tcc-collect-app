@@ -4,9 +4,9 @@ import 'radio_option.dart';
 class FormModel {
   late int modelId;
 
-  late String name;
+  String? name;
   var _fieldList = <Map<String?, String>>[];
-  var _optionList = <Map<String?, String>>[];
+  var _optionList = [];
 
   static final tableName = 'FormModel';
   static final tableColumns = {
@@ -21,7 +21,7 @@ class FormModel {
       );
   ''';
 
-  FormModel(this.name);
+  FormModel({required this.name});
 
   FormModel.fromDB(Map data) {
     modelId = data[tableColumns['id']];
@@ -36,21 +36,7 @@ class FormModel {
 
   get getName => this.name;
 
-  void addFields(List<dynamic> fieldList) {
-    for (var i = 0; i < fieldList.length; i++) {
-      _fieldList.add({
-        FormWidget.tableColumns['name']: fieldList[i].name,
-        FormWidget.tableColumns['type']: fieldList[i].getType,
-      });
-      if (fieldList[i].getType == 'radio') {
-        for (var j = 0; j < fieldList[i].options.length; j++) {
-          _optionList.add({
-            RadioOption.tableColumns['name']: fieldList[i].options[j],
-          });
-        }
-      }
-    }
-  }
+  void removeField() {}
 
   Map<String, Object?> getData() {
     return {
@@ -62,7 +48,7 @@ class FormModel {
     return _fieldList;
   }
 
-  List<Map<String?, String>> getOptionList() {
+  getOptionList() {
     return _optionList;
   }
 }

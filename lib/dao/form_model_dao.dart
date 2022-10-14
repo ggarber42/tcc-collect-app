@@ -1,15 +1,14 @@
 import 'package:collect_app/dao/form_widget_dao.dart';
 import 'package:collect_app/models/form_widget.dart';
 
-import '../interfaces/dao_interface.dart';
 import '../models/form_model.dart';
 import '../services/db_connector.dart';
 import 'entry_dao.dart';
 
-class FormModelDAO  {
+class FormModelDAO {
   final entryDao = EntryDAO();
   final widgetDao = FormWidgetDAO();
-
+  
   Future<bool> _hasEntries(int modelId) async {
     var entries = await entryDao.readAll(modelId);
     if (entries.length > 0) {
@@ -19,28 +18,15 @@ class FormModelDAO  {
   }
 
   @override
-  Future<void> add(FormModel model) async {
+  Future<int> add(FormModel model) async {
     final db = await DataBaseConnector.instance.database;
-    int modelId = await db.insert(
+    return await db.insert(
       FormModel.tableName,
       model.getData(),
     );
-    model.setModelId = modelId;
-    List<Map<String?, String>> fieldList = model.getFieldList();
-    final formWidgetName = FormWidget.tableColumns['name'];
-    final formWidgetType = FormWidget.tableColumns['type'];
-    for (var i = 0; i < fieldList.length; i++) {
-      FormWidget formWidget = FormWidget.withModel(
-        fieldList[i][formWidgetName] as String,
-        fieldList[i][formWidgetType] as String,
-        model,
-      );
-      FormWidgetDAO formWidgetDao = FormWidgetDAO();
-      formWidgetDao.add(formWidget);
-    }
   }
 
-  @override
+
   Future<int> delete(int modelId) async {
     final hasEntries = await _hasEntries(modelId);
     if (hasEntries) {
@@ -55,8 +41,7 @@ class FormModelDAO  {
     );
   }
 
-
-   Future<int> update(FormModel model) async {
+  Future<int> update(FormModel model) async {
     final db = await DataBaseConnector.instance.database;
     return await db.update(
       FormModel.tableName,

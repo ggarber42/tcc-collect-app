@@ -1,7 +1,11 @@
+import 'package:collect_app/models/form_widget.dart';
+import 'package:collect_app/models/radio_option.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../dao/form_model_dao.dart';
+import '../../dao/form_widget_dao.dart';
+import '../../dao/radio_option_dao.dart';
 import '../../factories/dummy_field_factory.dart';
 import '../../models/form_model.dart';
 import '../../providers/form_models.dart';
@@ -24,6 +28,9 @@ class _CreateFormModelsScreenState extends State<CreateFormModelsScreen> {
   final TextEditingController _textEditingController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final modelFormDao = FormModelDAO();
+  final widgetDao = FormWidgetDAO();
+  final radioDao = RadioOptionDAO();
+
   var fieldList = [];
 
   Future _showFieldDialog(BuildContext context) {
@@ -57,8 +64,23 @@ class _CreateFormModelsScreenState extends State<CreateFormModelsScreen> {
       final modelForm = FormModel(
         name: _textEditingController.value.text,
       );
-      modelForm.addFields(fieldList);
-      await modelFormDao.add(modelForm);
+      final modelId = await modelFormDao.add(modelForm);
+      for (var field in fieldList) {
+        final widgetId = await widgetDao.add(
+          FormWidget.withModelId(
+            field.name,
+            field.getType,
+            modelId,
+          ),
+        );
+        if (field.getType == 'radio') {
+          for (var option in field.options) {
+            await radioDao.add(
+              RadioOption.withForeingKey(option, widgetId)
+            );
+          }
+        }
+      }
       await models.updateModels();
       Helper.showSnack(context, 'Modelo criado');
       Navigator.popUntil(context, (Route<dynamic> route) => route.isFirst);
