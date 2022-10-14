@@ -72,7 +72,7 @@ class _ModelTileState extends State<ModelTile> {
         _goToEntriesScreen(context);
         break;
       case 'edit':
-        widget.goToEditScreen(context, widget.model.getModelId);
+        widget.goToEditScreen(context, widget.model.getModelId, widget.model.getName);
         break;
       case 'delete':
         _deleteModel(context);

@@ -5,7 +5,7 @@ class FormWidget {
   final String name;
   final String type;
 
-  FormModel? model;
+  int? modelId;
 
   static final tableName = 'FormWidget';
   static final String dropTableQuery = 'DROP TABLE IF EXISTS $tableName';
@@ -27,17 +27,16 @@ class FormWidget {
 
   FormWidget(this.widgetId, this.name, this.type);
 
-  FormWidget.withModel(this.name, this.type, this.model);
+  FormWidget.withModelId(this.name, this.type, this.modelId);
 
   get getType => type;
 
-  get getModel => model;
 
   Map<String, Object?> getData() {
     return {
       tableColumns['name'] as String: name,
       tableColumns['type'] as String: type,
-      FormModel.tableColumns['id'] as String: model!.getModelId
+      FormModel.tableColumns['id'] as String: modelId
     };
   }
 
@@ -53,13 +52,5 @@ class FormWidget {
     };
   }
 
-  getModelData() {
-    return {
-      FormModel.tableColumns['id']: model,
-    };
-  }
 
-  getOptionList() {
-    return model!.getOptionList();
-  }
 }
