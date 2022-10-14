@@ -5,7 +5,7 @@ import '../dialog_widgets/dialog_widget_radio.dart';
 import 'dummy_radio_item.dart';
 
 class DummyFieldRadio implements Dummy {
-  int? index;
+  int? _index;
   late String _name;
   late dynamic _options;
   final IconData widgetIcon;
@@ -15,6 +15,7 @@ class DummyFieldRadio implements Dummy {
 
   DummyFieldRadio.fromEditScreen(this.widgetIcon, this._name, this._options);
 
+  get index => _index;
   get name => _name;
   get options => _options;
   @override
@@ -30,7 +31,7 @@ class DummyFieldRadio implements Dummy {
 
   @override
   Widget getWidgetBody(indexValue, deleteField, context) {
-    index = indexValue;
+    _index = indexValue;
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -50,7 +51,7 @@ class DummyFieldRadio implements Dummy {
               children: <Widget>[
                 TextButton.icon(
                   onPressed: () {
-                    deleteField(index);
+                    deleteField(_index);
                   },
                   icon: Icon(Icons.delete_forever),
                   label: Text(''),
