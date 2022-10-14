@@ -72,8 +72,8 @@ class _DialogWidgetRadioState extends State<DialogWidgetRadio> {
             Container(
               padding: EdgeInsets.symmetric(vertical: 15),
               decoration: BoxDecoration(
-                border: Border.symmetric(
-                  horizontal: BorderSide(color: Colors.grey),
+                border: Border(
+                  bottom: BorderSide(color: Colors.grey),
                 ),
               ),
               width: double.maxFinite,
