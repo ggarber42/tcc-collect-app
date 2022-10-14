@@ -42,6 +42,7 @@ class _ListEntriesScreenState extends State<ListEntriesScreen> {
       appBar: MainBar(
         windowTitle: 'Entradas: ${widget.modelName}',
         hasBackButton: true,
+        clickHandler: () => Navigator.of(context).pop(),
       ),
       body: Container(
         width: double.infinity,
