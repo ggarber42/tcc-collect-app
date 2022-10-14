@@ -31,7 +31,7 @@ class _EditFormModelScreenState extends State<EditFormModelScreen> {
   final modelDao = FormModelDAO();
   final radioDao = RadioOptionDAO();
   final widgetDao = FormWidgetDAO();
-  var _fields = [];
+  var fieldList = [];
 
   @override
   void initState() {
@@ -56,7 +56,7 @@ class _EditFormModelScreenState extends State<EditFormModelScreen> {
   }
 
   _updateWidgets() async {
-    for (var field in _fields) {
+    for (var field in fieldList) {
       print(field.getId);
       // await widgetDao.update(field.getId);
     }
@@ -80,66 +80,91 @@ class _EditFormModelScreenState extends State<EditFormModelScreen> {
     }
   }
 
+  deleteField(index) {
+    fieldList.removeAt(index);
+    setState(() {});
+  }
+
+  backButtonClickHandler() async {
+    bool shouldPop = await Helper.shouldPopDialog(context);
+    if (shouldPop) {
+      Navigator.of(context).pop(false);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: MainBar(
-        windowTitle: 'Editar modelo',
-        hasBackButton: true,
-      ),
-      body: Container(
-        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 25),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Form(
-              key: _formKey,
-              child: TextFormField(
-                controller: _textEditingController,
-                decoration: InputDecoration(labelText: 'Nome do modelo *'),
-                textInputAction: TextInputAction.done,
-                validator: (String? value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Esse campo não pode ser nulo';
-                  }
-                  return null;
-                },
-              ),
-            ),
-            SingleChildScrollView(
-                child: Container(
-              child: FutureBuilder(
-                future: _fetchFields(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    var fields = snapshot.data as List;
-                    _fields = fields;
-                    return ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: fields.length,
-                      itemBuilder: (ctx, index) =>
-                          fields[index].getWidgetBody(),
-                    );
-                  }
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                },
-              ),
-            )),
-          ],
+    return WillPopScope(
+      onWillPop: () async {
+        bool shouldPop = await Helper.shouldPopDialog(context);
+        if (shouldPop) {
+          return true;
+        }
+        return false;
+      },
+      child: Scaffold(
+        appBar: MainBar(
+          windowTitle: 'Editar modelo',
+          hasBackButton: true,
+          clickHandler: backButtonClickHandler,
         ),
-      ),
-      floatingActionButton: Padding(
-          padding: const EdgeInsets.only(bottom: 50),
-          child: FloatingActionButton.extended(
-            label: Text("Campo de entrada"),
-            icon: Icon(Icons.add),
-            onPressed: () {},
-          )),
-      bottomSheet: Container(
-        width: MediaQuery.of(context).size.width,
-        child: BottomButton('Editar Modelo', _handleSubmit),
+        body: Container(
+          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 25),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Form(
+                key: _formKey,
+                child: TextFormField(
+                  controller: _textEditingController,
+                  decoration: InputDecoration(labelText: 'Nome do modelo *'),
+                  textInputAction: TextInputAction.done,
+                  validator: (String? value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Esse campo não pode ser nulo';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              SingleChildScrollView(
+                  child: Container(
+                constraints: BoxConstraints(maxHeight: 500),
+                child: FutureBuilder(
+                  future: _fetchFields(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      var fields = snapshot.data as List;
+                      fieldList = fields;
+                      return Scrollbar(
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: fields.length,
+                          itemBuilder: (ctx, index) => fields[index]
+                              .getWidgetBody(index, deleteField, context),
+                        ),
+                      );
+                    }
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  },
+                ),
+              )),
+            ],
+          ),
+        ),
+        floatingActionButton: Padding(
+            padding: const EdgeInsets.only(bottom: 50),
+            child: FloatingActionButton.extended(
+              label: Text("Campo de entrada"),
+              icon: Icon(Icons.add),
+              onPressed: () {},
+            )),
+        bottomSheet: Container(
+          width: MediaQuery.of(context).size.width,
+          child: BottomButton('Editar Modelo', _handleSubmit),
+        ),
       ),
     );
   }
