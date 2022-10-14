@@ -34,13 +34,34 @@ class Helper {
     switch (rawType) {
       case 'img':
         return 'Foto';
-        case 'gps':
+      case 'gps':
         return 'GPS';
-        case 'date':
+      case 'date':
         return 'Data';
       default:
         return 'Texto';
     }
+  }
+
+  static shouldPopDialog(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Deseja sair sem salvar?'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, false),
+              child: const Text('CANCELAR'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context, true),
+              child: const Text('SAIR'),
+            )
+          ],
+        );
+      },
+    );
   }
 }
 
