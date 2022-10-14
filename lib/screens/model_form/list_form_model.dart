@@ -63,10 +63,12 @@ class _ListFormModelsScreenState extends State<ListFormModelsScreen> {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               List<FormModel> models = snapshot.data as List<FormModel>;
-              return ListView.builder(
-                itemCount: models.length,
-                itemBuilder: (ctx, index) =>
-                    ModelTile(models[index], deleteModel, goToEditScreen),
+              return Scrollbar(
+                child: ListView.builder(
+                  itemCount: models.length,
+                  itemBuilder: (ctx, index) =>
+                      ModelTile(models[index], deleteModel, goToEditScreen),
+                ),
               );
             }
             return Center(
