@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 import '../../dao/entry_dao.dart';
 import '../../utils/helper.dart';
-import '../../widgets/base_widgets/main_bar.dart';
+import '../../widgets/custom_widgets/main_bar.dart';
 import '../../widgets/base_widgets/main_drawer.dart';
 import 'entry_name.dart';
 
@@ -40,7 +40,7 @@ class _ListEntriesScreenState extends State<ListEntriesScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MainBar(
-        windowTitle: widget.modelName,
+        windowTitle: 'Entradas: ${widget.modelName}',
         hasBackButton: true,
       ),
       body: Container(

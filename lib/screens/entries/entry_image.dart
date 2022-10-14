@@ -5,7 +5,7 @@ import 'package:camera/camera.dart';
 import '../../utils/helper.dart';
 import 'camera_preview.dart';
 import '../../widgets/base_widgets/bottom_button.dart';
-import '../../widgets/base_widgets/main_bar.dart';
+import '../../widgets/custom_widgets/main_bar.dart';
 
 class EntryImageScreen extends StatefulWidget {
   final imageWidgetData;
@@ -42,7 +42,6 @@ class _EntryImageScreenState extends State<EntryImageScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.imageWidgetData);
     return Scaffold(
       appBar: MainBar(),
       body: Column(

@@ -1,6 +1,6 @@
 import 'package:collect_app/models/entry_image.dart';
 import 'package:collect_app/models/entry_value.dart';
-import 'package:collect_app/widgets/base_widgets/main_bar.dart';
+import 'package:collect_app/widgets/custom_widgets/main_bar.dart';
 import 'package:flutter/material.dart';
 
 import '../../dao/entry_image_dao.dart';

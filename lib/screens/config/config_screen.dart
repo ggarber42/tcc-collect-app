@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../widgets/base_widgets/main_bar.dart';
+import '../../widgets/custom_widgets/main_bar.dart';
 import '../../widgets/base_widgets/main_drawer.dart';
 
 class ConfigScreen extends StatelessWidget {

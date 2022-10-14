@@ -4,7 +4,7 @@ import '../../factories/field_factory.dart';
 import '../../models/entry_value.dart';
 import '../../utils/helper.dart';
 import '../../widgets/base_widgets/bottom_button.dart';
-import '../../widgets/base_widgets/main_bar.dart';
+import '../../widgets/custom_widgets/main_bar.dart';
 
 class EntryInputsScreen extends StatefulWidget {
   final List<dynamic> inputFields;

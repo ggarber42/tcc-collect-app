@@ -7,7 +7,7 @@ import '../../models/entry_image.dart';
 import '../../models/entry_value.dart';
 import '../../services/db_connector.dart';
 import '../../widgets/base_widgets/bottom_button.dart';
-import '../../widgets/base_widgets/main_bar.dart';
+import '../../widgets/custom_widgets/main_bar.dart';
 import '../../widgets/custom_widgets/image_tile.dart';
 import '../../utils/helper.dart';
 import '../../utils/queries.dart';

@@ -5,32 +5,63 @@ import '../dialog_widgets/dialog_widget_radio.dart';
 import 'dummy_radio_item.dart';
 
 class DummyFieldRadio implements Dummy {
+  int? index;
   late String _name;
   late dynamic _options;
+  final IconData widgetIcon;
   var dialog = DialogWidgetRadio();
 
-  DummyFieldRadio();
+  DummyFieldRadio(this.widgetIcon);
 
-  DummyFieldRadio.fromEditScreen(this._name, this._options);
+  DummyFieldRadio.fromEditScreen(this.widgetIcon, this._name, this._options);
 
   get name => _name;
   get options => _options;
   @override
   get getType => 'radio';
 
+  Widget _fieldName() {
+    var returnedName = name ?? '';
+    return ListTile(
+      leading: Icon(widgetIcon),
+      title: Text(returnedName),
+    );
+  }
+
   @override
-  Widget getWidgetBody() {
-    return Column(children: [
-      Text(_name),
-      ListView.builder(
-        shrinkWrap: true,
-        itemCount: _options.length,
-        itemBuilder: (ctx, index) => Container(
-          margin: EdgeInsets.symmetric(vertical: 1.5),
-          child: DummyRadioItem(_options[index]),
+  Widget getWidgetBody(indexValue, deleteField, context) {
+    index = indexValue;
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            _fieldName(),
+            ListView.builder(
+              shrinkWrap: true,
+              itemCount: _options.length,
+              itemBuilder: (ctx, index) => Container(
+                margin: EdgeInsets.symmetric(vertical: 1.5),
+                child: DummyRadioItem(_options[index]),
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                TextButton.icon(
+                  onPressed: () {
+                    deleteField(index);
+                  },
+                  icon: Icon(Icons.delete_forever),
+                  label: Text(''),
+                ),
+                const SizedBox(width: 8),
+              ],
+            ),
+          ],
         ),
-      )
-    ]);
+      ),
+    );
   }
 
   Future<dynamic> showInitDialog(BuildContext context) {

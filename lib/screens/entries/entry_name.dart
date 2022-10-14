@@ -1,7 +1,7 @@
 import 'package:collect_app/screens/entries/entry_detail.dart';
 import 'package:flutter/material.dart';
 
-import '../../widgets/base_widgets/main_bar.dart';
+import '../../widgets/custom_widgets/main_bar.dart';
 import '../../widgets/base_widgets/name_input.dart';
 
 class EntryNameScreen extends StatelessWidget {
