@@ -29,10 +29,6 @@ const EntrielTileMenuOptions = const [
     value: 'open',
   ),
   PopupMenuItem<String>(
-    child: const Text('Editar'),
-    value: 'edit',
-  ),
-  PopupMenuItem<String>(
     child: const Text('Deletar', style: TextStyle(color: Colors.red)),
     value: 'delete',
   ),

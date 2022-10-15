@@ -6,6 +6,13 @@ class FormWidget {
   final String type;
 
   int? modelId;
+  get getId => widgetId;
+
+  FormWidget(this.widgetId, this.name, this.type);
+
+  FormWidget.withModelId(this.name, this.type, this.modelId);
+
+  get getType => type;
 
   static final tableName = 'FormWidget';
   static final String dropTableQuery = 'DROP TABLE IF EXISTS $tableName';
@@ -24,13 +31,6 @@ class FormWidget {
           REFERENCES ${FormModel.tableName} (${FormModel.tableColumns['id']})
     );
   ''';
-
-  FormWidget(this.widgetId, this.name, this.type);
-
-  FormWidget.withModelId(this.name, this.type, this.modelId);
-
-  get getType => type;
-
 
   Map<String, Object?> getData() {
     return {
@@ -51,6 +51,4 @@ class FormWidget {
       tableColumns['type']: type,
     };
   }
-
-
 }

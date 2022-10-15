@@ -16,19 +16,16 @@ class _DeleteModelDialogState extends State<DeleteModelDialog> {
     return AlertDialog(
       content: Text(
         widget.text,
-        style: TextStyle(
-          color: Colors.red,
-        ),
       ),
       actions: [
         TextButton(
-          child: const Text('Sim'),
+          child: const Text('SIM'),
           onPressed: () {
             Navigator.of(context).pop(true);
           },
         ),
         TextButton(
-          child: const Text('Não'),
+          child: const Text('NÃO'),
           onPressed: () {
             Navigator.of(context).pop(false);
           },
