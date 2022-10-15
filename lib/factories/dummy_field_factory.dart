@@ -68,7 +68,6 @@ class DummyFactoryField {
       }
       return DummyFieldRadio.fromEditScreen(icon, name, optionsName);
     }
-    // return DummyField.fromEditScreen(widgetId, type, name, icon);
     return DummyField.fromEditScreen(
       widgetId: widgetId,
       type: type,

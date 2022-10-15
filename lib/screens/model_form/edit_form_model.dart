@@ -5,11 +5,14 @@ import 'package:flutter/material.dart';
 
 import '../../dao/radio_option_dao.dart';
 import '../../models/form_model.dart';
+import '../../models/form_widget.dart';
+import '../../models/radio_option.dart';
 import '../../services/db_connector.dart';
 import '../../utils/helper.dart';
 import '../../utils/queries.dart';
 import '../../widgets/base_widgets/bottom_button.dart';
 import '../../widgets/custom_widgets/main_bar.dart';
+import '../../widgets/dialog_widgets/dialog_new_field.dart';
 
 class EditFormModelScreen extends StatefulWidget {
   final int modelId;
@@ -31,35 +34,44 @@ class _EditFormModelScreenState extends State<EditFormModelScreen> {
   final modelDao = FormModelDAO();
   final radioDao = RadioOptionDAO();
   final widgetDao = FormWidgetDAO();
-  var fieldList = [];
+  var _hasFetched = false;
+  var fields = [];
+  var currentWidgets = {};
 
   @override
   void initState() {
     super.initState();
     _textEditingController.text = widget.modelName;
+    _fetchFields();
+  }
+
+  bool _hasFieldsAdded() {
+    return fields.length > 0;
   }
 
   _fetchFields() async {
-    var fields = [];
     var options;
     final db = await DataBaseConnector.instance.database;
     final queryResult = await db.rawQuery(
       Queries.getFieldTypes(widget.modelId),
     );
     for (var result in queryResult) {
+      currentWidgets.putIfAbsent(
+        result['widgetId'],
+        () => {
+          'type': result['type'],
+        },
+      );
       if (result['type'] == 'radio') {
         options = await radioDao.readAll(result['widgetId'] as int);
       }
-      fields.add(dummyFactory.getFields(result, options));
+      fields.add(
+        dummyFactory.getFields(result, options),
+      );
     }
-    return fields;
-  }
-
-  _updateWidgets() async {
-    for (var field in fieldList) {
-      print(field.getId);
-      // await widgetDao.update(field.getId);
-    }
+    setState(() {
+      _hasFetched = true;
+    });
   }
 
   _updateModelName() async {
@@ -71,31 +83,104 @@ class _EditFormModelScreenState extends State<EditFormModelScreen> {
     );
   }
 
+  _deleteCurrentWidgets() async {
+    currentWidgets.forEach((widgetId, widgetValue) async {
+      await widgetDao.delete(widgetId);
+      if (widgetValue['tpye'] == 'radio') {
+        await radioDao.deleteAll(widgetId);
+      }
+    });
+  }
+
+  _addNewWidgets() async {
+    for (var field in fields) {
+      final widgetId = await widgetDao.add(
+        FormWidget.withModelId(
+          field.name,
+          field.getType,
+          widget.modelId,
+        ),
+      );
+      if (field.getType == 'radio') {
+        for (var option in field.options) {
+          await radioDao.add(RadioOption.withForeingKey(option, widgetId));
+        }
+      }
+    }
+  }
+
+  deleteField(index) {
+    fields.removeAt(index);
+    setState(() {});
+  }
+
+  backButtonClickHandler() async {
+    if (_hasFieldsAdded()) {
+      bool shouldPop = await Helper.shouldPopDialog(context);
+      if (shouldPop) {
+        Navigator.of(context).pop();
+      }
+    } else {
+      Navigator.of(context).pop();
+    }
+  }
+
   _handleSubmit() async {
+    if (fields.length == 0) {
+      Helper.showWarningDialog(context, 'Adicione pelo menos um campo!');
+      return;
+    }
     if (_formKey.currentState!.validate()) {
       await _updateModelName();
-      // await _updateWidgets();
+      await _deleteCurrentWidgets();
+      await _addNewWidgets();
       Navigator.of(context).pop();
       Helper.showSnack(context, 'Modelo editado!');
     }
   }
 
-  deleteField(index) {
-    fieldList.removeAt(index);
-    setState(() {});
+  Future _showFieldDialog(BuildContext context) {
+    return showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (BuildContext context) {
+          return DialogNewField();
+        });
   }
 
-  backButtonClickHandler() async {
-    bool shouldPop = await Helper.shouldPopDialog(context);
-    if (shouldPop) {
-      Navigator.of(context).pop(false);
+  _makeFields() async {
+    final selectedType = await _showFieldDialog(context);
+    if (selectedType == null) return;
+    final newFormField = await DummyFactoryField().createFormField(
+      context,
+      selectedType,
+    );
+    setState(() {
+      fields.add(newFormField);
+    });
+  }
+
+  Widget _widgetList() {
+    if (_hasFetched) {
+      return Scrollbar(
+        child: ListView.builder(
+          shrinkWrap: true,
+          itemCount: fields.length,
+          itemBuilder: (ctx, index) =>
+              fields[index].getWidgetBody(index, deleteField, context),
+        ),
+      );
     }
+    return Center(child: CircularProgressIndicator());
   }
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
+    return WillPopScope(  
       onWillPop: () async {
+        if (!_hasFieldsAdded()) {
+          return true;
+        }
         bool shouldPop = await Helper.shouldPopDialog(context);
         if (shouldPop) {
           return true;
@@ -103,6 +188,7 @@ class _EditFormModelScreenState extends State<EditFormModelScreen> {
         return false;
       },
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: MainBar(
           windowTitle: 'Editar modelo',
           hasBackButton: true,
@@ -113,43 +199,27 @@ class _EditFormModelScreenState extends State<EditFormModelScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Form(
-                key: _formKey,
-                child: TextFormField(
-                  controller: _textEditingController,
-                  decoration: InputDecoration(labelText: 'Nome do modelo *'),
-                  textInputAction: TextInputAction.done,
-                  validator: (String? value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Esse campo não pode ser nulo';
-                    }
-                    return null;
-                  },
+              Container(
+                margin: EdgeInsets.only(bottom: 15),
+                child: Form(
+                  key: _formKey,
+                  child: TextFormField(
+                    controller: _textEditingController,
+                    decoration: InputDecoration(labelText: 'Nome do modelo *'),
+                    textInputAction: TextInputAction.done,
+                    validator: (String? value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Esse campo não pode ser nulo';
+                      }
+                      return null;
+                    },
+                  ),
                 ),
               ),
               SingleChildScrollView(
                   child: Container(
                 constraints: BoxConstraints(maxHeight: 500),
-                child: FutureBuilder(
-                  future: _fetchFields(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      var fields = snapshot.data as List;
-                      fieldList = fields;
-                      return Scrollbar(
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: fields.length,
-                          itemBuilder: (ctx, index) => fields[index]
-                              .getWidgetBody(index, deleteField, context),
-                        ),
-                      );
-                    }
-                    return Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  },
-                ),
+                child: _widgetList(),
               )),
             ],
           ),
@@ -159,7 +229,7 @@ class _EditFormModelScreenState extends State<EditFormModelScreen> {
             child: FloatingActionButton.extended(
               label: Text("Campo de entrada"),
               icon: Icon(Icons.add),
-              onPressed: () {},
+              onPressed: _makeFields,
             )),
         bottomSheet: Container(
           width: MediaQuery.of(context).size.width,

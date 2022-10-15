@@ -1,5 +1,6 @@
 import 'package:collect_app/dao/radio_option_dao.dart';
 
+import '../models/form_model.dart';
 import '../models/form_widget.dart';
 import '../services/db_connector.dart';
 
@@ -15,12 +16,6 @@ class FormWidgetDAO {
   }
 
   @override
-  Future<int> delete(int id) {
-    // TODO: implement delete
-    throw UnimplementedError();
-  }
-
-  @override
   Future<List<FormWidget>> readAll(int? id) {
     // TODO: implement readAll
     throw UnimplementedError();
@@ -30,6 +25,15 @@ class FormWidgetDAO {
   Future<int> update(FormWidget t) {
     // TODO: implement update
     throw UnimplementedError();
+  }
+
+  Future<int> delete(int widgetId) async {
+    final db = await DataBaseConnector.instance.database;
+    return await db.delete(
+      FormWidget.tableName,
+      where: '${FormWidget.tableColumns['id'] as String}=?',
+      whereArgs: [widgetId],
+    );
   }
 
   Future<dynamic> deleteAll(int modelId) async {

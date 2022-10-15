@@ -30,8 +30,11 @@ class _CreateFormModelsScreenState extends State<CreateFormModelsScreen> {
   final modelFormDao = FormModelDAO();
   final widgetDao = FormWidgetDAO();
   final radioDao = RadioOptionDAO();
-
   var fieldList = [];
+
+  bool _hasFieldsAdded() {
+    return fieldList.length > 0;
+  }
 
   Future _showFieldDialog(BuildContext context) {
     return showDialog(
@@ -55,12 +58,11 @@ class _CreateFormModelsScreenState extends State<CreateFormModelsScreen> {
   }
 
   _handleSubmit(models) async {
-    var hasFieldAdded = fieldList.length > 0;
-    if (!hasFieldAdded) {
+    if (!_hasFieldsAdded()) {
       Helper.showWarningDialog(context, 'Adicione pelo menos um campo!');
       return;
     }
-    if (_formKey.currentState!.validate() && hasFieldAdded) {
+    if (_formKey.currentState!.validate() && _hasFieldsAdded()) {
       final modelForm = FormModel(
         name: _textEditingController.value.text,
       );
@@ -75,9 +77,7 @@ class _CreateFormModelsScreenState extends State<CreateFormModelsScreen> {
         );
         if (field.getType == 'radio') {
           for (var option in field.options) {
-            await radioDao.add(
-              RadioOption.withForeingKey(option, widgetId)
-            );
+            await radioDao.add(RadioOption.withForeingKey(option, widgetId));
           }
         }
       }
@@ -93,9 +93,13 @@ class _CreateFormModelsScreenState extends State<CreateFormModelsScreen> {
   }
 
   backButtonClickHandler() async {
-    bool shouldPop = await Helper.shouldPopDialog(context);
-    if (shouldPop) {
-      Navigator.of(context).pop(false);
+    if (_hasFieldsAdded()) {
+      bool shouldPop = await Helper.shouldPopDialog(context);
+      if (shouldPop) {
+        Navigator.of(context).pop();
+      }
+    } else {
+      Navigator.of(context).pop();
     }
   }
 
@@ -104,6 +108,9 @@ class _CreateFormModelsScreenState extends State<CreateFormModelsScreen> {
     final models = Provider.of<FormModels>(context, listen: false);
     return WillPopScope(
       onWillPop: () async {
+        if (!_hasFieldsAdded()) {
+          return true;
+        }
         bool shouldPop = await Helper.shouldPopDialog(context);
         if (shouldPop) {
           return true;
