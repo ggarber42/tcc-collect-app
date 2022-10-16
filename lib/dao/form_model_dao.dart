@@ -1,5 +1,4 @@
 import 'package:collect_app/dao/form_widget_dao.dart';
-import 'package:collect_app/models/form_widget.dart';
 
 import '../models/form_model.dart';
 import '../services/db_connector.dart';
@@ -8,7 +7,7 @@ import 'entry_dao.dart';
 class FormModelDAO {
   final entryDao = EntryDAO();
   final widgetDao = FormWidgetDAO();
-  
+
   Future<bool> _hasEntries(int modelId) async {
     var entries = await entryDao.readAll(modelId);
     if (entries.length > 0) {
@@ -17,7 +16,6 @@ class FormModelDAO {
     return false;
   }
 
-  @override
   Future<int> add(FormModel model) async {
     final db = await DataBaseConnector.instance.database;
     return await db.insert(
@@ -25,7 +23,6 @@ class FormModelDAO {
       model.getData(),
     );
   }
-
 
   Future<int> delete(int modelId) async {
     final hasEntries = await _hasEntries(modelId);
@@ -51,7 +48,7 @@ class FormModelDAO {
     );
   }
 
-  @override
+  
   Future<List<FormModel>> readAll(_) async {
     final db = await DataBaseConnector.instance.database;
     List<FormModel> models = [];

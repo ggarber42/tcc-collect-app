@@ -15,18 +15,6 @@ class FormWidgetDAO {
     );
   }
 
-  @override
-  Future<List<FormWidget>> readAll(int? id) {
-    // TODO: implement readAll
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<int> update(FormWidget t) {
-    // TODO: implement update
-    throw UnimplementedError();
-  }
-
   Future<int> delete(int widgetId) async {
     final db = await DataBaseConnector.instance.database;
     return await db.delete(
@@ -39,10 +27,21 @@ class FormWidgetDAO {
   Future<dynamic> deleteAll(int modelId) async {
     final db = await DataBaseConnector.instance.database;
     final query = '''
-      DELETE FROM ${FormWidget.tableName}
-        WHERE ${FormWidget.tableColumns['id']} = $modelId;
+      SELECT ${FormWidget.tableColumns['id']}, ${FormWidget.tableColumns['type']}
+      FROM ${FormWidget.tableName}
+      WHERE ${FormModel.tableColumns['id']} = $modelId;
       ''';
-    final result = await db.rawQuery(query);
-    return result;
+    final queryResult = await db.rawQuery(query);
+    for (var result in queryResult) {
+      await db.delete(
+        FormWidget.tableName,
+        where: '${FormWidget.tableColumns['id'] as String}=?',
+        whereArgs: [result['widgetId']],
+      );
+      if (result['type'] == 'radio') {
+        await radioDao.deleteAll(result['widgetId'] as int);
+      }
+    }
+    return 1;
   }
 }
