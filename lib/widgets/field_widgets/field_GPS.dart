@@ -1,7 +1,11 @@
+import 'package:collect_app/widgets/custom_widgets/field_input.dart';
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 
+import 'package:collect_app/widgets/custom_widgets/field_card.dart';
+import 'package:collect_app/widgets/base_widgets/field_title.dart';
 import '../../interfaces/field_interface.dart';
+import '../../utils/helper.dart';
 
 class FieldGPS extends StatelessWidget implements Field {
   final int widgetId;
@@ -19,12 +23,11 @@ class FieldGPS extends StatelessWidget implements Field {
     };
   }
 
-  dynamic _getLocation() async {
+  _getLocation(context) async {
     Location location = Location();
 
     bool _serviceEnabled;
     PermissionStatus _permissionGranted;
-    LocationData _locationData;
 
     _serviceEnabled = await location.serviceEnabled();
     if (!_serviceEnabled) {
@@ -41,28 +44,24 @@ class FieldGPS extends StatelessWidget implements Field {
         return;
       }
     }
-
-    _locationData = await location.getLocation();
-    controller.text = _locationData.toString();
+    Helper.showProgressDialog(context);
+    final locationData = await location.getLocation();
+    controller.text = locationData.toString();
   }
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      controller: controller,
-      decoration: InputDecoration(
-          labelText: name,
-          icon: Icon(
-            Icons.gps_fixed_sharp,
-          )),
-      textInputAction: TextInputAction.done,
-      validator: (String? text) {
-        if (text == null || text.isEmpty) {
-          return 'Esse campo não pode ser nulo';
-        }
-        return null;
-      },
-      onTap: _getLocation,
-    );
+    return FieldCard(children: [
+      FieldTitle(name),
+      FieldInput(
+        controller: controller,
+        iconData: Icons.gps_fixed,
+        readOnly: true,
+      ),
+      ElevatedButton(
+        onPressed: () => _getLocation(context),
+        child: Text('CALCULAR'),
+      )
+    ]);
   }
 }

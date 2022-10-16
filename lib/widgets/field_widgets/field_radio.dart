@@ -1,8 +1,10 @@
 import 'package:collect_app/models/radio_option.dart';
+import 'package:collect_app/widgets/base_widgets/field_title.dart';
 import 'package:flutter/material.dart';
 
-import '../../interfaces/field_interface.dart';
 import '../custom_widgets/radio_item.dart';
+import '../../interfaces/field_interface.dart';
+import '../../utils/extensions.dart';
 
 class FieldRadio extends StatefulWidget implements Field {
   final int widgetId;
@@ -35,22 +37,31 @@ class _FieldRadioState extends State<FieldRadio> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
-      Text(widget.name),
-      ListView.builder(
-        shrinkWrap: true,
-        itemCount: widget.options.length,
-        itemBuilder: (ctx, index) => Container(
-          margin: EdgeInsets.symmetric(vertical: 1.5),
-          child: RadioItem(
-            index,
-            widget.selectedValue,
-            // widget.options[index]['optionName'],
-            widget.options[index][RadioOption.tableColumns['name']],
-            updateSelected,
-          ),
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 10),
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 5),
+          child: Column(children: [
+            FieldTitle(widget.name),
+            const SizedBox(height: 10,),
+            ListView.builder(
+              shrinkWrap: true,
+              itemCount: widget.options.length,
+              itemBuilder: (ctx, index) => Container(
+                margin: EdgeInsets.symmetric(vertical: 1.5),
+                child: RadioItem(
+                  index,
+                  widget.selectedValue,
+                  // widget.options[index]['optionName'],
+                  widget.options[index][RadioOption.tableColumns['name']],
+                  updateSelected,
+                ),
+              ),
+            )
+          ]),
         ),
-      )
-    ]);
+      ),
+    );
   }
 }

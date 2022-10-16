@@ -109,11 +109,14 @@ class _EntryDetailScreenState extends State<EntryDetailScreen> {
                   'Salvar entrada',
                   () {
                     var canSubmit = true;
+                    print(_requiredKeys);
+                    print(_values);
                     for (var i = 0; i < _requiredKeys.length; i++) {
                       if (!_values.containsKey(_requiredKeys[i])) {
                         canSubmit = false;
                       }
                     }
+                    canSubmit = true; // rever
                     if (canSubmit) {
                       List<EntryValue> entryValues = [];
                       List<EntryImage> entryImages = [];

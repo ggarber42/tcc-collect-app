@@ -1,9 +1,9 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:camera/camera.dart';
+import 'package:image_picker/image_picker.dart';
 
-import '../../utils/helper.dart';
 import 'camera_preview.dart';
+import '../../utils/helper.dart';
 import '../../widgets/base_widgets/bottom_button.dart';
 import '../../widgets/custom_widgets/main_bar.dart';
 
@@ -47,18 +47,57 @@ class _EntryImageScreenState extends State<EntryImageScreen> {
       body: Column(
         children: [
           Container(
-              child: _imagePreview(),
-              margin: EdgeInsets.symmetric(
-                vertical: 10,
-                horizontal: 35,
-              )),
-          ElevatedButton(
-            child: const Icon(Icons.camera_alt),
-            onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => CameraPreviewScreen(setImage),
-                fullscreenDialog: true,
+            margin: EdgeInsets.symmetric(
+              vertical: 30,
+              horizontal: 20,
+            ),
+            width: double.infinity,
+            child: Padding(
+              padding: const EdgeInsets.all(10),
+              child: Card(
+                child: Column(
+                  children: [
+                    Container(
+                        child: _imagePreview(),
+                        margin: EdgeInsets.symmetric(
+                          vertical: 10,
+                          horizontal: 35,
+                        )),
+                    SizedBox(
+                      height: 50,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        ElevatedButton(
+                          child: const Icon(Icons.camera_alt),
+                          onPressed: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  CameraPreviewScreen(setImage),
+                              fullscreenDialog: true,
+                            ),
+                          ),
+                        ),
+                        ElevatedButton(
+                            child: const Icon(Icons.attach_file),
+                            onPressed: () async {
+                              final picker = ImagePicker();
+                              try {
+                                XFile? file = await picker.pickImage(
+                                  source: ImageSource.gallery,
+                                );
+                                if(file != null) setState(()=> imageFile = file);
+                              } catch (e) {}
+                            })
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20,
+                    )
+                  ],
+                ),
               ),
             ),
           ),
@@ -68,7 +107,7 @@ class _EntryImageScreenState extends State<EntryImageScreen> {
               child: Container(
                 width: MediaQuery.of(context).size.width,
                 child: BottomButton(
-                  'Avançar',
+                  'Adicionar',
                   () {
                     if (imageFile != null) {
                       widget.addValue([

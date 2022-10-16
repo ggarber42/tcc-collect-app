@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../../utils/extensions.dart';
+import '../custom_widgets/field_input.dart';
 import '../../interfaces/field_interface.dart';
+import '../../widgets/custom_widgets/field_card.dart';
+import '../../widgets/base_widgets/field_title.dart';
 
 class FieldText extends StatelessWidget implements Field {
   final int widgetId;
@@ -22,47 +24,12 @@ class FieldText extends StatelessWidget implements Field {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          margin: EdgeInsets.symmetric(vertical: 10),
-          child: Card(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 5),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Container(
-                    width: double.infinity,
-                    child: Center(
-                        child: Text(name.capitalize(),
-                            style: TextStyle(fontSize: 17))),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextFormField(
-                        decoration: InputDecoration(
-                          prefixIcon: const Icon(Icons.text_fields),
-                          fillColor: Colors.grey.shade200,
-                          filled: true,
-                          border: OutlineInputBorder(),
-                        ),
-                        controller: controller,
-                        textInputAction: TextInputAction.done,
-                        validator: (String? text) {
-                          if (text == null || text.isEmpty) {
-                            return 'Esse campo não pode ser nulo';
-                          }
-                          return null;
-                        }),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-        SizedBox(height: 25,)
-      ],
-    );
+    return FieldCard(children: [
+      FieldTitle(name),
+      FieldInput(
+        controller: controller,
+        iconData: Icons.text_fields,
+      )
+    ]);
   }
 }

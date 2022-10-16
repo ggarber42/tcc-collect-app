@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'dart:io';
 
-import '../../utils/helper.dart';
-
 class CameraPreviewScreen extends StatefulWidget {
   final Function printHandler;
   CameraPreviewScreen(this.printHandler);

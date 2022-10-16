@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../factories/field_factory.dart';
-import '../../models/entry_value.dart';
 import '../../utils/helper.dart';
 import '../../widgets/base_widgets/bottom_button.dart';
 import '../../widgets/custom_widgets/main_bar.dart';
@@ -39,6 +38,7 @@ class _EntryInputsScreenState extends State<EntryInputsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey.shade200,
       resizeToAvoidBottomInset: false,
       appBar: MainBar(),
       body: Column(
@@ -61,9 +61,11 @@ class _EntryInputsScreenState extends State<EntryInputsScreen> {
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
                           _inputFields = snapshot.data;
-                          return ListView.builder(
-                            itemCount: _inputFields.length,
-                            itemBuilder: (ctx, index) => _inputFields[index],
+                          return Scrollbar(
+                            child: ListView.builder(
+                              itemCount: _inputFields.length,
+                              itemBuilder: (ctx, index) => _inputFields[index],
+                            ),
                           );
                         }
                         return Center(
@@ -90,7 +92,7 @@ class _EntryInputsScreenState extends State<EntryInputsScreen> {
                         );
                       }
                       widget.addValue(newValues);
-                      Helper.showSnack(context, 'Valor adicionado');
+                      Helper.showSnack(context, 'Valores adicionados!');
                       Navigator.pop(context);
                     }
                   })),

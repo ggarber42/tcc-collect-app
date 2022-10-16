@@ -18,7 +18,7 @@ class InputTile extends StatelessWidget {
           children: <Widget>[
             ListTile(
               leading: Icon(Icons.file_copy),
-              title: Text('Inputs'),
+              title: Text('Campos'),
             ),
           ],
         )),
