@@ -5,16 +5,18 @@ import '../../widgets/dialog_widgets/alert_widget_dialog.dart';
 
 class Helper {
   static showSnack(BuildContext context, String text) {
-    return ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
-      content: new Text(
-        text,
-        style: TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
+    return ScaffoldMessenger.of(context).showSnackBar(
+      new SnackBar(
+        content: new Text(
+          text,
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+          textAlign: TextAlign.center,
         ),
-        textAlign: TextAlign.center,
       ),
-    ));
+    );
   }
 
   static String getUuid() {
@@ -63,20 +65,21 @@ class Helper {
       },
     );
   }
-}
 
-class StackHelper<E> {
-  final _list = <E>[];
-
-  void push(E value) => _list.add(value);
-
-  E pop() => _list.removeLast();
-
-  E get peek => _list.last;
-
-  bool get isEmpty => _list.isEmpty;
-  bool get isNotEmpty => _list.isNotEmpty;
-
-  @override
-  String toString() => _list.toString();
+  static showProgressDialog(BuildContext context) {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          Future.delayed(Duration(seconds: 3), () {
+            Navigator.of(context).pop(true);
+          });
+          return AlertDialog(
+            title: Center(child: Text('Calculando')),
+            content: Container(
+              height: 100,
+              child: Center(child: CircularProgressIndicator()),
+            ),
+          );
+        });
+  }
 }
