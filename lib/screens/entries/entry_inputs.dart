@@ -50,7 +50,7 @@ class _EntryInputsScreenState extends State<EntryInputsScreen> {
               children: [
                 SingleChildScrollView(
                   child: Container(
-                    height: 400,
+                    constraints: BoxConstraints(maxHeight: 600),
                     width: double.infinity,
                     margin: EdgeInsets.symmetric(
                       vertical: 10,
