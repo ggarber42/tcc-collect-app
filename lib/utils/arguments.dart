@@ -1,4 +1,5 @@
-import '../models/entry.dart';
+import '../models/entry_image.dart';
+import '../models/entry_value.dart';
 
 class ModelArguments {
   final int modelId;
@@ -7,9 +8,22 @@ class ModelArguments {
   ModelArguments(this.modelId, this.modelName);
 }
 
-class EntryArguments {
+class EntryResultsArguments {
   final int entryId;
 
-  EntryArguments(this.entryId);
+  EntryResultsArguments(this.entryId);
+}
+
+
+class EntryValuesArguments {
+  final List<EntryValue> values;
+
+  EntryValuesArguments(this.values);
+}
+
+class EntryImageArguments {
+  final EntryImage image;
+
+  EntryImageArguments(this.image);
 }
 

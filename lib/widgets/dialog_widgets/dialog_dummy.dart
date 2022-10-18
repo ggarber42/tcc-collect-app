@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-
-import '../../interfaces/dialog_widget_interface.dart';
-
 class DialogDummy extends StatelessWidget {
 
   final TextEditingController _textEditingController = TextEditingController();

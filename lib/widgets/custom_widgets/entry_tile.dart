@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
+import '../dialog_widgets/delete_model_dialog.dart';
 import '../../models/entry.dart';
-import '../../screens/entries/entry_review.dart';
 import '../../utils/arguments.dart';
 import '../../utils/constants.dart';
-import '../dialog_widgets/delete_model_dialog.dart';
+import '../../screens/entries/entry_results.dart';
 
 class EntryTile extends StatefulWidget {
   final Entry entry;
@@ -25,11 +25,11 @@ class _EntryTileState extends State<EntryTile> {
     });
   }
 
-  _goToCreateEntriesScreen() {
+  _goToCreateEntryResultScreen() {
     Navigator.pushNamed(
       context,
-      EntryReviewScreen.routeName,
-      arguments: EntryArguments(widget.entry.getId),
+      EntryResultScreen.routeName,
+      arguments: EntryResultsArguments(widget.entry.getId),
     );
   }
 
@@ -65,9 +65,7 @@ class _EntryTileState extends State<EntryTile> {
     final selectedOption = await _showContextMenu();
     switch (selectedOption) {
       case 'open':
-        _goToCreateEntriesScreen();
-        break;
-      case 'edit':
+        _goToCreateEntryResultScreen();
         break;
       case 'delete':
         _deleteEntry();
@@ -87,11 +85,11 @@ class _EntryTileState extends State<EntryTile> {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             ListTile(
-              leading: Icon(Icons.adjust_sharp),
+              leading: Icon(Icons.check_box_outlined),
               title: Text(widget.entry.getName),
               trailing: Icon(Icons.more_vert),
               onLongPress: () => _openMenu(),
-              onTap: () => _goToCreateEntriesScreen(),
+              onTap: () => _goToCreateEntryResultScreen(),
             ),
           ],
         )),

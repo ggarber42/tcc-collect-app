@@ -72,7 +72,10 @@ class _EntryDetailScreenState extends State<EntryDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MainBar(windowTitle: widget.entryName),
+      appBar: MainBar(
+        windowTitle: widget.entryName,
+        hasBackButton: true,
+      ),
       body: Column(
         children: [
           SingleChildScrollView(
@@ -109,8 +112,6 @@ class _EntryDetailScreenState extends State<EntryDetailScreen> {
                   'Salvar entrada',
                   () {
                     var canSubmit = true;
-                    print(_requiredKeys);
-                    print(_values);
                     for (var i = 0; i < _requiredKeys.length; i++) {
                       if (!_values.containsKey(_requiredKeys[i])) {
                         canSubmit = false;

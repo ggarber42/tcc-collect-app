@@ -40,7 +40,10 @@ class _EntryInputsScreenState extends State<EntryInputsScreen> {
     return Scaffold(
       backgroundColor: Colors.grey.shade200,
       resizeToAvoidBottomInset: false,
-      appBar: MainBar(),
+      appBar: MainBar(
+        windowTitle: 'Campos',
+        hasBackButton: true,
+      ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
@@ -48,7 +51,7 @@ class _EntryInputsScreenState extends State<EntryInputsScreen> {
             key: _formKey,
             child: Column(
               children: [
-                SingleChildScrollView(
+                SingleChildScrollView( //rever -> nao consigo digitar no campo input devido ao keyboard
                   child: Container(
                     constraints: BoxConstraints(maxHeight: 600),
                     width: double.infinity,

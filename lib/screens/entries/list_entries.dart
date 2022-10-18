@@ -1,13 +1,13 @@
-import 'package:collect_app/dao/entry_value_dao.dart';
-import 'package:collect_app/models/entry.dart';
-import 'package:collect_app/widgets/custom_widgets/entry_tile.dart';
 import 'package:flutter/material.dart';
 
+import 'entry_name.dart';
+import '../../dao/entry_value_dao.dart';
 import '../../dao/entry_dao.dart';
-import '../../utils/helper.dart';
+import '../../models/entry.dart';
+import '../../widgets/custom_widgets/entry_tile.dart';
 import '../../widgets/custom_widgets/main_bar.dart';
 import '../../widgets/base_widgets/main_drawer.dart';
-import 'entry_name.dart';
+import '../../utils/helper.dart';
 
 class ListEntriesScreen extends StatefulWidget {
   static const routeName = '/list_entries';

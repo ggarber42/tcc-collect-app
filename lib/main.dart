@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'providers/form_models.dart';
-import 'screens/entries/list_entries.dart';
 import 'screens/config/config_screen.dart';
-import 'screens/entries/entry_review.dart';
+import 'screens/entries/entry_results.dart';
+import '/screens/entries/entry_result_image.dart';
+import 'screens/entries/entry_result_values.dart';
+import 'screens/entries/list_entries.dart';
 import 'screens/model_form/list_form_model.dart';
 import 'utils/arguments.dart';
 import 'utils/db_helper.dart';
@@ -58,11 +60,27 @@ class _MyAppState extends State<MyApp> {
               );
             });
           }
-          if (settings.name == EntryReviewScreen.routeName) {
-            final args = settings.arguments as EntryArguments;
+          if (settings.name == EntryResultScreen.routeName) {
+            final args = settings.arguments as EntryResultsArguments;
             return MaterialPageRoute(builder: (context) {
-              return EntryReviewScreen(
+              return EntryResultScreen(
                 args.entryId,
+              );
+            });
+          }
+          if (settings.name == EntryValuesResultScreen.routeName) {
+            final args = settings.arguments as EntryValuesArguments;
+            return MaterialPageRoute(builder: (context) {
+              return EntryValuesResultScreen(
+                args.values,
+              );
+            });
+          }
+          if (settings.name == EntryResultImageScreen.routeName) {
+            final args = settings.arguments as EntryImageArguments;
+            return MaterialPageRoute(builder: (context) {
+              return EntryResultImageScreen(
+                args.image,
               );
             });
           }

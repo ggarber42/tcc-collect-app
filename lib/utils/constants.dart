@@ -33,3 +33,14 @@ const EntrielTileMenuOptions = const [
     value: 'delete',
   ),
 ];
+
+const ResultTileValueOptions = const [
+  PopupMenuItem<String>(
+    child: const Text('Ver'),
+    value: 'open',
+  ),
+  PopupMenuItem<String>(
+    child: const Text('Compartilhar'),
+    value: 'share',
+  ),
+];

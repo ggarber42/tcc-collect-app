@@ -15,8 +15,9 @@ class FieldCard extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 5),
               child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: children),
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: children,
+              ),
             ),
           ),
         ),
