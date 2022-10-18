@@ -18,6 +18,7 @@ class EntryNameScreen extends StatelessWidget {
         resizeToAvoidBottomInset: false,
         appBar: MainBar(
           windowTitle: screenName,
+          hasBackButton: true,
         ),
         body: Column(
           children: [
