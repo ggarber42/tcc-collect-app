@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:social_share/social_share.dart';
 
 import '../../models/entry_value.dart';
 import '../../widgets/custom_widgets/main_bar.dart';
 
 class EntryValuesResultScreen extends StatelessWidget {
   final List<EntryValue> values;
+  final VoidCallback shareValues;
   static const routeName = '/entry_results_input';
 
-  EntryValuesResultScreen(this.values);
-
-  shareValues() async {
-    await SocialShare.shareOptions('kkkk');
-  }
+  EntryValuesResultScreen(this.values, this.shareValues);
 
   Widget _viewResultTile(value) {
     return Container(
@@ -22,17 +18,19 @@ class EntryValuesResultScreen extends StatelessWidget {
         children: [
           Container(
             padding: const EdgeInsets.all(20),
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text(value.getName,
-                  style: TextStyle(
-                    color: Colors.grey.shade600,
-                  )),
-              SizedBox(
-                height: 20,
-              ),
-              Text(value.getValue),
-            ]),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  value.getName,
+                  style: TextStyle(color: Colors.grey.shade600),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Text(value.getValue),
+              ],
+            ),
           ),
           Divider()
         ],

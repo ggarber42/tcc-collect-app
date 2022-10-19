@@ -1,4 +1,9 @@
+import 'dart:io';
+import 'package:collect_app/widgets/dialog_widgets/dialog_share.dart';
+import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../models/entry_value.dart';
 import '../../screens/entries/entry_result_values.dart';
@@ -17,6 +22,63 @@ class ResultTile extends StatefulWidget {
 class _ResultTileState extends State<ResultTile> {
   var _tapPosition;
 
+  _getValuesAsText() {
+    var valuesAsText = '';
+    widget.values.forEach((value) {
+      valuesAsText += '${value.getName} ${value.getValue}\n';
+    });
+    return valuesAsText;
+  }
+
+  _generateCSV() {
+    List<List<dynamic>> rows = [];
+    List<dynamic> row = [];
+
+    for (var value in widget.values) {
+      row.add(value.getName);
+      rows.add(row);
+    }
+    for (var value in widget.values) {
+      row.add(value.getValue);
+      rows.add(row);
+    }
+    return ListToCsvConverter().convert(rows);
+  }
+
+  showShareDialog() {
+    return showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (BuildContext context) {
+          return DialogShare();
+        });
+  }
+
+  shareValues() async {
+    // Image currentImg = widget.image.getImage;
+    // MemoryImage memory = currentImg.image as MemoryImage;
+    // final list = memory.bytes.buffer.asUint8List();
+    // final tempDir = await getTemporaryDirectory();
+    // final file =
+    //     await new File('${tempDir.path}/${widget.image.getName}.jpg').create();
+    // file.writeAsBytesSync(list);
+    final selectedValue = await showShareDialog();
+    if (selectedValue == null) return;
+    switch (selectedValue) {
+      case 'csv':
+        final csv = await _generateCSV();
+        final tempDir = await getTemporaryDirectory();
+        final file = await File('${tempDir.path}/values.csv').create();
+        file.writeAsString(csv);
+        Share.shareFiles([file.path]);
+        break;
+      default:
+        final valuesAsText = _getValuesAsText();
+        Share.share(valuesAsText);
+        break;
+    }
+  }
+
   _getTapPosition(details) {
     setState((() => _tapPosition = details.globalPosition));
   }
@@ -25,7 +87,7 @@ class _ResultTileState extends State<ResultTile> {
     Navigator.pushNamed(
       context,
       EntryValuesResultScreen.routeName,
-      arguments: EntryValuesArguments(widget.values),
+      arguments: EntryValuesArguments(widget.values, shareValues),
     );
   }
 
@@ -47,9 +109,9 @@ class _ResultTileState extends State<ResultTile> {
       case 'open':
         _goToResultsScreen();
         break;
-      // case 'share':
-      //   _deleteEntry();
-      //   break;
+      case 'share':
+        shareValues();
+        break;
       default:
         break;
     }

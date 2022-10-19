@@ -8,6 +8,11 @@ const DropMenuOptions = const [
   DropdownMenuItem(child: Text('Data'), value: 'date')
 ];
 
+const DropShareOptions = const [
+  DropdownMenuItem(child: Text('Texto'), value: 'text'),
+  DropdownMenuItem(child: Text('CSV'), value: 'csv'),
+];
+
 const ModelTileMenuOptions = const [
   PopupMenuItem<String>(
     child: const Text('Entradas'),
