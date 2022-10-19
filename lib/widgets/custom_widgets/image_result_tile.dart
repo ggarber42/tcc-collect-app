@@ -1,6 +1,9 @@
-import 'package:collect_app/models/entry_image.dart';
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
 
+import '../../models/entry_image.dart';
 import '../../screens/entries/entry_result_image.dart';
 import '../../utils/arguments.dart';
 import '../../utils/constants.dart';
@@ -17,6 +20,17 @@ class ImageResultTile extends StatefulWidget {
 class _ImageResultTileState extends State<ImageResultTile> {
     var _tapPosition;
 
+    shareValues() async {
+    Image currentImg = widget.image.getImage;
+    MemoryImage memory = currentImg.image as MemoryImage;
+    final list = memory.bytes.buffer.asUint8List();
+    final tempDir = await getTemporaryDirectory();
+    final file =
+        await File('${tempDir.path}/${widget.image.getName}.jpg').create();
+    file.writeAsBytesSync(list);
+    Share.shareFiles([file.path]);
+  }
+
   _getTapPosition(details) {
     setState((() => _tapPosition = details.globalPosition));
   }
@@ -25,7 +39,7 @@ class _ImageResultTileState extends State<ImageResultTile> {
     Navigator.pushNamed(
       context,
       EntryResultImageScreen.routeName,
-      arguments: EntryImageArguments(widget.image),
+      arguments: EntryImageArguments(widget.image, shareValues),
     );
   }
 
@@ -47,9 +61,9 @@ class _ImageResultTileState extends State<ImageResultTile> {
       case 'open':
         _goToResultsScreen();
         break;
-      // case 'share':
-      //   _deleteEntry();
-      //   break;
+      case 'share':
+        shareValues();
+        break;
       default:
         break;
     }
