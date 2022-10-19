@@ -73,6 +73,7 @@ class _MyAppState extends State<MyApp> {
             return MaterialPageRoute(builder: (context) {
               return EntryValuesResultScreen(
                 args.values,
+                args.shareValues
               );
             });
           }
@@ -81,6 +82,7 @@ class _MyAppState extends State<MyApp> {
             return MaterialPageRoute(builder: (context) {
               return EntryResultImageScreen(
                 args.image,
+                args.shareValues
               );
             });
           }

@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+
 import '../models/entry_image.dart';
 import '../models/entry_value.dart';
 
@@ -14,16 +16,16 @@ class EntryResultsArguments {
   EntryResultsArguments(this.entryId);
 }
 
-
 class EntryValuesArguments {
   final List<EntryValue> values;
+  final VoidCallback shareValues;
 
-  EntryValuesArguments(this.values);
+  EntryValuesArguments(this.values, this.shareValues);
 }
 
 class EntryImageArguments {
   final EntryImage image;
+  final VoidCallback shareValues;
 
-  EntryImageArguments(this.image);
+  EntryImageArguments(this.image, this.shareValues);
 }
-
