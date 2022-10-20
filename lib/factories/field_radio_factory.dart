@@ -11,7 +11,10 @@ class FieldRadioFactory implements FieldFactory {
   late final String _name;
   final _options = [];
 
-  Future<Widget> makeWidget(int widgetId, _) async {
+  Future<Widget> makeWidget(
+    int widgetId,
+    TextEditingController controller,
+  ) async {
     _widgetId = widgetId;
     final db = await DataBaseConnector.instance.database;
     final fetchNameQuery = '''
@@ -39,6 +42,6 @@ class FieldRadioFactory implements FieldFactory {
       _options.add(optionResult);
     }
 
-    return FieldRadio(_widgetId, _name, _options);
+    return FieldRadio(_widgetId, _name, _options, controller);
   }
 }
