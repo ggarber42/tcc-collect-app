@@ -46,7 +46,11 @@ class FieldGPS extends StatelessWidget implements Field {
     }
     Helper.showProgressDialog(context);
     final locationData = await location.getLocation();
-    controller.text = locationData.toString();
+    var textValue = '';
+    textValue += 'lat: ${Helper.roundNumber(locationData.latitude)}, ';
+    textValue += 'long: ${Helper.roundNumber(locationData.longitude)}, ';
+    textValue += 'alt: ${Helper.roundNumber(locationData.altitude)}';
+    controller.text = textValue;
   }
 
   @override
@@ -60,7 +64,7 @@ class FieldGPS extends StatelessWidget implements Field {
       ),
       ElevatedButton(
         onPressed: () => _getLocation(context),
-        child: Text('CALCULAR'),
+        child: Text('Buscar localização'),
       )
     ]);
   }

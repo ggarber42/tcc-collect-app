@@ -82,4 +82,8 @@ class Helper {
           );
         });
   }
+
+  static roundNumber(number) {
+    return number.toStringAsFixed(3);
+  }
 }
