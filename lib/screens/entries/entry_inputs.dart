@@ -37,6 +37,8 @@ class _EntryInputsScreenState extends State<EntryInputsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+    final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
     return Scaffold(
       backgroundColor: Colors.grey.shade200,
       resizeToAvoidBottomInset: false,
@@ -49,11 +51,14 @@ class _EntryInputsScreenState extends State<EntryInputsScreen> {
         children: [
           Form(
             key: _formKey,
-            child: Column(
-              children: [
-                SingleChildScrollView( //rever -> nao consigo digitar no campo input devido ao keyboard
-                  child: Container(
-                    constraints: BoxConstraints(maxHeight: 600),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Container(
+                    constraints: BoxConstraints(maxHeight: screenHeight * 0.75),
+                    padding: EdgeInsets.only(
+                      bottom: keyboardHeight - keyboardHeight * .1
+                    ),
                     width: double.infinity,
                     margin: EdgeInsets.symmetric(
                       vertical: 10,
@@ -77,8 +82,8 @@ class _EntryInputsScreenState extends State<EntryInputsScreen> {
                       },
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
           Expanded(
@@ -90,9 +95,7 @@ class _EntryInputsScreenState extends State<EntryInputsScreen> {
                     var newValues = [];
                     if (_formKey.currentState!.validate()) {
                       for (var i = 0; i < _inputFields.length; i++) {
-                        newValues.add(
-                          _inputFields[i].getInputValue()
-                        );
+                        newValues.add(_inputFields[i].getInputValue());
                       }
                       widget.addValue(newValues);
                       Helper.showSnack(context, 'Valores adicionados!');
