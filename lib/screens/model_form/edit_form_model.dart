@@ -225,7 +225,7 @@ class _EditFormModelScreenState extends State<EditFormModelScreen> {
           ),
         ),
         floatingActionButton: Padding(
-            padding: const EdgeInsets.only(bottom: 50),
+            padding: const EdgeInsets.only(bottom: 30),
             child: FloatingActionButton.extended(
               label: Text("Campo de entrada"),
               icon: Icon(Icons.add),
