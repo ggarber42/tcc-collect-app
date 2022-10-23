@@ -4,19 +4,19 @@ import 'package:location/location.dart';
 
 import 'package:collect_app/widgets/custom_widgets/field_card.dart';
 import 'package:collect_app/widgets/base_widgets/field_title.dart';
-import '../../interfaces/field_interface.dart';
 import '../../utils/helper.dart';
 
-class FieldGPS extends StatelessWidget implements Field {
+class FieldGPS extends StatelessWidget{
   final int widgetId;
   final String name;
   final TextEditingController controller;
 
   FieldGPS(this.widgetId, this.name, this.controller);
 
-  @override
-  Map<String, String> getInputValue() {
+
+  Map<String, dynamic> getInputValue() {
     return {
+      'widgetId': widgetId,
       'name': name,
       'type': 'input',
       'value': controller.value.text,
