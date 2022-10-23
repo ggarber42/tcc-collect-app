@@ -25,7 +25,7 @@ class EntryDetailScreen extends StatefulWidget {
 class _EntryDetailScreenState extends State<EntryDetailScreen> {
   var entryDAO = EntryDAO();
   var _values = {};
-  var _requiredKeys = [];
+  var _requiredKeys = {};
 
   addValue(newValues) {
     for (var i = 0; i < newValues.length; i++) {
@@ -58,7 +58,11 @@ class _EntryDetailScreenState extends State<EntryDetailScreen> {
       Queries.getFieldTypes(widget.modelId),
     );
     for (var i = 0; i < queryResult.length; i++) {
-      _requiredKeys.add(queryResult[i]['widgetId']);
+      _requiredKeys.update(
+        queryResult[i]['widgetId'],
+        (value) => queryResult[i]['widgetId'],
+        ifAbsent: () => queryResult[i]['widgetId'],
+      );
 
       if (queryResult[i]['type'] == 'img') {
         imageFields.add(queryResult[i]);
@@ -112,12 +116,11 @@ class _EntryDetailScreenState extends State<EntryDetailScreen> {
                   'Salvar entrada',
                   () {
                     var canSubmit = true;
-                    for (var i = 0; i < _requiredKeys.length; i++) {
-                      if (!_values.containsKey(_requiredKeys[i])) {
-                        canSubmit = false;
+                    for (var key in _requiredKeys.keys) {
+                      if (!_values.containsKey(key)) {
+                       canSubmit = false;
                       }
                     }
-                    canSubmit = true; // rever
                     if (canSubmit) {
                       List<EntryValue> entryValues = [];
                       List<EntryImage> entryImages = [];
