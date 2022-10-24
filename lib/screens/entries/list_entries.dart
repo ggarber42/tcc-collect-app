@@ -1,12 +1,16 @@
+import 'dart:io';
+import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
 
+import '../../widgets/dialog_widgets/dialog_shareAll.dart';
 import 'entry_name.dart';
 import '../../dao/entry_value_dao.dart';
 import '../../dao/entry_dao.dart';
 import '../../models/entry.dart';
 import '../../widgets/custom_widgets/entry_tile.dart';
 import '../../widgets/custom_widgets/main_bar.dart';
-import '../../widgets/base_widgets/main_drawer.dart';
 import '../../utils/helper.dart';
 
 class ListEntriesScreen extends StatefulWidget {
@@ -36,12 +40,57 @@ class _ListEntriesScreenState extends State<ListEntriesScreen> {
     return entries;
   }
 
+  _generateCSV(List<Entry> entries) async {
+    List<List<dynamic>> rows = [];
+    final firstValues = await valueDao.readAll(entries.first.entryId);
+    final header = firstValues.map((value) => value.getName).toList();
+    rows.add(header);
+    for (var entry in entries) {
+      List<dynamic> row = [];
+      final entryValues = await valueDao.readAll(entry.entryId);
+      for (var entryValue in entryValues) {
+        row.add(entryValue.getValue);
+      }
+      rows.add(row);
+    }
+
+    return ListToCsvConverter().convert(rows);
+  }
+
+  showShareDialog() {
+    return showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (BuildContext context) {
+          return DialogShareAll();
+        });
+  }
+
+  shareAllEntryValues() async {
+    final selectedValue = await showShareDialog();
+    if (selectedValue == null) return;
+    switch (selectedValue) {
+      case 'fields':
+        final entries = await entryDao.readAll(widget.modelId);
+        final csv = await _generateCSV(entries);
+        final tempDir = await getTemporaryDirectory();
+        final file = await File('${tempDir.path}/values.csv').create();
+        await file.writeAsString(csv);
+        Share.shareFiles([file.path]);
+        break;
+      default:
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MainBar(
         windowTitle: 'Entradas: ${widget.modelName}',
         hasBackButton: true,
+        hasShareAction: true,
+        shareFunction: shareAllEntryValues,
         clickHandler: () => Navigator.of(context).pop(),
       ),
       body: Container(
@@ -64,7 +113,6 @@ class _ListEntriesScreenState extends State<ListEntriesScreen> {
           },
         ),
       ),
-      drawer: MainDrawer(),
       floatingActionButton: FloatingActionButton.extended(
         label: Text("Entrada"),
         icon: Icon(Icons.add),
