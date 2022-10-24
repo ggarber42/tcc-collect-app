@@ -139,7 +139,7 @@ class _CameraPreviewScreenState extends State<CameraPreviewScreen> {
     size = MediaQuery.of(context).size;
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Camera'),
+          title: const Text('Câmera'),
           backgroundColor: Colors.grey[900],
           centerTitle: true,
           elevation: 0,
