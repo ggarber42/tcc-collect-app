@@ -13,6 +13,12 @@ const DropShareOptions = const [
   DropdownMenuItem(child: Text('CSV'), value: 'csv'),
 ];
 
+const DropShareOptionsAll = const [
+  DropdownMenuItem(child: Text('Campos'), value: 'fields'),
+  DropdownMenuItem(child: Text('Imagens'), value: 'imgs'),
+];
+
+
 const ModelTileMenuOptions = const [
   PopupMenuItem<String>(
     child: const Text('Entradas'),
