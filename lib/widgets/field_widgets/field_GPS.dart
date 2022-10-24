@@ -47,8 +47,8 @@ class FieldGPS extends StatelessWidget{
     Helper.showProgressDialog(context);
     final locationData = await location.getLocation();
     var textValue = '';
-    textValue += 'lat: ${Helper.roundNumber(locationData.latitude)}, ';
-    textValue += 'long: ${Helper.roundNumber(locationData.longitude)}, ';
+    textValue += 'lat: ${Helper.roundNumber(locationData.latitude)} ';
+    textValue += 'long: ${Helper.roundNumber(locationData.longitude)} ';
     textValue += 'alt: ${Helper.roundNumber(locationData.altitude)}';
     controller.text = textValue;
   }
