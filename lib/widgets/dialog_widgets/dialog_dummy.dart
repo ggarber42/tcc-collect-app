@@ -23,11 +23,11 @@ class DialogDummy extends StatelessWidget {
               ),
             ),
             actions: [
-              FlatButton(
+              TextButton(
                 onPressed: () => Navigator.pop(context, false),
                 child: Text('Cancel'),
               ),
-              FlatButton(
+              TextButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     return Navigator.pop(

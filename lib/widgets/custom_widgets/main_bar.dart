@@ -28,21 +28,24 @@ class MainBar extends StatelessWidget with PreferredSizeWidget {
   }
 
   Widget _backButton(context) {
-    if (hasBackButton) {
       return IconButton(
         icon: Icon(Icons.arrow_back),
         onPressed: () => Navigator.of(context).pop(),
       );
-    }
-    return SizedBox.shrink();
   }
 
   @override
   Widget build(BuildContext context) {
-    return AppBar(
+    if(hasBackButton){
+      return AppBar(
       title: Text(windowTitle),
       automaticallyImplyLeading: false,
       leading: _backButton(context),
+      actions: _actions(),
+    );
+    }
+    return AppBar(
+      title: Text(windowTitle),
       actions: _actions(),
     );
   }
