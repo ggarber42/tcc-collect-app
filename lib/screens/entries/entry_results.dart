@@ -62,14 +62,14 @@ class _EntrysResultScreenState extends State<EntryResultScreen> {
               future: _fetchImages(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  var entryImages = snapshot.data as List<EntryImage>;
+                  final entryImages = snapshot.data as List<EntryImage>;
                   return ListView.builder(
                     shrinkWrap: true,
                     itemCount: entryImages.length,
                     itemBuilder: (ctx, i) => ImageResultTile(entryImages[i]),
                   );
                 }
-                return Center(child: Text('Nao existem entradas'));
+                return SizedBox.shrink();
               },
             ),
           ]),
