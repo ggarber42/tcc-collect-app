@@ -19,15 +19,15 @@ class _DeleteModelDialogState extends State<DeleteModelDialog> {
       ),
       actions: [
         TextButton(
-          child: const Text('SIM'),
-          onPressed: () {
-            Navigator.of(context).pop(true);
-          },
-        ),
-        TextButton(
           child: const Text('NÃO'),
           onPressed: () {
             Navigator.of(context).pop(false);
+          },
+        ),
+        TextButton(
+          child: const Text('SIM'),
+          onPressed: () {
+            Navigator.of(context).pop(true);
           },
         ),
       ],

@@ -23,11 +23,11 @@ class RadioItemDialog extends StatelessWidget {
         ),
       ),
       actions: [
-        FlatButton(
+        TextButton(
           onPressed: () => Navigator.pop(context, null),
           child: Text('Cancel'),
         ),
-        FlatButton(
+        TextButton(
           onPressed: () {
             if (_formKey.currentState!.validate()) {
               return Navigator.pop(context, _textEditingController.value.text);

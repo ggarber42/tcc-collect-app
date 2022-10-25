@@ -32,13 +32,14 @@ class _ResultTileState extends State<ResultTile> {
 
   _generateCSV() {
     List<List<dynamic>> rows = [];
-    List<dynamic> row = [];
 
     for (var value in widget.values) {
+      List<dynamic> row = [];
       row.add(value.getName);
       rows.add(row);
     }
     for (var value in widget.values) {
+      List<dynamic> row = [];
       row.add(value.getValue);
       rows.add(row);
     }
@@ -55,21 +56,14 @@ class _ResultTileState extends State<ResultTile> {
   }
 
   shareValues() async {
-    // Image currentImg = widget.image.getImage;
-    // MemoryImage memory = currentImg.image as MemoryImage;
-    // final list = memory.bytes.buffer.asUint8List();
-    // final tempDir = await getTemporaryDirectory();
-    // final file =
-    //     await new File('${tempDir.path}/${widget.image.getName}.jpg').create();
-    // file.writeAsBytesSync(list);
     final selectedValue = await showShareDialog();
     if (selectedValue == null) return;
     switch (selectedValue) {
       case 'csv':
         final csv = await _generateCSV();
         final tempDir = await getTemporaryDirectory();
-        final file = await File('${tempDir.path}/values.csv').create();
-        file.writeAsString(csv);
+        final file = await File('${tempDir.path}/values.txt').create();
+        await file.writeAsString(csv);
         Share.shareFiles([file.path]);
         break;
       default:

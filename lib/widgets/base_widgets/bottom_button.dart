@@ -8,11 +8,7 @@ class BottomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RaisedButton(
-      color: Theme.of(context).colorScheme.primary,
-      textColor: Colors.white,
-      elevation: 0,
-      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+    return ElevatedButton(
       child: Text(name, style: TextStyle(fontSize: 20)),
       onPressed: clickHandler,
     );

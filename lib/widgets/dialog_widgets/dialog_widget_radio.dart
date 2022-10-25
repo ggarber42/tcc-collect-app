@@ -95,15 +95,15 @@ class _DialogWidgetRadioState extends State<DialogWidgetRadio> {
               child: Wrap(
                 alignment: WrapAlignment.center,
                 children: [
-                  FlatButton(
+                  TextButton(
                     onPressed: () => Navigator.pop(context, false),
                     child: Text('Cancel'),
                   ),
-                  FlatButton(
+                  TextButton(
                     onPressed: () => _handleDialog(),
                     child: Text('Adicionar campo'),
                   ),
-                  FlatButton(
+                  TextButton(
                     onPressed: () {
                       if (_options.length == 0) {
                         _showWarningDialog(context);
