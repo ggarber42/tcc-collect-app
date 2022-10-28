@@ -1,15 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:collect_app/models/entry_value.dart';
-import 'package:collect_app/widgets/base_widgets/main_drawer.dart';
-import 'package:collect_app/widgets/custom_widgets/collection_tile.dart';
 import 'package:flutter/material.dart';
 
+import '../../models/entry_value.dart';
 import '../../models/entry_value_collection.dart';
-import '../../utils/constants.dart';
-import '../../utils/helper.dart';
+import '../../widgets/base_widgets/main_drawer.dart';
+import '../../widgets/custom_widgets/collection_tile.dart';
 import '../../widgets/custom_widgets/field_card.dart';
 import '../../widgets/custom_widgets/main_bar.dart';
-import '../../widgets/dialog_widgets/dialog_dummy.dart';
+import '../../utils/constants.dart';
 
 class ListBackupValuesScreen extends StatefulWidget {
   static const routeName = '/list-backup';
@@ -26,28 +24,6 @@ class _ListBackupValuesScreenState extends State<ListBackupValuesScreen> {
       .map((snapshot) => snapshot.docs
           .map((doc) => {'docId': doc.id, 'data': doc.data()})
           .toList());
-
-  _createCat(String catName) async {
-    final docId = Helper.getUuid();
-    final docUser = FirebaseFirestore.instance.collection('user').doc(docId);
-    final json = {'name': catName};
-    await docUser.set(json);
-    Helper.showSnack(context, 'Nome adicionado!');
-  }
-
-  _showModal() async {
-    return showDialog(
-        context: context,
-        barrierDismissible: true,
-        builder: (BuildContext context) {
-          return DialogDummy();
-        });
-  }
-
-  _handleClick() async {
-    final catName = await _showModal();
-    _createCat(catName);
-  }
 
   Widget titleTile(obj) {
     return FieldCard(children: [
@@ -96,10 +72,6 @@ class _ListBackupValuesScreenState extends State<ListBackupValuesScreen> {
             );
           }
         },
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _handleClick,
-        label: Icon(Icons.add),
       ),
     );
   }
