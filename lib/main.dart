@@ -16,6 +16,8 @@ import 'utils/db_helper.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
+  // DataBaseHelper.dropTables();
+    DataBaseHelper.initTables();
   await Firebase.initializeApp(
   options: DefaultFirebaseOptions.currentPlatform,
 );
@@ -31,12 +33,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  @override
-  void initState() {
-    super.initState();
-    // DataBaseHelper.dropTables();
-    DataBaseHelper.initTables();
-  }
 
   @override
   Widget build(BuildContext context) {
