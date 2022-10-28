@@ -1,3 +1,4 @@
+import 'package:collect_app/screens/backup/list_backup_entries_values.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -55,6 +56,7 @@ class _MyAppState extends State<MyApp> {
         routes: {
           ListFormModelsScreen.routeName: (ctx) => ListFormModelsScreen(),
           ConfigScreen.routeName: (_) => ConfigScreen(),
+          ListBackupValuesScreen.routeName: (_) => ListBackupValuesScreen(),
         },
         onGenerateRoute: (settings) {
           if (settings.name == ListEntriesScreen.routeName) {
@@ -71,6 +73,7 @@ class _MyAppState extends State<MyApp> {
             return MaterialPageRoute(builder: (context) {
               return EntryResultScreen(
                 args.entryId,
+                args.entryName
               );
             });
           }
@@ -79,7 +82,8 @@ class _MyAppState extends State<MyApp> {
             return MaterialPageRoute(builder: (context) {
               return EntryValuesResultScreen(
                 args.values,
-                args.shareValues
+                args.shareValues,
+                args.backupEntryValues
               );
             });
           }

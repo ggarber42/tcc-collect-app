@@ -12,15 +12,17 @@ class ModelArguments {
 
 class EntryResultsArguments {
   final int entryId;
+  final String entryName;
 
-  EntryResultsArguments(this.entryId);
+  EntryResultsArguments(this.entryId, this.entryName);
 }
 
 class EntryValuesArguments {
   final List<EntryValue> values;
   final VoidCallback shareValues;
+  final VoidCallback backupEntryValues;
 
-  EntryValuesArguments(this.values, this.shareValues);
+  EntryValuesArguments(this.values, this.shareValues, this.backupEntryValues);
 }
 
 class EntryImageArguments {

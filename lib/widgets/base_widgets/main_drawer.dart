@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../screens/backup/list_backup_entries_values.dart';
 import '../../screens/config/config_screen.dart';
 import '../../screens/model_form/list_form_model.dart';
 
@@ -29,6 +30,15 @@ class MainDrawer extends StatelessWidget {
             onTap: () {
               Navigator.of(context)
                   .pushReplacementNamed(ConfigScreen.routeName);
+            },
+          ),
+          Divider(),
+          ListTile(
+            leading: Icon(Icons.backup),
+            title: Text('Backups'),
+            onTap: () {
+              Navigator.of(context)
+                  .pushReplacementNamed(ListBackupValuesScreen.routeName);
             },
           )
         ],

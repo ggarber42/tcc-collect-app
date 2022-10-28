@@ -29,7 +29,7 @@ class _EntryTileState extends State<EntryTile> {
     Navigator.pushNamed(
       context,
       EntryResultScreen.routeName,
-      arguments: EntryResultsArguments(widget.entry.getId),
+      arguments: EntryResultsArguments(widget.entry.getId, widget.entry.getName),
     );
   }
 

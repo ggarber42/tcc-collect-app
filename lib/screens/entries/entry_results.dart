@@ -9,10 +9,11 @@ import '../../widgets/custom_widgets/result_tile.dart';
 import '../../widgets/custom_widgets/main_bar.dart';
 
 class EntryResultScreen extends StatefulWidget {
-  final int entryId;
   static const routeName = '/entry_results';
+  final int entryId;
+  final String entryName;
 
-  EntryResultScreen(this.entryId);
+  EntryResultScreen(this.entryId, this.entryName);
 
   @override
   State<EntryResultScreen> createState() => _EntrysResultScreenState();
@@ -53,7 +54,7 @@ class _EntrysResultScreenState extends State<EntryResultScreen> {
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   var values = snapshot.data as List<EntryValue>;
-                  return ResultTile(values);
+                  return ResultTile(widget.entryName, values);
                 }
                 return SizedBox.shrink();
               },
