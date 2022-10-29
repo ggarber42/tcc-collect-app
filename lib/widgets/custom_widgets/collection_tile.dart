@@ -1,3 +1,4 @@
+import 'package:collect_app/dao/entry_dao.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -17,14 +18,16 @@ class CollectionTile extends StatefulWidget {
 }
 
 class _CollectionTileState extends State<CollectionTile> {
+  final EntryDAO entryDao = EntryDAO();
   var _tapPosition;
 
   deleteCollection() async {
-    final doc = FirebaseFirestore.instance
-        .collection(VALUE_COLLECTION)
-        .doc(widget.collection.getId);
+    final docId = widget.collection.getId;
+    final doc =
+        FirebaseFirestore.instance.collection(VALUE_COLLECTION).doc(docId);
     Helper.showSnack(context, 'Documento deletado');
     await doc.delete();
+    await entryDao.deleteDocValuesId(docId);
   }
 
   _getTapPosition(details) {

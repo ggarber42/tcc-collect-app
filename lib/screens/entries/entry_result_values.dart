@@ -8,8 +8,14 @@ class EntryValuesResultScreen extends StatelessWidget {
   final List<EntryValue> values;
   final VoidCallback shareValues;
   final VoidCallback backupEntryValues;
+  final bool hasBackupValue;
 
-  EntryValuesResultScreen(this.values, this.shareValues, this.backupEntryValues);
+  EntryValuesResultScreen(
+    this.values,
+    this.shareValues,
+    this.backupEntryValues,
+    this.hasBackupValue,
+  );
 
   Widget _viewResultTile(value) {
     return Container(

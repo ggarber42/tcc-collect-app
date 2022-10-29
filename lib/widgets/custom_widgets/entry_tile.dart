@@ -29,7 +29,7 @@ class _EntryTileState extends State<EntryTile> {
     Navigator.pushNamed(
       context,
       EntryResultScreen.routeName,
-      arguments: EntryResultsArguments(widget.entry.getId, widget.entry.getName),
+      arguments: EntryResultsArguments(widget.entry),
     );
   }
 
@@ -85,7 +85,6 @@ class _EntryTileState extends State<EntryTile> {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             ListTile(
-              leading: Icon(Icons.check_box_outlined),
               title: Text(widget.entry.getName),
               trailing: Icon(Icons.more_vert),
               onLongPress: () => _openMenu(),

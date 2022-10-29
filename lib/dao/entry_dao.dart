@@ -53,17 +53,43 @@ class EntryDAO implements DAO<Entry> {
     final db = await DataBaseConnector.instance.database;
     List<Entry> entries = [];
     final query = '''
-      SELECT ${Entry.tableColumns['id']}, ${Entry.tableColumns['name']}
+        SELECT
+        ${Entry.tableColumns['id']}, 
+        ${Entry.tableColumns['name']},
+        ${Entry.tableColumns['docValuesId']}
         FROM ${Entry.tableName}
         WHERE modelId = $modelId;
       ''';
-    List<Map<String, Object?>> queryResult = await db.rawQuery(query);
-    for (int i = 0; i < queryResult.length; i++) {
-      var entryModelName = queryResult[i][Entry.tableColumns['name']] as String;
-      var entryId = queryResult[i][Entry.tableColumns['id']] as int;
-      entries.add(Entry.withId(entryId, entryModelName));
+    final queryResult = await db.rawQuery(query);
+    for (var result in queryResult) {
+      final docValuesId = result[Entry.tableColumns['docValuesId']] as String?;
+      final entryModelName = result[Entry.tableColumns['name']] as String;
+      final entryId = result[Entry.tableColumns['id']] as int;
+      entries.add(Entry.withId(entryId, entryModelName, docValuesId));
     }
     return entries;
+  }
+
+  addDocValuesId(int entryId, String docValuesId) async {
+    final db = await DataBaseConnector.instance.database;
+    await db.rawUpdate(
+      '''
+      UPDATE ${Entry.tableName}
+      SET ${Entry.tableColumns['docValuesId']} = ? 
+      WHERE ${Entry.tableColumns['id']} = ?''',
+      [docValuesId, entryId],
+    );
+  }
+
+  deleteDocValuesId(String docValuesId) async {
+    final db = await DataBaseConnector.instance.database;
+    final count = await db.rawUpdate(
+      '''
+      UPDATE ${Entry.tableName}
+      SET ${Entry.tableColumns['docValuesId']} = ? 
+      WHERE ${Entry.tableColumns['docValuesId']} = ?''',
+      [null, docValuesId],
+    );
   }
 
   @override

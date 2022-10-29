@@ -1,11 +1,13 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:collect_app/dao/entry_dao.dart';
 import 'package:collect_app/widgets/dialog_widgets/dialog_share.dart';
 import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../../models/entry.dart';
 import '../../models/entry_value.dart';
 import '../../models/entry_value_collection.dart';
 import '../../screens/entries/entry_result_values.dart';
@@ -14,17 +16,19 @@ import '../../utils/constants.dart';
 import '../../utils/helper.dart';
 
 class ResultTile extends StatefulWidget {
-  final String entryName;
+  final Entry entry;
   final List<EntryValue> values;
 
-  ResultTile(this.entryName, this.values);
+  ResultTile(this.entry, this.values);
 
   @override
   State<ResultTile> createState() => _ResultTileState();
 }
 
 class _ResultTileState extends State<ResultTile> {
+  final EntryDAO entryDao = EntryDAO();
   var _tapPosition;
+  var hasBackupValue = false;
 
   _getValuesAsText() {
     var valuesAsText = '';
@@ -51,17 +55,26 @@ class _ResultTileState extends State<ResultTile> {
   }
 
   backupEntryValues() async {
-    final docId = Helper.getUuid();
-    final collectDoc =
-        FirebaseFirestore.instance
-        .collection(VALUE_COLLECTION)
-        .doc(docId);
-    final valuesCollection = EntryValueCollection(
-      entryName: widget.entryName,
-      values: widget.values,
-    );
-    collectDoc.set(valuesCollection.toJson());
-    Helper.showSnack(context, 'Backup realizado');
+    if (hasBackupValue) {
+      Helper.showWarningDialog(context, 'Este resultado já possui backup!');
+    } else {
+      final docId = Helper.getUuid();
+      final collectDoc =
+          FirebaseFirestore.instance.collection(VALUE_COLLECTION).doc(docId);
+      final valuesCollection = EntryValueCollection(
+        entryName: widget.entry.getName,
+        values: widget.values,
+      );
+      await collectDoc.set(valuesCollection.toJson());
+      await entryDao.addDocValuesId(
+        widget.entry.entryId as int,
+        docId,
+      );
+      Helper.showSnack(context, 'Backup realizado');
+      setState(() {
+        hasBackupValue = true;
+      });
+    }
   }
 
   showShareDialog() {
@@ -75,7 +88,6 @@ class _ResultTileState extends State<ResultTile> {
 
   shareValues() async {
     final selectedValue = await showShareDialog();
-    print(selectedValue);
     if (selectedValue == null) return;
     switch (selectedValue) {
       case 'csv':
@@ -100,7 +112,12 @@ class _ResultTileState extends State<ResultTile> {
     Navigator.pushNamed(
       context,
       EntryValuesResultScreen.routeName,
-      arguments: EntryValuesArguments(widget.values, shareValues, backupEntryValues),
+      arguments: EntryValuesArguments(
+        widget.values,
+        shareValues,
+        backupEntryValues,
+        hasBackupValue,
+      ),
     );
   }
 
@@ -131,6 +148,12 @@ class _ResultTileState extends State<ResultTile> {
       default:
         break;
     }
+  }
+
+  @override
+  void initState() {
+    hasBackupValue = widget.entry.docValuesId != null;
+    super.initState();
   }
 
   @override

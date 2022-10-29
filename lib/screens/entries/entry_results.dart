@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../dao/entry_image_dao.dart';
 import '../../dao/entry_value_dao.dart';
+import '../../models/entry.dart';
 import '../../models/entry_image.dart';
 import '../../models/entry_value.dart';
 import '../../widgets/custom_widgets/image_result_tile.dart';
@@ -10,10 +11,9 @@ import '../../widgets/custom_widgets/main_bar.dart';
 
 class EntryResultScreen extends StatefulWidget {
   static const routeName = '/entry_results';
-  final int entryId;
-  final String entryName;
+  final Entry entry;
 
-  EntryResultScreen(this.entryId, this.entryName);
+  EntryResultScreen(this.entry);
 
   @override
   State<EntryResultScreen> createState() => _EntrysResultScreenState();
@@ -24,11 +24,11 @@ class _EntrysResultScreenState extends State<EntryResultScreen> {
   final imageDao = EntryImageDAO();
 
   _fetchValues() async {
-    return [...await entryValueDao.readAll(widget.entryId)];
+    return [...await entryValueDao.readAll(widget.entry.entryId)];
   }
 
   _fetchImages() async {
-    return [...await imageDao.readAll(widget.entryId)];
+    return [...await imageDao.readAll(widget.entry.entryId)];
   }
 
   @override
@@ -53,8 +53,8 @@ class _EntrysResultScreenState extends State<EntryResultScreen> {
               future: _fetchValues(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  var values = snapshot.data as List<EntryValue>;
-                  return ResultTile(widget.entryName, values);
+                  var values = snapshot.data as List<EntryValue>; //docid aqui
+                  return ResultTile(widget.entry, values);
                 }
                 return SizedBox.shrink();
               },

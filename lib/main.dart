@@ -14,13 +14,13 @@ import 'screens/model_form/list_form_model.dart';
 import 'utils/arguments.dart';
 import 'utils/db_helper.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // DataBaseHelper.dropTables();
-    DataBaseHelper.initTables();
+  DataBaseHelper.initTables();
   await Firebase.initializeApp(
-  options: DefaultFirebaseOptions.currentPlatform,
-);
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(MyApp());
 }
 //tornas as querys de colunas dinamicas
@@ -33,7 +33,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -67,10 +66,7 @@ class _MyAppState extends State<MyApp> {
           if (settings.name == EntryResultScreen.routeName) {
             final args = settings.arguments as EntryResultsArguments;
             return MaterialPageRoute(builder: (context) {
-              return EntryResultScreen(
-                args.entryId,
-                args.entryName
-              );
+              return EntryResultScreen(args.entry);
             });
           }
           if (settings.name == EntryValuesResultScreen.routeName) {
@@ -79,17 +75,15 @@ class _MyAppState extends State<MyApp> {
               return EntryValuesResultScreen(
                 args.values,
                 args.shareValues,
-                args.backupEntryValues
+                args.backupEntryValues,
+                args.hasBackupValue
               );
             });
           }
           if (settings.name == EntryResultImageScreen.routeName) {
             final args = settings.arguments as EntryImageArguments;
             return MaterialPageRoute(builder: (context) {
-              return EntryResultImageScreen(
-                args.image,
-                args.shareValues
-              );
+              return EntryResultImageScreen(args.image, args.shareValues);
             });
           }
           assert(false, 'Need to implement ${settings.name}');
