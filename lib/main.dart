@@ -8,7 +8,6 @@ import 'firebase_options.dart';
 
 import 'providers/auth_firebase.dart';
 import 'providers/form_models.dart';
-import 'screens/config/config_screen.dart';
 import 'screens/entries/entry_results.dart';
 import 'screens/entries/entry_result_image.dart';
 import 'screens/entries/entry_result_values.dart';
@@ -52,7 +51,6 @@ class _MyAppState extends State<MyApp> {
         home: ListFormModelsScreen(),
         routes: {
           ListFormModelsScreen.routeName: (ctx) => ListFormModelsScreen(),
-          ConfigScreen.routeName: (_) => ConfigScreen(),
           ListBackupValuesScreen.routeName: (_) => ListBackupValuesScreen(),
           AuthCheckScreen.routeName: (_) => AuthCheckScreen(),
           LoginScreen.routeName: (_) => LoginScreen()
