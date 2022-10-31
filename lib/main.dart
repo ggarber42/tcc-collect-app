@@ -1,13 +1,16 @@
+import 'package:collect_app/screens/auth/auth_check.dart';
+import 'package:collect_app/screens/auth/login.dart';
 import 'package:collect_app/screens/backup/list_backup_entries_values.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
+import 'providers/auth_firebase.dart';
 import 'providers/form_models.dart';
 import 'screens/config/config_screen.dart';
 import 'screens/entries/entry_results.dart';
-import '/screens/entries/entry_result_image.dart';
+import 'screens/entries/entry_result_image.dart';
 import 'screens/entries/entry_result_values.dart';
 import 'screens/entries/list_entries.dart';
 import 'screens/model_form/list_form_model.dart';
@@ -37,9 +40,8 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(
-          create: (ctx) => FormModels(),
-        ),
+        ChangeNotifierProvider(create: (ctx) => FormModels()),
+        ChangeNotifierProvider(create: (context) => AuthProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -52,6 +54,8 @@ class _MyAppState extends State<MyApp> {
           ListFormModelsScreen.routeName: (ctx) => ListFormModelsScreen(),
           ConfigScreen.routeName: (_) => ConfigScreen(),
           ListBackupValuesScreen.routeName: (_) => ListBackupValuesScreen(),
+          AuthCheckScreen.routeName: (_) => AuthCheckScreen(),
+          LoginScreen.routeName: (_) => LoginScreen()
         },
         onGenerateRoute: (settings) {
           if (settings.name == ListEntriesScreen.routeName) {
@@ -72,12 +76,8 @@ class _MyAppState extends State<MyApp> {
           if (settings.name == EntryValuesResultScreen.routeName) {
             final args = settings.arguments as EntryValuesArguments;
             return MaterialPageRoute(builder: (context) {
-              return EntryValuesResultScreen(
-                args.values,
-                args.shareValues,
-                args.backupEntryValues,
-                args.hasBackupValue
-              );
+              return EntryValuesResultScreen(args.values, args.shareValues,
+                  args.backupEntryValues, args.hasBackupValue);
             });
           }
           if (settings.name == EntryResultImageScreen.routeName) {
