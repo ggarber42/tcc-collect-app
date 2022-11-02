@@ -15,6 +15,10 @@ class AuthProvider extends ChangeNotifier {
     _authCheck();
   }
 
+  getUserId() {
+    return user!.uid;
+  }
+
   _authCheck() {
     _auth.authStateChanges().listen((User? user) {
       user = (user == null) ? null : user;

@@ -1,6 +1,6 @@
-import 'package:collect_app/widgets/custom_widgets/main_bar.dart';
 import 'package:flutter/material.dart';
 
+import '../../widgets/custom_widgets/main_bar.dart';
 import '../../widgets/base_widgets/main_drawer.dart';
 
 class ConfirmationAuthScreen extends StatelessWidget {
@@ -13,7 +13,7 @@ class ConfirmationAuthScreen extends StatelessWidget {
         drawer: MainDrawer(),
         body: Center(
           child: Text(
-            'Login feito ;)',
+            'Login feito  ;)',
             style: TextStyle(fontSize: 25),
           ),
         ));

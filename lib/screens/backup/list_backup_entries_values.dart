@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:collect_app/facades/firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../models/entry_value.dart';
 import '../../models/entry_value_collection.dart';
+import '../../providers/auth_firebase.dart';
 import '../../widgets/base_widgets/main_drawer.dart';
 import '../../widgets/custom_widgets/collection_tile.dart';
 import '../../widgets/custom_widgets/field_card.dart';
@@ -18,6 +21,7 @@ class ListBackupValuesScreen extends StatefulWidget {
 }
 
 class _ListBackupValuesScreenState extends State<ListBackupValuesScreen> {
+  final fireFacade = FirestoreFacade();
   Stream<List<dynamic>> readValueCollections() => FirebaseFirestore.instance
       .collection(VALUE_COLLECTION)
       .snapshots()
@@ -36,11 +40,13 @@ class _ListBackupValuesScreenState extends State<ListBackupValuesScreen> {
 
   @override
   Widget build(BuildContext context) {
+    AuthProvider auth = Provider.of<AuthProvider>(context, listen: false);
+    final userId = auth.getUserId();
     return Scaffold(
       appBar: MainBar(),
       drawer: MainDrawer(),
       body: StreamBuilder(
-        stream: readValueCollections(),
+        stream: fireFacade.readBackupValues(userId),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final data = snapshot.data as List;

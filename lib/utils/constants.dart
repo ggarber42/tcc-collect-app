@@ -19,6 +19,7 @@ const DropShareOptionsAll = const [
 ];
 
 const VALUE_COLLECTION = 'valueCollection';
+const USER_COLLECTION = 'user';
 
 const ModelTileMenuOptions = const [
   PopupMenuItem<String>(
@@ -70,8 +71,8 @@ const ResultTileValueOptions = const [
     child: const Text(
       'Backup',
       style: TextStyle(
-          color: Colors.blue,
-        ),
+        color: Colors.blue,
+      ),
     ),
     value: 'backup',
   ),

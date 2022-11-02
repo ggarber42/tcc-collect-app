@@ -1,15 +1,17 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collect_app/dao/entry_dao.dart';
+import 'package:collect_app/facades/firestore.dart';
 import 'package:collect_app/widgets/dialog_widgets/dialog_share.dart';
 import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../models/entry.dart';
 import '../../models/entry_value.dart';
-import '../../models/entry_value_collection.dart';
+import '../../providers/auth_firebase.dart';
 import '../../screens/entries/entry_result_values.dart';
 import '../../utils/arguments.dart';
 import '../../utils/constants.dart';
@@ -27,6 +29,7 @@ class ResultTile extends StatefulWidget {
 
 class _ResultTileState extends State<ResultTile> {
   final EntryDAO entryDao = EntryDAO();
+  final FirestoreFacade fireFacade = FirestoreFacade();
   var _tapPosition;
   var hasBackupValue = false;
 
@@ -55,26 +58,26 @@ class _ResultTileState extends State<ResultTile> {
   }
 
   backupEntryValues() async {
-    if (hasBackupValue) {
-      Helper.showWarningDialog(context, 'Este resultado já possui backup!');
-    } else {
-      final docId = Helper.getUuid();
-      final collectDoc =
-          FirebaseFirestore.instance.collection(VALUE_COLLECTION).doc(docId);
-      final valuesCollection = EntryValueCollection(
-        entryName: widget.entry.getName,
-        values: widget.values,
-      );
-      await collectDoc.set(valuesCollection.toJson());
-      await entryDao.addDocValuesId(
-        widget.entry.entryId as int,
-        docId,
-      );
-      Helper.showSnack(context, 'Backup realizado');
-      setState(() {
-        hasBackupValue = true;
-      });
+    AuthProvider auth = Provider.of<AuthProvider>(context, listen: false);
+    final userId = auth.getUserId();
+    if (userId == null) {
+      return Helper.showWarningDialog(context, 'Você precisa se autenticar!');
     }
+
+    if (hasBackupValue) {
+      return Helper.showWarningDialog(
+          context, 'Este resultado já possui backup!');
+    }
+    await fireFacade.addBackupFile(
+      userId,
+      widget.entry.entryId as int,
+      widget.entry.getName,
+      widget.values,
+    );
+    Helper.showSnack(context, 'Backup realizado');
+    setState(() {
+      hasBackupValue = true;
+    });
   }
 
   showShareDialog() {
