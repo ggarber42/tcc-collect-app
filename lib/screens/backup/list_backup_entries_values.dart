@@ -11,6 +11,7 @@ import '../../widgets/custom_widgets/collection_tile.dart';
 import '../../widgets/custom_widgets/field_card.dart';
 import '../../widgets/custom_widgets/main_bar.dart';
 import '../../utils/constants.dart';
+import '../auth/login.dart';
 
 class ListBackupValuesScreen extends StatefulWidget {
   static const routeName = '/list-backup';
@@ -38,6 +39,65 @@ class _ListBackupValuesScreenState extends State<ListBackupValuesScreen> {
     ]);
   }
 
+  Widget _notAuthWarning() {
+    return Container(
+      width: double.infinity,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            'Você não está logado',
+            style: TextStyle(fontSize: 25),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pushReplacementNamed(LoginScreen.routeName);
+            },
+            child: Text('Faça o login aqui'),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _listBackups(String userId) {
+    return StreamBuilder(
+      stream: fireFacade.readBackupValues(userId),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          final data = snapshot.data as List;
+          return ListView.builder(
+              itemCount: data.length,
+              itemBuilder: (ctx, i) {
+                List<EntryValue> entryValues = [];
+                for (var entry in data[i]['data']['values']) {
+                  entryValues.add(
+                    EntryValue.fromField(entry['name'], entry['value']),
+                  );
+                }
+                final collection = EntryValueCollection.fromFireBase(
+                  docId: data[i]['docId'],
+                  entryName: data[i]['data']['name'],
+                  values: entryValues,
+                );
+                return CollectionTile(i, collection);
+              });
+        } else if (snapshot.hasError) {
+          return Center(
+              child: Text(
+            'Algo deu errado :(',
+            style: TextStyle(fontSize: 25),
+          ));
+        } else {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     AuthProvider auth = Provider.of<AuthProvider>(context, listen: false);
@@ -45,40 +105,7 @@ class _ListBackupValuesScreenState extends State<ListBackupValuesScreen> {
     return Scaffold(
       appBar: MainBar(),
       drawer: MainDrawer(),
-      body: StreamBuilder(
-        stream: fireFacade.readBackupValues(userId),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            final data = snapshot.data as List;
-            return ListView.builder(
-                itemCount: data.length,
-                itemBuilder: (ctx, i) {
-                  List<EntryValue> entryValues = [];
-                  for (var entry in data[i]['data']['values']) {
-                    entryValues.add(
-                      EntryValue.fromField(entry['name'], entry['value']),
-                    );
-                  }
-                  final collection = EntryValueCollection.fromFireBase(
-                    docId: data[i]['docId'],
-                    entryName: data[i]['data']['name'],
-                    values: entryValues,
-                  );
-                  return CollectionTile(i, collection);
-                });
-          } else if (snapshot.hasError) {
-            return Center(
-                child: Text(
-              'Algo deu errado :(',
-              style: TextStyle(fontSize: 25),
-            ));
-          } else {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-        },
-      ),
+      body: (userId == null) ? _notAuthWarning() : _listBackups(userId),
     );
   }
 }

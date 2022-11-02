@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../providers/auth_firebase.dart';
+import '../../widgets/base_widgets/button_loading.dart';
 import '../../widgets/base_widgets/main_drawer.dart';
 import '../../widgets/custom_widgets/main_bar.dart';
 import '../../screens/auth/auth_check.dart';
@@ -66,11 +67,11 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() => loading = true);
     try {
       await context.read<AuthProvider>().register(email.text, password.text);
-      goToAuthCheckScreen();
     } on AuthException catch (e) {
       setState(() => loading = false);
       Helper.showSnack(context, e.message);
     }
+    goToAuthCheckScreen();
   }
 
   @override
@@ -143,18 +144,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: (loading)
-                          ? [
-                              Padding(
-                                padding: EdgeInsets.all(16),
-                                child: SizedBox(
-                                  width: 24,
-                                  height: 24,
-                                  child: CircularProgressIndicator(
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              )
-                            ]
+                          ? [ButtonLoading()]
                           : [
                               Icon(Icons.check),
                               Padding(
