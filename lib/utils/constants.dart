@@ -20,6 +20,7 @@ const DropShareOptionsAll = const [
 
 const VALUE_COLLECTION = 'valueCollection';
 const USER_COLLECTION = 'user';
+const MODEL_COLLECTION = 'model';
 
 const ModelTileMenuOptions = const [
   PopupMenuItem<String>(

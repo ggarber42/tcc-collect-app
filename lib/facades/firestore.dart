@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collect_app/dao/entry_dao.dart';
 
 import '../models/entry_value.dart';
@@ -38,4 +39,15 @@ class FirestoreFacade {
       .map((snapshot) => snapshot.docs
           .map((doc) => {'docId': doc.id, 'data': doc.data()})
           .toList());
+
+  Future<void> addModelForm(modelData) async {
+    final modelCollect = fireDb.collection(MODEL_COLLECTION);
+    await modelCollect.add(modelData);
+  }
+
+  Future<List<dynamic>> getModels() async {
+    final modelCollect = fireDb.collection(MODEL_COLLECTION);
+    QuerySnapshot querySnapshot = await modelCollect.get();
+    return querySnapshot.docs.map((doc) => doc.data()).toList();
+  }
 }

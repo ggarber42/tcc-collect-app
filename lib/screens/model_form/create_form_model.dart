@@ -1,3 +1,4 @@
+import 'package:collect_app/facades/firestore.dart';
 import 'package:collect_app/models/form_widget.dart';
 import 'package:collect_app/models/radio_option.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,7 @@ import '../../providers/form_models.dart';
 import '../../widgets/custom_widgets/main_bar.dart';
 import '../../widgets/base_widgets/bottom_button.dart';
 import '../../widgets/base_widgets/main_drawer.dart';
+import '../../widgets/dialog_widgets/confirmation_dialog.dart';
 import '../../widgets/dialog_widgets/dialog_new_field.dart';
 import '../../utils/helper.dart';
 
@@ -30,7 +32,39 @@ class _CreateFormModelsScreenState extends State<CreateFormModelsScreen> {
   final modelFormDao = FormModelDAO();
   final widgetDao = FormWidgetDAO();
   final radioDao = RadioOptionDAO();
+  final fireFacade = FirestoreFacade();
   var fieldList = [];
+
+  _shareModel() async {
+    final res = await showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (BuildContext context) {
+          return ConfirmationDialog('Deseja compartilhar o modelo criado?');
+        });
+    if (!res) {
+      return;
+    }
+    final fireData = _makeFireStoreData();
+    await fireFacade.addModelForm(fireData);
+  }
+
+  _makeFireStoreData() {
+    return {
+      'name': _textEditingController.value.text,
+      'fields': fieldList.map((field) {
+        if (field.getType == 'radio') {
+          final options = field.options.map((option) => option).toList();
+          return {
+            'name': field.name,
+            'type': field.getType,
+            'options': options
+          };
+        }
+        return {'name': field.name, 'type': field.getType};
+      }).toList(),
+    };
+  }
 
   bool _hasFieldsAdded() {
     return fieldList.length > 0;
@@ -59,9 +93,9 @@ class _CreateFormModelsScreenState extends State<CreateFormModelsScreen> {
 
   _handleSubmit(models) async {
     if (!_hasFieldsAdded()) {
-      Helper.showWarningDialog(context, 'Adicione pelo menos um campo!');
-      return;
+      return Helper.showWarningDialog(context, 'Adicione pelo menos um campo!');
     }
+
     if (_formKey.currentState!.validate() && _hasFieldsAdded()) {
       final modelForm = FormModel(
         name: _textEditingController.value.text,
@@ -82,7 +116,8 @@ class _CreateFormModelsScreenState extends State<CreateFormModelsScreen> {
         }
       }
       await models.updateModels();
-      Helper.showSnack(context, 'Modelo criado');
+      await _shareModel();
+      await Helper.showSnack(context, 'Modelo criado');
       Navigator.popUntil(context, (Route<dynamic> route) => route.isFirst);
     }
   }

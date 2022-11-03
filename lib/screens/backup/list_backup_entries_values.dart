@@ -8,9 +8,7 @@ import '../../models/entry_value_collection.dart';
 import '../../providers/auth_firebase.dart';
 import '../../widgets/base_widgets/main_drawer.dart';
 import '../../widgets/custom_widgets/collection_tile.dart';
-import '../../widgets/custom_widgets/field_card.dart';
 import '../../widgets/custom_widgets/main_bar.dart';
-import '../../utils/constants.dart';
 import '../auth/login.dart';
 
 class ListBackupValuesScreen extends StatefulWidget {
@@ -23,21 +21,6 @@ class ListBackupValuesScreen extends StatefulWidget {
 
 class _ListBackupValuesScreenState extends State<ListBackupValuesScreen> {
   final fireFacade = FirestoreFacade();
-  Stream<List<dynamic>> readValueCollections() => FirebaseFirestore.instance
-      .collection(VALUE_COLLECTION)
-      .snapshots()
-      .map((snapshot) => snapshot.docs
-          .map((doc) => {'docId': doc.id, 'data': doc.data()})
-          .toList());
-
-  Widget titleTile(obj) {
-    return FieldCard(children: [
-      ListTile(
-        leading: Icon(Icons.android),
-        title: Text(obj['name']),
-      ),
-    ]);
-  }
 
   Widget _notAuthWarning() {
     return Container(
