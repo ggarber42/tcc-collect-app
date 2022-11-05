@@ -42,7 +42,6 @@ class Entry {
   set newDocIdValues(String newId) => docValuesId = newId;
 
   get getDocIdValues => docValuesId;
-  
 
   get getValues => values as List<EntryValue>;
 
