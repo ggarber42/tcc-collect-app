@@ -50,4 +50,10 @@ class FirestoreFacade {
     QuerySnapshot querySnapshot = await modelCollect.get();
     return querySnapshot.docs.map((doc) => doc.data()).toList();
   }
+
+  Future<void> deleteBackup(String userId, String docId) async {
+    final userCollect = fireDb.collection(USER_COLLECTION).doc(userId);
+    final valueBackupDoc = userCollect.collection(VALUE_COLLECTION).doc(docId);
+    await valueBackupDoc.delete();
+  }
 }
