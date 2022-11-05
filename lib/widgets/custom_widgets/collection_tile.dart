@@ -1,6 +1,6 @@
 import 'package:collect_app/dao/entry_dao.dart';
+import 'package:collect_app/facades/firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../../models/entry_value_collection.dart';
 import '../../screens/backup/backup_value_detail.dart';
@@ -9,25 +9,25 @@ import '../../utils/helper.dart';
 
 class CollectionTile extends StatefulWidget {
   final int index;
+  final String docId;
+  final String userId;
   final EntryValueCollection collection;
 
-  CollectionTile(this.index, this.collection);
+  CollectionTile(this.index, this.docId, this.userId, this.collection);
 
   @override
   State<CollectionTile> createState() => _CollectionTileState();
 }
 
 class _CollectionTileState extends State<CollectionTile> {
+  final fireFacade = FirestoreFacade();
   final EntryDAO entryDao = EntryDAO();
   var _tapPosition;
 
   deleteCollection() async {
-    final docId = widget.collection.getId;
-    final doc =
-        FirebaseFirestore.instance.collection(VALUE_COLLECTION).doc(docId);
     Helper.showSnack(context, 'Documento deletado');
-    await doc.delete();
-    await entryDao.deleteDocValuesId(docId);
+    await fireFacade.deleteBackup(widget.userId, widget.docId);
+    await entryDao.deleteDocValuesId(widget.docId);
   }
 
   _getTapPosition(details) {
@@ -84,10 +84,7 @@ class _CollectionTileState extends State<CollectionTile> {
             mainAxisSize: MainAxisSize.min,
             children: [
               ListTile(
-                leading: Text(
-                  widget.index.toString(),
-                  style: TextStyle(),
-                ),
+                leading: Icon(Icons.check_box),
                 title: Text(widget.collection.getName),
                 trailing: Icon(Icons.more_vert),
                 onLongPress: () => _openMenu(),
