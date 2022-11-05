@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collect_app/dao/entry_dao.dart';
 import 'package:collect_app/facades/firestore.dart';
 import 'package:collect_app/widgets/dialog_widgets/dialog_share.dart';
@@ -32,6 +31,12 @@ class _ResultTileState extends State<ResultTile> {
   final FirestoreFacade fireFacade = FirestoreFacade();
   var _tapPosition;
   var hasBackupValue = false;
+
+  @override
+  void initState() {
+    hasBackupValue = widget.entry.docValuesId != null;
+    super.initState();
+  }
 
   _getValuesAsText() {
     var valuesAsText = '';
@@ -151,12 +156,6 @@ class _ResultTileState extends State<ResultTile> {
       default:
         break;
     }
-  }
-
-  @override
-  void initState() {
-    hasBackupValue = widget.entry.docValuesId != null;
-    super.initState();
   }
 
   @override

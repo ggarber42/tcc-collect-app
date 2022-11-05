@@ -3,7 +3,8 @@ import 'package:provider/provider.dart';
 
 import '../../providers/auth_firebase.dart';
 import '../../widgets/base_widgets/button_loading.dart';
-import '../../widgets/base_widgets/main_drawer.dart';
+import '../../widgets/custom_widgets/main_bottom.dart';
+import '../../widgets/custom_widgets/main_drawer.dart';
 import '../../widgets/custom_widgets/main_bar.dart';
 import '../../screens/auth/auth_check.dart';
 import '../../utils/helper.dart';
@@ -79,6 +80,9 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       appBar: MainBar(),
       drawer: MainDrawer(),
+      bottomNavigationBar: MainBottom(
+        currentIndex: 1,
+      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.only(top: 100),
@@ -104,6 +108,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'Informe o email corretamente!';
+                      }
+                      if (!Helper.validateEmail(value)) {
+                        return 'Informe um email válido!';
                       }
                       return null;
                     },

@@ -1,12 +1,12 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:collect_app/facades/firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/entry_value.dart';
 import '../../models/entry_value_collection.dart';
+import '../../facades/firestore.dart';
 import '../../providers/auth_firebase.dart';
-import '../../widgets/base_widgets/main_drawer.dart';
+import '../../widgets/custom_widgets/main_bottom.dart';
+import '../../widgets/custom_widgets/main_drawer.dart';
 import '../../widgets/custom_widgets/collection_tile.dart';
 import '../../widgets/custom_widgets/main_bar.dart';
 import '../auth/login.dart';
@@ -64,7 +64,7 @@ class _ListBackupValuesScreenState extends State<ListBackupValuesScreen> {
                   entryName: data[i]['data']['name'],
                   values: entryValues,
                 );
-                return CollectionTile(i, collection);
+                return CollectionTile(i, data[i]['docId'], userId, collection);
               });
         } else if (snapshot.hasError) {
           return Center(
@@ -89,6 +89,7 @@ class _ListBackupValuesScreenState extends State<ListBackupValuesScreen> {
       appBar: MainBar(),
       drawer: MainDrawer(),
       body: (userId == null) ? _notAuthWarning() : _listBackups(userId),
+      bottomNavigationBar: MainBottom(currentIndex: 2),
     );
   }
 }

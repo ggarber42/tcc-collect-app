@@ -1,11 +1,10 @@
-import 'package:collect_app/facades/firestore.dart';
-
 import 'create_form_model.dart';
 import 'package:flutter/material.dart';
 
-import '../../widgets/custom_widgets/main_bar.dart';
-import '../../widgets/base_widgets/main_drawer.dart';
 import 'list_online_models.dart';
+import '../../facades/firestore.dart';
+import '../../widgets/custom_widgets/main_bar.dart';
+import '../../widgets/custom_widgets/main_drawer.dart';
 
 class ChooseCreateModelsScreen extends StatefulWidget {
   @override

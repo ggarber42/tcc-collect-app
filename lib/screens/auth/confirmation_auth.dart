@@ -1,12 +1,13 @@
-import 'package:collect_app/screens/auth/login.dart';
-import 'package:collect_app/widgets/base_widgets/button_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../screens/auth/login.dart';
+import '../../widgets/base_widgets/button_loading.dart';
+import '../../widgets/custom_widgets/main_bottom.dart';
 import '../../providers/auth_firebase.dart';
 import '../../utils/helper.dart';
 import '../../widgets/custom_widgets/main_bar.dart';
-import '../../widgets/base_widgets/main_drawer.dart';
+import '../../widgets/custom_widgets/main_drawer.dart';
 
 class ConfirmationAuthScreen extends StatefulWidget {
   const ConfirmationAuthScreen({Key? key}) : super(key: key);
@@ -37,6 +38,9 @@ class _ConfirmationAuthScreenState extends State<ConfirmationAuthScreen> {
     return Scaffold(
         appBar: MainBar(),
         drawer: MainDrawer(),
+        bottomNavigationBar: MainBottom(
+          currentIndex: 1,
+        ),
         body: Container(
           width: double.infinity,
           margin: EdgeInsets.symmetric(horizontal: 20),
@@ -50,14 +54,18 @@ class _ConfirmationAuthScreenState extends State<ConfirmationAuthScreen> {
                   style: TextStyle(fontSize: 25),
                 ),
               ),
-              SizedBox(height: 30,),
+              SizedBox(
+                height: 30,
+              ),
               TextButton(
                 onPressed: _logOut,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: (loading)
                       ? [
-                          ButtonLoading(color: Colors.green,),
+                          ButtonLoading(
+                            color: Colors.green,
+                          ),
                         ]
                       : [
                           Padding(

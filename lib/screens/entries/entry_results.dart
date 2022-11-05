@@ -5,9 +5,10 @@ import '../../dao/entry_value_dao.dart';
 import '../../models/entry.dart';
 import '../../models/entry_image.dart';
 import '../../models/entry_value.dart';
+import '../../widgets/custom_widgets/main_bottom.dart';
+import '../../widgets/custom_widgets/main_bar.dart';
 import '../../widgets/custom_widgets/image_result_tile.dart';
 import '../../widgets/custom_widgets/result_tile.dart';
-import '../../widgets/custom_widgets/main_bar.dart';
 
 class EntryResultScreen extends StatefulWidget {
   static const routeName = '/entry_results';
@@ -76,6 +77,7 @@ class _EntrysResultScreenState extends State<EntryResultScreen> {
           ]),
         ),
       ),
+    bottomNavigationBar: MainBottom(),
     );
   }
 }
