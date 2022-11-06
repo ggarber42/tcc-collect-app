@@ -1,12 +1,13 @@
-import 'package:collect_app/models/entry_image.dart';
+import 'package:collect_app/models/backup_validation.dart';
 
+import 'entry_image.dart';
 import 'entry_value.dart';
 import 'form_model.dart';
 
 class Entry {
   final String name;
   int? entryId;
-  String? docValuesId;
+  BackupValidation? validation;
   int? modelId;
   List<EntryValue>? values;
   List<EntryImage>? images;
@@ -31,7 +32,7 @@ class Entry {
 
   Entry(this.name);
 
-  Entry.withId(this.entryId, this.name, this.docValuesId);
+  Entry.withValidation(this.entryId, this.name, this.validation);
 
   Entry.withValues(this.name, this.modelId, this.values, this.images);
 
@@ -39,9 +40,9 @@ class Entry {
 
   get getId => entryId as int;
 
-  set newDocIdValues(String newId) => docValuesId = newId;
+  set setValidation(BackupValidation newValidation) => validation = newValidation;
 
-  get getDocIdValues => docValuesId;
+  get getValidation => validation;
 
   get getValues => values as List<EntryValue>;
 

@@ -2,7 +2,6 @@ import 'create_form_model.dart';
 import 'package:flutter/material.dart';
 
 import 'list_online_models.dart';
-import '../../facades/firestore.dart';
 import '../../widgets/custom_widgets/main_bar.dart';
 import '../../widgets/custom_widgets/main_drawer.dart';
 
@@ -13,7 +12,6 @@ class ChooseCreateModelsScreen extends StatefulWidget {
 }
 
 class _ChooseCreateModelsScreenState extends State<ChooseCreateModelsScreen> {
-  final fireFacade = FirestoreFacade();
 
   @override
   Widget build(BuildContext context) {

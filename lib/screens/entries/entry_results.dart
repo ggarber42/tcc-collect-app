@@ -13,8 +13,9 @@ import '../../widgets/custom_widgets/result_tile.dart';
 class EntryResultScreen extends StatefulWidget {
   static const routeName = '/entry_results';
   final Entry entry;
+  final VoidCallback updateState;
 
-  EntryResultScreen(this.entry);
+  EntryResultScreen(this.entry, this.updateState);
 
   @override
   State<EntryResultScreen> createState() => _EntrysResultScreenState();
@@ -31,6 +32,7 @@ class _EntrysResultScreenState extends State<EntryResultScreen> {
   _fetchImages() async {
     return [...await imageDao.readAll(widget.entry.entryId)];
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -54,8 +56,8 @@ class _EntrysResultScreenState extends State<EntryResultScreen> {
               future: _fetchValues(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  var values = snapshot.data as List<EntryValue>; //docid aqui
-                  return ResultTile(widget.entry, values);
+                  var values = snapshot.data as List<EntryValue>;
+                  return ResultTile(widget.entry, values, widget.updateState);
                 }
                 return SizedBox.shrink();
               },
@@ -77,7 +79,7 @@ class _EntrysResultScreenState extends State<EntryResultScreen> {
           ]),
         ),
       ),
-    bottomNavigationBar: MainBottom(),
+      bottomNavigationBar: MainBottom(),
     );
   }
 }

@@ -9,8 +9,9 @@ import '../../screens/entries/entry_results.dart';
 class EntryTile extends StatefulWidget {
   final Entry entry;
   final Function deleteEntry;
+  final VoidCallback updateState;
 
-  EntryTile(this.entry, this.deleteEntry);
+  EntryTile(this.entry, this.deleteEntry, this.updateState);
 
   @override
   State<EntryTile> createState() => _EntryTileState();
@@ -29,7 +30,7 @@ class _EntryTileState extends State<EntryTile> {
     Navigator.pushNamed(
       context,
       EntryResultScreen.routeName,
-      arguments: EntryResultsArguments(widget.entry),
+      arguments: EntryResultsArguments(widget.entry, widget.updateState),
     );
   }
 

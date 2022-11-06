@@ -68,7 +68,7 @@ class _MyAppState extends State<MyApp> {
           if (settings.name == EntryResultScreen.routeName) {
             final args = settings.arguments as EntryResultsArguments;
             return MaterialPageRoute(builder: (context) {
-              return EntryResultScreen(args.entry);
+              return EntryResultScreen(args.entry, args.updateState);
             });
           }
           if (settings.name == EntryValuesResultScreen.routeName) {

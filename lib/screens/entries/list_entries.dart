@@ -84,6 +84,10 @@ class _ListEntriesScreenState extends State<ListEntriesScreen> {
     }
   }
 
+  updateState() {
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -107,7 +111,7 @@ class _ListEntriesScreenState extends State<ListEntriesScreen> {
               var entries = snapshot.data as List<Entry>;
               return ListView.builder(
                 itemCount: entries.length,
-                itemBuilder: (ctx, i) => EntryTile(entries[i], deleteEntry),
+                itemBuilder: (ctx, i) => EntryTile(entries[i], deleteEntry, updateState),
               );
             }
             return Center(child: Text('Nao existem entradas'));

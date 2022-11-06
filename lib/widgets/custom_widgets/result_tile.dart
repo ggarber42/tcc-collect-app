@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:collect_app/dao/backup_validation_dao.dart';
 import 'package:collect_app/dao/entry_dao.dart';
 import 'package:collect_app/facades/firestore.dart';
 import 'package:collect_app/widgets/dialog_widgets/dialog_share.dart';
@@ -8,6 +9,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../../models/backup_validation.dart';
 import '../../models/entry.dart';
 import '../../models/entry_value.dart';
 import '../../providers/auth_firebase.dart';
@@ -19,22 +21,30 @@ import '../../utils/helper.dart';
 class ResultTile extends StatefulWidget {
   final Entry entry;
   final List<EntryValue> values;
+  final VoidCallback updateState;
 
-  ResultTile(this.entry, this.values);
+  ResultTile(this.entry, this.values, this.updateState);
 
   @override
   State<ResultTile> createState() => _ResultTileState();
 }
 
 class _ResultTileState extends State<ResultTile> {
-  final EntryDAO entryDao = EntryDAO();
   final FirestoreFacade fireFacade = FirestoreFacade();
+  final EntryDAO entryDao = EntryDAO();
+  final BackupValidationDAO validationDao = BackupValidationDAO();
   var _tapPosition;
   var hasBackupValue = false;
 
   @override
   void initState() {
-    hasBackupValue = widget.entry.docValuesId != null;
+    final BackupValidation? backupValidation = widget.entry.getValidation;
+    if (backupValidation != null) {
+      AuthProvider auth = Provider.of<AuthProvider>(context, listen: false);
+      if (auth.getUserId() == backupValidation.userId) {
+        hasBackupValue = true;
+      }
+    }
     super.initState();
   }
 
@@ -66,12 +76,17 @@ class _ResultTileState extends State<ResultTile> {
     AuthProvider auth = Provider.of<AuthProvider>(context, listen: false);
     final userId = auth.getUserId();
     if (userId == null) {
-      return Helper.showWarningDialog(context, 'Você precisa se autenticar!');
+      return Helper.showWarningDialog(
+        context,
+        'Você precisa se autenticar!',
+      );
     }
 
     if (hasBackupValue) {
       return Helper.showWarningDialog(
-          context, 'Este resultado já possui backup!');
+        context,
+        'Este resultado já possui backup!',
+      );
     }
     await fireFacade.addBackupFile(
       userId,
@@ -80,9 +95,8 @@ class _ResultTileState extends State<ResultTile> {
       widget.values,
     );
     Helper.showSnack(context, 'Backup realizado');
-    setState(() {
-      hasBackupValue = true;
-    });
+    widget.updateState();
+    setState(() => hasBackupValue = true);
   }
 
   showShareDialog() {

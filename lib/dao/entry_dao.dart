@@ -1,7 +1,9 @@
 import 'dart:convert';
 
+import 'package:collect_app/dao/backup_validation_dao.dart';
 import 'package:collect_app/dao/entry_image_dao.dart';
 import 'package:collect_app/dao/entry_value_dao.dart';
+import 'package:collect_app/models/backup_validation.dart';
 
 import '../interfaces/dao_interface.dart';
 import '../models/entry.dart';
@@ -11,12 +13,12 @@ import '../services/db_connector.dart';
 
 class EntryDAO implements DAO<Entry> {
   final valueDao = EntryValueDAO();
+  final imageDao = EntryImageDAO();
+  final validationDao = BackupValidationDAO();
 
   @override
   Future<void> add(Entry entry) async {
     final db = await DataBaseConnector.instance.database;
-    EntryValueDAO valueDao = EntryValueDAO();
-    EntryImageDAO imageDao = EntryImageDAO();
 
     final int entryId = await db.insert(
       '${Entry.tableName}',
@@ -55,17 +57,20 @@ class EntryDAO implements DAO<Entry> {
     final query = '''
         SELECT
         ${Entry.tableColumns['id']}, 
-        ${Entry.tableColumns['name']},
-        ${Entry.tableColumns['docValuesId']}
+        ${Entry.tableColumns['name']}
         FROM ${Entry.tableName}
         WHERE modelId = $modelId;
       ''';
     final queryResult = await db.rawQuery(query);
     for (var result in queryResult) {
-      final docValuesId = result[Entry.tableColumns['docValuesId']] as String?;
-      final entryModelName = result[Entry.tableColumns['name']] as String;
       final entryId = result[Entry.tableColumns['id']] as int;
-      entries.add(Entry.withId(entryId, entryModelName, docValuesId));
+      final backupValidation = await validationDao.read(entryId) as BackupValidation?;
+      final entryModelName = result[Entry.tableColumns['name']] as String;
+      entries.add(Entry.withValidation(
+        entryId,
+        entryModelName,
+        backupValidation,
+      ));
     }
     return entries;
   }

@@ -13,8 +13,9 @@ class ModelArguments {
 
 class EntryResultsArguments {
   final Entry entry;
+  final VoidCallback updateState;
 
-  EntryResultsArguments(this.entry);
+  EntryResultsArguments(this.entry, this.updateState);
 }
 
 class EntryValuesArguments {
