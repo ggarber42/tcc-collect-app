@@ -1,12 +1,16 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../../facades/firestore.dart';
 import '../../models/entry_image.dart';
+import '../../providers/auth_firebase.dart';
 import '../../screens/entries/entry_result_image.dart';
 import '../../utils/arguments.dart';
 import '../../utils/constants.dart';
+import '../../utils/helper.dart';
 
 class ImageResultTile extends StatefulWidget {
   final EntryImage image;
@@ -18,9 +22,32 @@ class ImageResultTile extends StatefulWidget {
 }
 
 class _ImageResultTileState extends State<ImageResultTile> {
-    var _tapPosition;
+  final FirestoreFacade fireFacade = FirestoreFacade();
+  var _tapPosition;
 
-    shareValues() async {
+  showUploadWarning() {
+    Helper.showSnack(context, 'Upload feito!');
+  }
+
+  showFeedback() {
+    Helper.showUploadDialog(context);
+  }
+
+  backupImage() {
+    AuthProvider auth = Provider.of<AuthProvider>(context, listen: false);
+    final userId = auth.getUserId();
+    if (userId == null) {
+      return Helper.showWarningDialog(context, 'Você precisa se autenticar!');
+    }
+    fireFacade.uploadImage(
+      widget.image,
+      userId,
+      showFeedback,
+      showUploadWarning,
+    );
+  }
+
+  shareValues() async {
     Image currentImg = widget.image.getImage;
     MemoryImage memory = currentImg.image as MemoryImage;
     final list = memory.bytes.buffer.asUint8List();
@@ -39,7 +66,7 @@ class _ImageResultTileState extends State<ImageResultTile> {
     Navigator.pushNamed(
       context,
       EntryResultImageScreen.routeName,
-      arguments: EntryImageArguments(widget.image, shareValues),
+      arguments: EntryImageArguments(widget.image, shareValues, backupImage),
     );
   }
 
@@ -64,11 +91,14 @@ class _ImageResultTileState extends State<ImageResultTile> {
       case 'share':
         shareValues();
         break;
+      case 'backup':
+        backupImage();
+        break;
       default:
         break;
     }
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(

@@ -83,6 +83,23 @@ class Helper {
         });
   }
 
+  static showUploadDialog(BuildContext context) {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          Future.delayed(Duration(seconds: 3), () {
+            Navigator.of(context).pop(true);
+          });
+          return AlertDialog(
+            title: Center(child: Text('Subindo')),
+            content: Container(
+              height: 100,
+              child: Center(child: CircularProgressIndicator()),
+            ),
+          );
+        });
+  }
+
   static roundNumber(number) {
     return number.toStringAsFixed(3);
   }

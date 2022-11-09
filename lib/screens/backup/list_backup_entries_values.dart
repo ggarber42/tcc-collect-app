@@ -1,15 +1,15 @@
+import 'package:collect_app/screens/backup/list_image_files.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../models/entry_value.dart';
-import '../../models/entry_value_collection.dart';
+import '../../utils/arguments.dart';
+import '../auth/login.dart';
 import '../../facades/firestore.dart';
 import '../../providers/auth_firebase.dart';
 import '../../widgets/custom_widgets/main_bottom.dart';
 import '../../widgets/custom_widgets/main_drawer.dart';
-import '../../widgets/custom_widgets/collection_tile.dart';
 import '../../widgets/custom_widgets/main_bar.dart';
-import '../auth/login.dart';
+import '../../screens/backup/list_filed_entires.dart';
 
 class ListBackupValuesScreen extends StatefulWidget {
   static const routeName = '/list-backup';
@@ -44,40 +44,48 @@ class _ListBackupValuesScreenState extends State<ListBackupValuesScreen> {
     );
   }
 
-  Widget _listBackups(String userId) {
-    return StreamBuilder(
-      stream: fireFacade.readBackupValues(userId),
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          final data = snapshot.data as List;
-          return ListView.builder(
-              itemCount: data.length,
-              itemBuilder: (ctx, i) {
-                List<EntryValue> entryValues = [];
-                for (var entry in data[i]['data']['values']) {
-                  entryValues.add(
-                    EntryValue.fromField(entry['name'], entry['value']),
-                  );
-                }
-                final collection = EntryValueCollection.fromFireBase(
-                  docId: data[i]['docId'],
-                  entryName: data[i]['data']['name'],
-                  values: entryValues,
+  Widget _listTiles(String userId) {
+    final screenHeight = MediaQuery.of(context).size.height;
+    return Container(
+      constraints: BoxConstraints(maxHeight: screenHeight * 0.9),
+      width: double.infinity,
+      margin: EdgeInsets.symmetric(
+        vertical: 15,
+        horizontal: 10,
+      ),
+      child: SingleChildScrollView(
+          child: Column(
+        children: [
+          Card(
+            child: ListTile(
+              leading: Icon(Icons.check_box),
+              title: Text('Resultados campos'),
+              trailing: Icon(Icons.more_vert),
+              onTap: () {
+                Navigator.pushNamed(
+                  context,
+                  ListFieldEntriesScreen.routeName,
+                  arguments: ListFieldEntriesArguments(userId),
                 );
-                return CollectionTile(i, data[i]['docId'], userId, collection);
-              });
-        } else if (snapshot.hasError) {
-          return Center(
-              child: Text(
-            'Algo deu errado :(',
-            style: TextStyle(fontSize: 25),
-          ));
-        } else {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-      },
+              },
+            ),
+          ),
+          Card(
+            child: ListTile(
+              leading: Icon(Icons.check_box),
+              title: Text('Imagens'),
+              trailing: Icon(Icons.more_vert),
+              onTap: () {
+                Navigator.pushNamed(
+                  context,
+                  ListImageFielsScreen.routeName,
+                  arguments: ListImageFilesArguments(userId),
+                );
+              },
+            ),
+          )
+        ],
+      )),
     );
   }
 
@@ -88,7 +96,7 @@ class _ListBackupValuesScreenState extends State<ListBackupValuesScreen> {
     return Scaffold(
       appBar: MainBar(),
       drawer: MainDrawer(),
-      body: (userId == null) ? _notAuthWarning() : _listBackups(userId),
+      body: (userId == null) ? _notAuthWarning() : _listTiles(userId),
       bottomNavigationBar: MainBottom(currentIndex: 2),
     );
   }

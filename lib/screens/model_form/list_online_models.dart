@@ -3,8 +3,6 @@ import 'package:collect_app/widgets/custom_widgets/main_bar.dart';
 import 'package:flutter/material.dart';
 
 import '../../facades/firestore.dart';
-import '../../widgets/custom_widgets/field_card.dart';
-
 class ListOnlineModelsScreen extends StatefulWidget {
   @override
   State<ListOnlineModelsScreen> createState() => _ListOnlineModelsScreenState();
@@ -14,7 +12,7 @@ class _ListOnlineModelsScreenState extends State<ListOnlineModelsScreen> {
   final fireFacade = FirestoreFacade();
 
   Widget titleTile(obj) {
-    return FieldCard(children: [
+    return Card(child:
       ListTile(
         leading: Icon(Icons.note_alt_rounded),
         title: Text(obj['name']),
@@ -28,7 +26,7 @@ class _ListOnlineModelsScreenState extends State<ListOnlineModelsScreen> {
           );
         },
       ),
-    ]);
+    );
   }
 
   @override

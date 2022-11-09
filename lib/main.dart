@@ -1,6 +1,8 @@
 import 'package:collect_app/screens/auth/auth_check.dart';
 import 'package:collect_app/screens/auth/login.dart';
 import 'package:collect_app/screens/backup/list_backup_entries_values.dart';
+import 'package:collect_app/screens/backup/list_filed_entires.dart';
+import 'package:collect_app/screens/backup/list_image_files.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -53,7 +55,7 @@ class _MyAppState extends State<MyApp> {
           ListFormModelsScreen.routeName: (ctx) => ListFormModelsScreen(),
           ListBackupValuesScreen.routeName: (_) => ListBackupValuesScreen(),
           AuthCheckScreen.routeName: (_) => AuthCheckScreen(),
-          LoginScreen.routeName: (_) => LoginScreen()
+          LoginScreen.routeName: (_) => LoginScreen(),
         },
         onGenerateRoute: (settings) {
           if (settings.name == ListEntriesScreen.routeName) {
@@ -81,7 +83,19 @@ class _MyAppState extends State<MyApp> {
           if (settings.name == EntryResultImageScreen.routeName) {
             final args = settings.arguments as EntryImageArguments;
             return MaterialPageRoute(builder: (context) {
-              return EntryResultImageScreen(args.image, args.shareValues);
+              return EntryResultImageScreen(args.image, args.shareValues, args.backupImage);
+            });
+          }
+          if (settings.name == ListFieldEntriesScreen.routeName) {
+            final args = settings.arguments as ListFieldEntriesArguments;
+            return MaterialPageRoute(builder: (context) {
+              return ListFieldEntriesScreen(args.userId);
+            });
+          }
+          if (settings.name == ListImageFielsScreen.routeName) {
+            final args = settings.arguments as ListImageFilesArguments;
+            return MaterialPageRoute(builder: (context) {
+              return ListImageFielsScreen(args.userId);
             });
           }
           assert(false, 'Need to implement ${settings.name}');

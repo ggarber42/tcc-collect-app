@@ -1,8 +1,13 @@
+import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:collect_app/dao/entry_dao.dart';
-import 'package:collect_app/models/backup_validation.dart';
+import 'package:path_provider/path_provider.dart';
 
 import '../dao/backup_validation_dao.dart';
+import '../dao/entry_dao.dart';
+import '../models/backup_validation.dart';
+import '../models/entry_image.dart';
 import '../models/entry_value.dart';
 import '../models/entry_value_collection.dart';
 import '../services/db_firestore.dart';
@@ -11,6 +16,7 @@ import '../utils/helper.dart';
 
 class FirestoreFacade {
   final fireDb = DBFirestore.get();
+  final fireRef = FirebaseStorage.instance.ref();
   final entryDao = EntryDAO();
   final validationDao = BackupValidationDAO();
 
@@ -63,5 +69,35 @@ class FirestoreFacade {
     final valueBackupDoc = userCollect.collection(VALUE_COLLECTION).doc(docId);
     await valueBackupDoc.delete();
     await validationDao.delete(docId);
+  }
+
+  uploadImage(EntryImage image, String userId, VoidCallback showFeedback,
+      VoidCallback showWarning) async {
+    Image currentImg = image.getImage;
+    MemoryImage memory = currentImg.image as MemoryImage;
+    final list = memory.bytes.buffer.asUint8List();
+    final tempDir = await getTemporaryDirectory();
+    final file = await File('${tempDir.path}/${image.getName}.jpg').create();
+    file.writeAsBytesSync(list);
+    final path = 'files/$userId/${image.getName}.jpg';
+    final ref = FirebaseStorage.instance.ref().child(path);
+    showFeedback();
+    ref.putFile(file).whenComplete(() {
+      showWarning();
+    });
+  }
+
+  getImagesFromUser(String userId) async {
+    final path = 'files/$userId';
+    final ref = fireRef.child(path);
+    // final path = 'files/$userId/3x4.jpg';
+    // final ref = FirebaseStorage.instance.ref().child(path);
+    // final url = await ref.getDownloadURL();
+    // print(url);
+    ref.listAll().then((result) async {
+      final imagePath = result.items[0].fullPath;
+      final url = await fireRef.child(imagePath).getDownloadURL();
+      print(url);
+    });
   }
 }

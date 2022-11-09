@@ -35,6 +35,19 @@ class EntryValuesArguments {
 class EntryImageArguments {
   final EntryImage image;
   final VoidCallback shareValues;
+  final VoidCallback backupImage;
 
-  EntryImageArguments(this.image, this.shareValues);
+  EntryImageArguments(this.image, this.shareValues, this.backupImage);
+}
+
+class ListFieldEntriesArguments{
+  final String userId;
+
+  ListFieldEntriesArguments(this.userId);
+}
+
+class ListImageFilesArguments{
+  final String userId;
+
+  ListImageFilesArguments(this.userId);
 }
