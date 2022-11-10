@@ -1,3 +1,4 @@
+import 'package:collect_app/widgets/custom_widgets/main_bottom.dart';
 import 'package:flutter/material.dart';
 
 import '../../facades/firestore.dart';
@@ -24,11 +25,20 @@ class _ListFieldEntriesScreenState extends State<ListFieldEntriesScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MainBar(),
+      bottomNavigationBar: MainBottom(currentIndex: 2,),
       body: StreamBuilder(
         stream: fireFacade.readBackupValues(widget.userId),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final data = snapshot.data as List;
+             if (data.isEmpty) {
+                return Center(
+                  child: Text(
+                    'Não há valores cadastrados!',
+                    style: TextStyle(fontSize: 22),
+                  ),
+                );
+              }
             return ListView.builder(
                 itemCount: data.length,
                 itemBuilder: (ctx, i) {
