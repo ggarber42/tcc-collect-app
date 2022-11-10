@@ -87,17 +87,20 @@ class FirestoreFacade {
     });
   }
 
+  buildAsync(item) async {
+    final imagePath = item.fullPath;
+    final url = await fireRef.child(imagePath).getDownloadURL();
+    return url;
+  }
+
   getImagesFromUser(String userId) async {
-    final path = 'files/$userId';
-    final ref = fireRef.child(path);
-    // final path = 'files/$userId/3x4.jpg';
-    // final ref = FirebaseStorage.instance.ref().child(path);
-    // final url = await ref.getDownloadURL();
-    // print(url);
-    ref.listAll().then((result) async {
-      final imagePath = result.items[0].fullPath;
-      final url = await fireRef.child(imagePath).getDownloadURL();
-      print(url);
-    });
+    final ref = fireRef.child('files/$userId');
+    final result = await ref.listAll();
+    return [for (final item in result.items) await buildAsync(item)];
+  }
+
+  deleteImage(String imageUrl) async {
+    await FirebaseStorage.instance.refFromURL(imageUrl).delete();
+    
   }
 }

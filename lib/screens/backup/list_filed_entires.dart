@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../facades/firestore.dart';
 import '../../models/entry_value.dart';
 import '../../models/entry_value_collection.dart';
+import '../../widgets/base_widgets/error_warning.dart';
 import '../../widgets/custom_widgets/collection_tile.dart';
 import '../../widgets/custom_widgets/main_bar.dart';
 
@@ -46,11 +47,7 @@ class _ListFieldEntriesScreenState extends State<ListFieldEntriesScreen> {
                       i, data[i]['docId'], widget.userId, collection);
                 });
           } else if (snapshot.hasError) {
-            return Center(
-                child: Text(
-              'Algo deu errado :(',
-              style: TextStyle(fontSize: 25),
-            ));
+            return ErrorWarning();
           } else {
             return Center(
               child: CircularProgressIndicator(),
