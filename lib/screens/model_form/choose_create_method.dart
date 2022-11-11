@@ -1,8 +1,10 @@
+
 import 'create_form_model.dart';
 import 'package:flutter/material.dart';
 
 import 'list_online_models.dart';
 import '../../widgets/custom_widgets/main_bar.dart';
+import '../../widgets/custom_widgets/main_bottom.dart';
 import '../../widgets/custom_widgets/main_drawer.dart';
 
 class ChooseCreateModelsScreen extends StatefulWidget {
@@ -17,6 +19,7 @@ class _ChooseCreateModelsScreenState extends State<ChooseCreateModelsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MainBar(windowTitle: 'Modelos'),
+      bottomNavigationBar: MainBottom(currentIndex: 0),
       body: Container(
         width: MediaQuery.of(context).size.width,
         child: Padding(

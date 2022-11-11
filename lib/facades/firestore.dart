@@ -53,9 +53,13 @@ class FirestoreFacade {
         return docs.reversed.toList();
       });
 
-  Future<void> addModelForm(modelData) async {
+  Future addModelForm(modelData) async {
     final modelCollect = fireDb.collection(MODEL_COLLECTION);
-    await modelCollect.add(modelData);
+    try {
+      await modelCollect.add(modelData);
+    } catch (e) {
+      print(e);
+    }
   }
 
   Future<List<dynamic>> getModels() async {
@@ -101,6 +105,5 @@ class FirestoreFacade {
 
   deleteImage(String imageUrl) async {
     await FirebaseStorage.instance.refFromURL(imageUrl).delete();
-    
   }
 }
