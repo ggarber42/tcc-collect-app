@@ -3,19 +3,11 @@ import 'package:flutter/material.dart';
 import '../../models/entry_value.dart';
 import '../../widgets/custom_widgets/main_bar.dart';
 
-class EntryValuesResultScreen extends StatelessWidget {
-  static const routeName = '/entry_results_input';
+class BackupValueDetailScreen extends StatelessWidget {
   final List<EntryValue> values;
-  final VoidCallback shareValues;
-  final VoidCallback backupEntryValues;
-  final bool hasBackupValue;
+  final VoidCallback deleteFunction;
 
-  EntryValuesResultScreen(
-    this.values,
-    this.shareValues,
-    this.backupEntryValues,
-    this.hasBackupValue,
-  );
+  BackupValueDetailScreen(this.values, this.deleteFunction);
 
   Widget _viewResultTile(value) {
     return Container(
@@ -50,12 +42,8 @@ class EntryValuesResultScreen extends StatelessWidget {
     final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: MainBar(
-        windowTitle: 'Resultados',
-        hasBackButton: true,
-        hasShareAction: true,
-        hasBackup: true,
-        shareFunction: shareValues,
-        backupFunction: backupEntryValues,
+        hasDeleteAction: true,
+        deleteFunction: deleteFunction,
       ),
       body: SingleChildScrollView(
         child: Container(

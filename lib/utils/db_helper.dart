@@ -1,3 +1,5 @@
+import 'package:collect_app/models/backup_validation.dart';
+
 import '../models/entry.dart';
 import '../models/entry_image.dart';
 import '../models/entry_value.dart';
@@ -21,7 +23,8 @@ class DataBaseHelper {
       RadioOption.createTableQuery,
       Entry.createTableQuery,
       EntryValue.createTableQuery,
-      EntryImage.createTableQuery
+      EntryImage.createTableQuery,
+      BackupValidation.createTableQuery
     ];
     DataBaseHelper().queryAction(querys);
   }
@@ -33,7 +36,8 @@ class DataBaseHelper {
       RadioOption.dropTableQuery,
       Entry.dropTableQuery,
       EntryValue.dropTableQuery,
-      EntryImage.dropTableQuery
+      EntryImage.dropTableQuery,
+      BackupValidation.dropTableQuery
     ];
     DataBaseHelper().queryAction(querys);
   }

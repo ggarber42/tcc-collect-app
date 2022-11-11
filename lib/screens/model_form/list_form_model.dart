@@ -1,15 +1,16 @@
-import 'package:collect_app/dao/form_model_dao.dart';
-import 'package:collect_app/providers/form_models.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../utils/helper.dart';
-import './create_form_model.dart';
-import '../../models/form_model.dart';
-import '../../widgets/custom_widgets/main_bar.dart';
-import '../../widgets/base_widgets/main_drawer.dart';
-import '../../widgets/custom_widgets/model_tile.dart';
 import 'edit_form_model.dart';
+import '../../dao/form_model_dao.dart';
+import '../../models/form_model.dart';
+import '../../providers/form_models.dart';
+import '../../screens/model_form/choose_create_method.dart';
+import '../../widgets/custom_widgets/main_bar.dart';
+import '../../widgets/custom_widgets/main_bottom.dart';
+import '../../widgets/custom_widgets/main_drawer.dart';
+import '../../widgets/custom_widgets/model_tile.dart';
+import '../../utils/helper.dart';
 
 class ListFormModelsScreen extends StatefulWidget {
   static const routeName = '/list_models';
@@ -78,16 +79,18 @@ class _ListFormModelsScreenState extends State<ListFormModelsScreen> {
         ),
       ),
       drawer: MainDrawer(),
+      bottomNavigationBar: MainBottom(),
       floatingActionButton: FloatingActionButton.extended(
         label: Text("Modelo"),
         icon: Icon(Icons.add),
-        onPressed: () {
-          Navigator.push(
+        onPressed: () async {
+          await Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (_) => CreateFormModelsScreen(),
+              builder: (_) => ChooseCreateModelsScreen(),
             ),
           );
+          setState(() {});
         },
       ),
     );

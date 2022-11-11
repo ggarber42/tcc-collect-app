@@ -2,17 +2,20 @@ import 'package:flutter/material.dart';
 
 import '../../dao/entry_image_dao.dart';
 import '../../dao/entry_value_dao.dart';
+import '../../models/entry.dart';
 import '../../models/entry_image.dart';
 import '../../models/entry_value.dart';
+import '../../widgets/custom_widgets/main_bottom.dart';
+import '../../widgets/custom_widgets/main_bar.dart';
 import '../../widgets/custom_widgets/image_result_tile.dart';
 import '../../widgets/custom_widgets/result_tile.dart';
-import '../../widgets/custom_widgets/main_bar.dart';
 
 class EntryResultScreen extends StatefulWidget {
-  final int entryId;
   static const routeName = '/entry_results';
+  final Entry entry;
+  final VoidCallback updateState;
 
-  EntryResultScreen(this.entryId);
+  EntryResultScreen(this.entry, this.updateState);
 
   @override
   State<EntryResultScreen> createState() => _EntrysResultScreenState();
@@ -23,12 +26,13 @@ class _EntrysResultScreenState extends State<EntryResultScreen> {
   final imageDao = EntryImageDAO();
 
   _fetchValues() async {
-    return [...await entryValueDao.readAll(widget.entryId)];
+    return [...await entryValueDao.readAll(widget.entry.entryId)];
   }
 
   _fetchImages() async {
-    return [...await imageDao.readAll(widget.entryId)];
+    return [...await imageDao.readAll(widget.entry.entryId)];
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +57,7 @@ class _EntrysResultScreenState extends State<EntryResultScreen> {
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   var values = snapshot.data as List<EntryValue>;
-                  return ResultTile(values);
+                  return ResultTile(widget.entry, values, widget.updateState);
                 }
                 return SizedBox.shrink();
               },
@@ -75,6 +79,7 @@ class _EntrysResultScreenState extends State<EntryResultScreen> {
           ]),
         ),
       ),
+      bottomNavigationBar: MainBottom(),
     );
   }
 }

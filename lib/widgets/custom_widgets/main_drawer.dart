@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../screens/config/config_screen.dart';
+import '../../screens/auth/auth_check.dart';
+import '../../screens/backup/list_backup_entries_values.dart';
 import '../../screens/model_form/list_form_model.dart';
 
 class MainDrawer extends StatelessWidget {
@@ -24,13 +25,22 @@ class MainDrawer extends StatelessWidget {
           ),
           Divider(),
           ListTile(
-            leading: Icon(Icons.filter_vintage_sharp),
-            title: Text('Configurações'),
+            leading: Icon(Icons.lock_rounded),
+            title: Text('Autenticação'),
             onTap: () {
               Navigator.of(context)
-                  .pushReplacementNamed(ConfigScreen.routeName);
+                  .pushReplacementNamed(AuthCheckScreen.routeName);
             },
-          )
+          ),
+          Divider(),
+          ListTile(
+            leading: Icon(Icons.backup),
+            title: Text('Backups'),
+            onTap: () {
+              Navigator.of(context)
+                  .pushReplacementNamed(ListBackupValuesScreen.routeName);
+            },
+          ),
         ],
       ),
     );

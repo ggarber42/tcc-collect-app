@@ -43,4 +43,6 @@ class EntryValue {
       Entry.tableColumns['id'] as String: entryId
     };
   }
+
+  Map<String, String> toMap() => {'name': name, 'value': value};
 }

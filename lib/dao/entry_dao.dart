@@ -1,7 +1,9 @@
 import 'dart:convert';
 
+import 'package:collect_app/dao/backup_validation_dao.dart';
 import 'package:collect_app/dao/entry_image_dao.dart';
 import 'package:collect_app/dao/entry_value_dao.dart';
+import 'package:collect_app/models/backup_validation.dart';
 
 import '../interfaces/dao_interface.dart';
 import '../models/entry.dart';
@@ -11,12 +13,12 @@ import '../services/db_connector.dart';
 
 class EntryDAO implements DAO<Entry> {
   final valueDao = EntryValueDAO();
+  final imageDao = EntryImageDAO();
+  final validationDao = BackupValidationDAO();
 
   @override
   Future<void> add(Entry entry) async {
     final db = await DataBaseConnector.instance.database;
-    EntryValueDAO valueDao = EntryValueDAO();
-    EntryImageDAO imageDao = EntryImageDAO();
 
     final int entryId = await db.insert(
       '${Entry.tableName}',
@@ -53,17 +55,46 @@ class EntryDAO implements DAO<Entry> {
     final db = await DataBaseConnector.instance.database;
     List<Entry> entries = [];
     final query = '''
-      SELECT ${Entry.tableColumns['id']}, ${Entry.tableColumns['name']}
+        SELECT
+        ${Entry.tableColumns['id']}, 
+        ${Entry.tableColumns['name']}
         FROM ${Entry.tableName}
         WHERE modelId = $modelId;
       ''';
-    List<Map<String, Object?>> queryResult = await db.rawQuery(query);
-    for (int i = 0; i < queryResult.length; i++) {
-      var entryModelName = queryResult[i][Entry.tableColumns['name']] as String;
-      var entryId = queryResult[i][Entry.tableColumns['id']] as int;
-      entries.add(Entry.withId(entryId, entryModelName));
+    final queryResult = await db.rawQuery(query);
+    for (var result in queryResult) {
+      final entryId = result[Entry.tableColumns['id']] as int;
+      final backupValidation = await validationDao.read(entryId) as BackupValidation?;
+      final entryModelName = result[Entry.tableColumns['name']] as String;
+      entries.add(Entry.withValidation(
+        entryId,
+        entryModelName,
+        backupValidation,
+      ));
     }
     return entries;
+  }
+
+  addDocValuesId(int entryId, String docValuesId) async {
+    final db = await DataBaseConnector.instance.database;
+    await db.rawUpdate(
+      '''
+      UPDATE ${Entry.tableName}
+      SET ${Entry.tableColumns['docValuesId']} = ? 
+      WHERE ${Entry.tableColumns['id']} = ?''',
+      [docValuesId, entryId],
+    );
+  }
+
+  deleteDocValuesId(String docValuesId) async {
+    final db = await DataBaseConnector.instance.database;
+    final count = await db.rawUpdate(
+      '''
+      UPDATE ${Entry.tableName}
+      SET ${Entry.tableColumns['docValuesId']} = ? 
+      WHERE ${Entry.tableColumns['docValuesId']} = ?''',
+      [null, docValuesId],
+    );
   }
 
   @override

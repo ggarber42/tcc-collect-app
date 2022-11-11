@@ -9,8 +9,9 @@ import '../../screens/entries/entry_results.dart';
 class EntryTile extends StatefulWidget {
   final Entry entry;
   final Function deleteEntry;
+  final VoidCallback updateState;
 
-  EntryTile(this.entry, this.deleteEntry);
+  EntryTile(this.entry, this.deleteEntry, this.updateState);
 
   @override
   State<EntryTile> createState() => _EntryTileState();
@@ -29,7 +30,7 @@ class _EntryTileState extends State<EntryTile> {
     Navigator.pushNamed(
       context,
       EntryResultScreen.routeName,
-      arguments: EntryResultsArguments(widget.entry.getId),
+      arguments: EntryResultsArguments(widget.entry, widget.updateState),
     );
   }
 
@@ -85,7 +86,6 @@ class _EntryTileState extends State<EntryTile> {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             ListTile(
-              leading: Icon(Icons.check_box_outlined),
               title: Text(widget.entry.getName),
               trailing: Icon(Icons.more_vert),
               onLongPress: () => _openMenu(),

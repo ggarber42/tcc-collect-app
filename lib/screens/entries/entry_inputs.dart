@@ -57,8 +57,7 @@ class _EntryInputsScreenState extends State<EntryInputsScreen> {
                   Container(
                     constraints: BoxConstraints(maxHeight: screenHeight * 0.75),
                     padding: EdgeInsets.only(
-                      bottom: keyboardHeight - keyboardHeight * .1
-                    ),
+                        bottom: keyboardHeight - keyboardHeight * .1),
                     width: double.infinity,
                     margin: EdgeInsets.symmetric(
                       vertical: 10,
@@ -90,18 +89,19 @@ class _EntryInputsScreenState extends State<EntryInputsScreen> {
             child: Align(
               alignment: Alignment.bottomCenter,
               child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  child: BottomButton('Avançar', () {
-                    var newValues = [];
-                    if (_formKey.currentState!.validate()) {
-                      for (var i = 0; i < _inputFields.length; i++) {
-                        newValues.add(_inputFields[i].getInputValue());
-                      }
-                      widget.addValue(newValues);
-                      Helper.showSnack(context, 'Valores adicionados!');
-                      Navigator.pop(context);
+                width: MediaQuery.of(context).size.width,
+                child: BottomButton('Avançar', () {
+                  var newValues = [];
+                  if (_formKey.currentState!.validate()) {
+                    for (var i = 0; i < _inputFields.length; i++) {
+                      newValues.add(_inputFields[i].getInputValue());
                     }
-                  })),
+                    widget.addValue(newValues);
+                    Helper.showSnack(context, 'Valores adicionados!');
+                    Navigator.pop(context);
+                  }
+                }),
+              ),
             ),
           ),
         ],
