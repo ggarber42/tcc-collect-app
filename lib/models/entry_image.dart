@@ -33,6 +33,8 @@ class EntryImage {
 
   EntryImage.fromField(this.name, this.imageFile);
 
+  get getId => entryImageId;
+  
   get getName => name;
 
   get getValue => value;

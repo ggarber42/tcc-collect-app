@@ -5,8 +5,10 @@ import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 
 import 'entry_name.dart';
-import '../../dao/entry_value_dao.dart';
 import '../../dao/entry_dao.dart';
+import '../../dao/entry_image_dao.dart';
+import '../../dao/entry_value_dao.dart';
+import '../../facades/share.dart'; 
 import '../../models/entry.dart';
 import '../../widgets/custom_widgets/main_bottom.dart';
 import '../../widgets/custom_widgets/entry_tile.dart';
@@ -26,7 +28,9 @@ class ListEntriesScreen extends StatefulWidget {
 }
 
 class _ListEntriesScreenState extends State<ListEntriesScreen> {
+  final shareFacade = ShareFacade();
   final entryDao = EntryDAO();
+  final imageDao = EntryImageDAO();
   final valueDao = EntryValueDAO();
 
   deleteEntry(int entryId) async {
@@ -39,23 +43,6 @@ class _ListEntriesScreenState extends State<ListEntriesScreen> {
   _fetchEntries() async {
     final entries = [...await entryDao.readAll(widget.modelId)];
     return entries;
-  }
-
-  _generateCSV(List<Entry> entries) async {
-    List<List<dynamic>> rows = [];
-    final firstValues = await valueDao.readAll(entries.first.entryId);
-    final header = firstValues.map((value) => value.getName).toList();
-    rows.add(header);
-    for (var entry in entries) {
-      List<dynamic> row = [];
-      final entryValues = await valueDao.readAll(entry.entryId);
-      for (var entryValue in entryValues) {
-        row.add(entryValue.getValue);
-      }
-      rows.add(row);
-    }
-
-    return ListToCsvConverter().convert(rows);
   }
 
   showShareDialog() {
@@ -72,12 +59,10 @@ class _ListEntriesScreenState extends State<ListEntriesScreen> {
     if (selectedValue == null) return;
     switch (selectedValue) {
       case 'fields':
-        final entries = await entryDao.readAll(widget.modelId);
-        final csv = await _generateCSV(entries);
-        final tempDir = await getTemporaryDirectory();
-        final file = await File('${tempDir.path}/values.csv').create();
-        await file.writeAsString(csv);
-        Share.shareFiles([file.path]);
+        shareFacade.shareAllValueFieldsFromModel(widget.modelId);
+        break;
+      case 'imgs':
+        shareFacade.shareAllImagesFromModel(widget.modelId);
         break;
       default:
         break;
@@ -111,7 +96,8 @@ class _ListEntriesScreenState extends State<ListEntriesScreen> {
               var entries = snapshot.data as List<Entry>;
               return ListView.builder(
                 itemCount: entries.length,
-                itemBuilder: (ctx, i) => EntryTile(entries[i], deleteEntry, updateState),
+                itemBuilder: (ctx, i) =>
+                    EntryTile(entries[i], deleteEntry, updateState),
               );
             }
             return Center(child: Text('Nao existem entradas'));
