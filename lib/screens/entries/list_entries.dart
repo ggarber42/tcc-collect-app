@@ -4,13 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 
-import '../../widgets/dialog_widgets/dialog_shareAll.dart';
 import 'entry_name.dart';
 import '../../dao/entry_value_dao.dart';
 import '../../dao/entry_dao.dart';
 import '../../models/entry.dart';
+import '../../widgets/custom_widgets/main_bottom.dart';
 import '../../widgets/custom_widgets/entry_tile.dart';
 import '../../widgets/custom_widgets/main_bar.dart';
+import '../../widgets/dialog_widgets/dialog_shareAll.dart';
 import '../../utils/helper.dart';
 
 class ListEntriesScreen extends StatefulWidget {
@@ -83,6 +84,10 @@ class _ListEntriesScreenState extends State<ListEntriesScreen> {
     }
   }
 
+  updateState() {
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -106,7 +111,7 @@ class _ListEntriesScreenState extends State<ListEntriesScreen> {
               var entries = snapshot.data as List<Entry>;
               return ListView.builder(
                 itemCount: entries.length,
-                itemBuilder: (ctx, i) => EntryTile(entries[i], deleteEntry),
+                itemBuilder: (ctx, i) => EntryTile(entries[i], deleteEntry, updateState),
               );
             }
             return Center(child: Text('Nao existem entradas'));
@@ -126,6 +131,7 @@ class _ListEntriesScreenState extends State<ListEntriesScreen> {
           setState(() {});
         },
       ),
+      bottomNavigationBar: MainBottom(),
     );
   }
 }

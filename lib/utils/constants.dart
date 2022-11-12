@@ -18,6 +18,9 @@ const DropShareOptionsAll = const [
   DropdownMenuItem(child: Text('Imagens'), value: 'imgs'),
 ];
 
+const VALUE_COLLECTION = 'valueCollection';
+const USER_COLLECTION = 'user';
+const MODEL_COLLECTION = 'model';
 
 const ModelTileMenuOptions = const [
   PopupMenuItem<String>(
@@ -45,6 +48,17 @@ const EntrielTileMenuOptions = const [
   ),
 ];
 
+const CollectionTileMenuOptions = const [
+  PopupMenuItem<String>(
+    child: const Text('Ver'),
+    value: 'open',
+  ),
+  PopupMenuItem<String>(
+    child: const Text('Deletar', style: TextStyle(color: Colors.red)),
+    value: 'delete',
+  ),
+];
+
 const ResultTileValueOptions = const [
   PopupMenuItem<String>(
     child: const Text('Ver'),
@@ -53,5 +67,14 @@ const ResultTileValueOptions = const [
   PopupMenuItem<String>(
     child: const Text('Compartilhar'),
     value: 'share',
+  ),
+  PopupMenuItem<String>(
+    child: const Text(
+      'Backup',
+      style: TextStyle(
+        color: Colors.blue,
+      ),
+    ),
+    value: 'backup',
   ),
 ];

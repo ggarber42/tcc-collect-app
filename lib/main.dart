@@ -1,17 +1,30 @@
+import 'package:collect_app/screens/auth/auth_check.dart';
+import 'package:collect_app/screens/auth/login.dart';
+import 'package:collect_app/screens/backup/list_backup_entries_values.dart';
+import 'package:collect_app/screens/backup/list_filed_entires.dart';
+import 'package:collect_app/screens/backup/list_image_files.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
+import 'providers/auth_firebase.dart';
 import 'providers/form_models.dart';
-import 'screens/config/config_screen.dart';
 import 'screens/entries/entry_results.dart';
-import '/screens/entries/entry_result_image.dart';
+import 'screens/entries/entry_result_image.dart';
 import 'screens/entries/entry_result_values.dart';
 import 'screens/entries/list_entries.dart';
 import 'screens/model_form/list_form_model.dart';
 import 'utils/arguments.dart';
 import 'utils/db_helper.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  // DataBaseHelper.dropTables();
+  DataBaseHelper.initTables();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(MyApp());
 }
 //tornas as querys de colunas dinamicas
@@ -25,19 +38,11 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   @override
-  void initState() {
-    super.initState();
-    // DataBaseHelper.dropTables();
-    DataBaseHelper.initTables();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(
-          create: (ctx) => FormModels(),
-        ),
+        ChangeNotifierProvider(create: (ctx) => FormModels()),
+        ChangeNotifierProvider(create: (context) => AuthProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -48,7 +53,9 @@ class _MyAppState extends State<MyApp> {
         home: ListFormModelsScreen(),
         routes: {
           ListFormModelsScreen.routeName: (ctx) => ListFormModelsScreen(),
-          ConfigScreen.routeName: (_) => ConfigScreen(),
+          ListBackupValuesScreen.routeName: (_) => ListBackupValuesScreen(),
+          AuthCheckScreen.routeName: (_) => AuthCheckScreen(),
+          LoginScreen.routeName: (_) => LoginScreen(),
         },
         onGenerateRoute: (settings) {
           if (settings.name == ListEntriesScreen.routeName) {
@@ -63,27 +70,32 @@ class _MyAppState extends State<MyApp> {
           if (settings.name == EntryResultScreen.routeName) {
             final args = settings.arguments as EntryResultsArguments;
             return MaterialPageRoute(builder: (context) {
-              return EntryResultScreen(
-                args.entryId,
-              );
+              return EntryResultScreen(args.entry, args.updateState);
             });
           }
           if (settings.name == EntryValuesResultScreen.routeName) {
             final args = settings.arguments as EntryValuesArguments;
             return MaterialPageRoute(builder: (context) {
-              return EntryValuesResultScreen(
-                args.values,
-                args.shareValues
-              );
+              return EntryValuesResultScreen(args.values, args.shareValues,
+                  args.backupEntryValues, args.hasBackupValue);
             });
           }
           if (settings.name == EntryResultImageScreen.routeName) {
             final args = settings.arguments as EntryImageArguments;
             return MaterialPageRoute(builder: (context) {
-              return EntryResultImageScreen(
-                args.image,
-                args.shareValues
-              );
+              return EntryResultImageScreen(args.image, args.shareValues, args.backupImage);
+            });
+          }
+          if (settings.name == ListFieldEntriesScreen.routeName) {
+            final args = settings.arguments as ListFieldEntriesArguments;
+            return MaterialPageRoute(builder: (context) {
+              return ListFieldEntriesScreen(args.userId);
+            });
+          }
+          if (settings.name == ListImageFielsScreen.routeName) {
+            final args = settings.arguments as ListImageFilesArguments;
+            return MaterialPageRoute(builder: (context) {
+              return ListImageFielsScreen(args.userId);
             });
           }
           assert(false, 'Need to implement ${settings.name}');

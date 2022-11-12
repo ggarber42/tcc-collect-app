@@ -6,9 +6,10 @@ import '../../widgets/custom_widgets/main_bar.dart';
 class EntryResultImageScreen extends StatelessWidget {
   final EntryImage image;
   final VoidCallback shareValues;
+  final VoidCallback backupImage;
   static const routeName = '/entry_result_image';
-  
-  EntryResultImageScreen(this.image, this.shareValues);
+
+  EntryResultImageScreen(this.image, this.shareValues, this.backupImage);
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +20,8 @@ class EntryResultImageScreen extends StatelessWidget {
         hasShareAction: true,
         hasBackButton: true,
         shareFunction: shareValues,
+        hasBackup: true,
+        backupFunction: backupImage,
       ),
       body: Container(
         margin: EdgeInsets.fromLTRB(10, currentHeigth * 0.05, 10, 0),
