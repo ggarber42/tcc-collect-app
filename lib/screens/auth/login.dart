@@ -32,7 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() {
       isLogin = action;
       if (isLogin) {
-        title = 'Bem vindo';
+        title = 'Bem-vindo';
         actionButton = 'Login';
         toggleButton = 'Ainda não tem conta? Cadastre-se agora.';
       } else {
