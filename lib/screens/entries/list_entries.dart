@@ -8,7 +8,7 @@ import 'entry_name.dart';
 import '../../dao/entry_dao.dart';
 import '../../dao/entry_image_dao.dart';
 import '../../dao/entry_value_dao.dart';
-import '../../facades/share.dart'; 
+import '../../facades/share.dart';
 import '../../models/entry.dart';
 import '../../widgets/custom_widgets/main_bottom.dart';
 import '../../widgets/custom_widgets/entry_tile.dart';
@@ -32,6 +32,8 @@ class _ListEntriesScreenState extends State<ListEntriesScreen> {
   final entryDao = EntryDAO();
   final imageDao = EntryImageDAO();
   final valueDao = EntryValueDAO();
+  var _hasValues = false;
+  var _hasImages = false;
 
   deleteEntry(int entryId) async {
     await entryDao.delete(entryId);
@@ -56,13 +58,23 @@ class _ListEntriesScreenState extends State<ListEntriesScreen> {
 
   shareAllEntryValues() async {
     final selectedValue = await showShareDialog();
+
     if (selectedValue == null) return;
     switch (selectedValue) {
+      //todo - aviso de imagens ou campos vazios
       case 'fields':
-        shareFacade.shareAllValueFieldsFromModel(widget.modelId);
+        if (_hasValues) {
+          shareFacade.shareAllValueFieldsFromModel(widget.modelId);
+        } else {
+          Helper.showWarningDialog(context, 'Não há campos nesse modelo');
+        }
         break;
       case 'imgs':
-        shareFacade.shareAllImagesFromModel(widget.modelId);
+        if (_hasImages) {
+          shareFacade.shareAllImagesFromModel(widget.modelId);
+        } else {
+          Helper.showWarningDialog(context, 'Não há campos nesse imagens');
+        }
         break;
       default:
         break;
@@ -71,6 +83,22 @@ class _ListEntriesScreenState extends State<ListEntriesScreen> {
 
   updateState() {
     setState(() {});
+  }
+
+  setGuards() async {
+    final entries = await _fetchEntries();
+    final values = await valueDao.readAll(entries.first.entryId);
+    final images = await imageDao.readAll(entries.first.entryId);
+    setState(() {
+      _hasImages = images.isNotEmpty;
+      _hasValues = values.isNotEmpty;
+    });
+  }
+
+  @override
+  void initState() {
+    setGuards();
+    super.initState();
   }
 
   @override
@@ -94,13 +122,22 @@ class _ListEntriesScreenState extends State<ListEntriesScreen> {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               var entries = snapshot.data as List<Entry>;
-              return ListView.builder(
-                itemCount: entries.length,
-                itemBuilder: (ctx, i) =>
-                    EntryTile(entries[i], deleteEntry, updateState),
-              );
+              if (entries.isEmpty) {
+                return Center(child: Text('Nao existem entradas'));
+              } else {
+                return ListView.builder(
+                  itemCount: entries.length,
+                  itemBuilder: (ctx, i) =>
+                      EntryTile(entries[i], deleteEntry, updateState),
+                );
+              }
+            } else if (snapshot.hasError) {
+              return Center(
+                  child: Text(
+                      'Aconteceu algo errado :( Tente novamente mais tarde'));
+            } else {
+              return CircularProgressIndicator();
             }
-            return Center(child: Text('Nao existem entradas'));
           },
         ),
       ),
