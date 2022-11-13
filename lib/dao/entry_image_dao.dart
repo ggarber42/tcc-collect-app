@@ -3,11 +3,9 @@ import 'package:flutter/widgets.dart';
 
 import '../models/entry.dart';
 import '../models/entry_image.dart';
-import '../interfaces/dao_interface.dart';
 import '../services/db_connector.dart';
 
-class EntryImageDAO implements DAO<EntryImage> {
-  @override
+class EntryImageDAO {
   Future<void> add(EntryImage entryImage) async {
     final db = await DataBaseConnector.instance.database;
     await db.insert(
@@ -16,13 +14,10 @@ class EntryImageDAO implements DAO<EntryImage> {
     );
   }
 
-  @override
   Future<int> delete(int id) {
-    // TODO: implement delete
     throw UnimplementedError();
   }
 
-  @override
   Future<List<EntryImage>> readAll(entryId) async {
     final db = await DataBaseConnector.instance.database;
     List<EntryImage> images = [];
@@ -51,9 +46,4 @@ class EntryImageDAO implements DAO<EntryImage> {
     return images;
   }
 
-  @override
-  Future<int> update(EntryImage t) {
-    // TODO: implement update
-    throw UnimplementedError();
-  }
-}
+ }

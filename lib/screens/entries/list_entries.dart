@@ -5,8 +5,10 @@ import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 
 import 'entry_name.dart';
-import '../../dao/entry_value_dao.dart';
 import '../../dao/entry_dao.dart';
+import '../../dao/entry_image_dao.dart';
+import '../../dao/entry_value_dao.dart';
+import '../../facades/share.dart';
 import '../../models/entry.dart';
 import '../../widgets/custom_widgets/main_bottom.dart';
 import '../../widgets/custom_widgets/entry_tile.dart';
@@ -26,8 +28,12 @@ class ListEntriesScreen extends StatefulWidget {
 }
 
 class _ListEntriesScreenState extends State<ListEntriesScreen> {
+  final shareFacade = ShareFacade();
   final entryDao = EntryDAO();
+  final imageDao = EntryImageDAO();
   final valueDao = EntryValueDAO();
+  var _hasValues = false;
+  var _hasImages = false;
 
   deleteEntry(int entryId) async {
     await entryDao.delete(entryId);
@@ -41,23 +47,6 @@ class _ListEntriesScreenState extends State<ListEntriesScreen> {
     return entries;
   }
 
-  _generateCSV(List<Entry> entries) async {
-    List<List<dynamic>> rows = [];
-    final firstValues = await valueDao.readAll(entries.first.entryId);
-    final header = firstValues.map((value) => value.getName).toList();
-    rows.add(header);
-    for (var entry in entries) {
-      List<dynamic> row = [];
-      final entryValues = await valueDao.readAll(entry.entryId);
-      for (var entryValue in entryValues) {
-        row.add(entryValue.getValue);
-      }
-      rows.add(row);
-    }
-
-    return ListToCsvConverter().convert(rows);
-  }
-
   showShareDialog() {
     return showDialog(
         context: context,
@@ -69,15 +58,23 @@ class _ListEntriesScreenState extends State<ListEntriesScreen> {
 
   shareAllEntryValues() async {
     final selectedValue = await showShareDialog();
+
     if (selectedValue == null) return;
     switch (selectedValue) {
+      //todo - aviso de imagens ou campos vazios
       case 'fields':
-        final entries = await entryDao.readAll(widget.modelId);
-        final csv = await _generateCSV(entries);
-        final tempDir = await getTemporaryDirectory();
-        final file = await File('${tempDir.path}/values.csv').create();
-        await file.writeAsString(csv);
-        Share.shareFiles([file.path]);
+        if (_hasValues) {
+          shareFacade.shareAllValueFieldsFromModel(widget.modelId);
+        } else {
+          Helper.showWarningDialog(context, 'Não há campos nesse modelo');
+        }
+        break;
+      case 'imgs':
+        if (_hasImages) {
+          shareFacade.shareAllImagesFromModel(widget.modelId);
+        } else {
+          Helper.showWarningDialog(context, 'Não há campos nesse imagens');
+        }
         break;
       default:
         break;
@@ -86,6 +83,22 @@ class _ListEntriesScreenState extends State<ListEntriesScreen> {
 
   updateState() {
     setState(() {});
+  }
+
+  setGuards() async {
+    final entries = await _fetchEntries();
+    final values = await valueDao.readAll(entries.first.entryId);
+    final images = await imageDao.readAll(entries.first.entryId);
+    setState(() {
+      _hasImages = images.isNotEmpty;
+      _hasValues = values.isNotEmpty;
+    });
+  }
+
+  @override
+  void initState() {
+    setGuards();
+    super.initState();
   }
 
   @override
@@ -109,12 +122,22 @@ class _ListEntriesScreenState extends State<ListEntriesScreen> {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               var entries = snapshot.data as List<Entry>;
-              return ListView.builder(
-                itemCount: entries.length,
-                itemBuilder: (ctx, i) => EntryTile(entries[i], deleteEntry, updateState),
-              );
+              if (entries.isEmpty) {
+                return Center(child: Text('Nao existem entradas'));
+              } else {
+                return ListView.builder(
+                  itemCount: entries.length,
+                  itemBuilder: (ctx, i) =>
+                      EntryTile(entries[i], deleteEntry, updateState),
+                );
+              }
+            } else if (snapshot.hasError) {
+              return Center(
+                  child: Text(
+                      'Aconteceu algo errado :( Tente novamente mais tarde'));
+            } else {
+              return CircularProgressIndicator();
             }
-            return Center(child: Text('Nao existem entradas'));
           },
         ),
       ),
