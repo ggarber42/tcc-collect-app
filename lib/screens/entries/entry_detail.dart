@@ -98,7 +98,9 @@ class _EntryDetailScreenState extends State<EntryDetailScreen> {
                       itemBuilder: (ctx, index) =>
                           ImageTile(imgFields[index], addValue),
                     ),
-                    InputTile(inputFields, addValue),
+                    inputFields.isNotEmpty
+                        ? InputTile(inputFields, addValue)
+                        : SizedBox.shrink(),
                   ],
                 );
               }
@@ -118,7 +120,7 @@ class _EntryDetailScreenState extends State<EntryDetailScreen> {
                     var canSubmit = true;
                     for (var key in _requiredKeys.keys) {
                       if (!_values.containsKey(key)) {
-                       canSubmit = false;
+                        canSubmit = false;
                       }
                     }
                     if (canSubmit) {
