@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+const VALUE_COLLECTION = 'valueCollection';
+const USER_COLLECTION = 'user';
+const MODEL_COLLECTION = 'model';
+
 const DropMenuOptions = const [
   DropdownMenuItem(child: Text('Texto'), value: 'text'),
   DropdownMenuItem(child: Text('Lista de Opções'), value: 'radio'),
@@ -17,10 +21,6 @@ const DropShareOptionsAll = const [
   DropdownMenuItem(child: Text('Campos'), value: 'fields'),
   DropdownMenuItem(child: Text('Imagens'), value: 'imgs'),
 ];
-
-const VALUE_COLLECTION = 'valueCollection';
-const USER_COLLECTION = 'user';
-const MODEL_COLLECTION = 'model';
 
 const ModelTileMenuOptions = const [
   PopupMenuItem<String>(

@@ -1,8 +1,3 @@
-import 'package:collect_app/screens/auth/auth_check.dart';
-import 'package:collect_app/screens/auth/login.dart';
-import 'package:collect_app/screens/backup/list_backup_entries_values.dart';
-import 'package:collect_app/screens/backup/list_filed_entires.dart';
-import 'package:collect_app/screens/backup/list_image_files.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -10,10 +5,15 @@ import 'firebase_options.dart';
 
 import 'providers/auth_firebase.dart';
 import 'providers/form_models.dart';
+
+import 'screens/auth/auth_check.dart';
+import 'screens/auth/login.dart';
+import 'screens/backup/list_backup_entries_values.dart';
+import 'screens/backup/list_image_files.dart';
+import 'screens/entries/list_entries.dart';
 import 'screens/entries/entry_results.dart';
 import 'screens/entries/entry_result_image.dart';
 import 'screens/entries/entry_result_values.dart';
-import 'screens/entries/list_entries.dart';
 import 'screens/model_form/list_form_model.dart';
 import 'utils/arguments.dart';
 import 'utils/db_helper.dart';
@@ -84,12 +84,6 @@ class _MyAppState extends State<MyApp> {
             final args = settings.arguments as EntryImageArguments;
             return MaterialPageRoute(builder: (context) {
               return EntryResultImageScreen(args.image, args.shareValues, args.backupImage);
-            });
-          }
-          if (settings.name == ListFieldEntriesScreen.routeName) {
-            final args = settings.arguments as ListFieldEntriesArguments;
-            return MaterialPageRoute(builder: (context) {
-              return ListFieldEntriesScreen(args.userId);
             });
           }
           if (settings.name == ListImageFielsScreen.routeName) {

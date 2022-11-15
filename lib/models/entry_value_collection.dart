@@ -4,8 +4,9 @@ class EntryValueCollection {
   final String entryName;
   final List<EntryValue> values;
   String? docId;
+  String? modelName;
 
-  EntryValueCollection({required this.entryName, required this.values});
+  EntryValueCollection({required this.entryName, this.modelName, required this.values});
 
   EntryValueCollection.fromFireBase({
     required this.entryName,
@@ -19,6 +20,7 @@ class EntryValueCollection {
 
   Map<String, dynamic> toJson() => {
         'name': entryName,
+        'modelName': modelName,
         'values': values.map((value) => value.toMap()).toList()
       };
 }

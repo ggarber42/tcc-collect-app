@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:collect_app/dao/backup_validation_dao.dart';
 import 'package:collect_app/dao/entry_dao.dart';
+import 'package:collect_app/dao/form_model_dao.dart';
 import 'package:collect_app/facades/firestore.dart';
 import 'package:collect_app/widgets/dialog_widgets/dialog_share.dart';
 import 'package:csv/csv.dart';
@@ -30,9 +31,10 @@ class ResultTile extends StatefulWidget {
 }
 
 class _ResultTileState extends State<ResultTile> {
-  final FirestoreFacade fireFacade = FirestoreFacade();
-  final EntryDAO entryDao = EntryDAO();
-  final BackupValidationDAO validationDao = BackupValidationDAO();
+  final fireFacade = FirestoreFacade();
+  final entryDao = EntryDAO();
+  final modelDao = FormModelDAO();
+  final validationDao = BackupValidationDAO();
   var _tapPosition;
   var hasBackupValue = false;
 
@@ -81,18 +83,19 @@ class _ResultTileState extends State<ResultTile> {
         'Você precisa se autenticar!',
       );
     }
-
     if (hasBackupValue) {
       return Helper.showWarningDialog(
         context,
         'Este resultado já possui backup!',
       );
     }
+    final modelName = await modelDao.getNameFromModel(widget.entry.getModelId);
     await fireFacade.addBackupFile(
       userId,
       widget.entry.entryId as int,
       widget.entry.getName,
       widget.values,
+      modelName
     );
     Helper.showSnack(context, 'Backup realizado');
     widget.updateState();

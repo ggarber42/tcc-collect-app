@@ -9,6 +9,7 @@ import '../interfaces/dao_interface.dart';
 import '../models/entry.dart';
 import '../models/entry_image.dart';
 import '../models/entry_value.dart';
+import '../models/form_model.dart';
 import '../services/db_connector.dart';
 
 class EntryDAO implements DAO<Entry> {
@@ -57,19 +58,22 @@ class EntryDAO implements DAO<Entry> {
     final query = '''
         SELECT
         ${Entry.tableColumns['id']}, 
-        ${Entry.tableColumns['name']}
+        ${Entry.tableColumns['name']},
+        ${FormModel.tableColumns['id']}
         FROM ${Entry.tableName}
         WHERE modelId = $modelId;
       ''';
     final queryResult = await db.rawQuery(query);
     for (var result in queryResult) {
       final entryId = result[Entry.tableColumns['id']] as int;
-      final backupValidation = await validationDao.read(entryId) as BackupValidation?;
+      final backupValidation =
+          await validationDao.read(entryId) as BackupValidation?;
       final entryModelName = result[Entry.tableColumns['name']] as String;
       entries.add(Entry.withValidation(
         entryId,
         entryModelName,
         backupValidation,
+        result['modelId'] as int
       ));
     }
     return entries;

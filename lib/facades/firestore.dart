@@ -25,12 +25,14 @@ class FirestoreFacade {
     int entryId,
     String name,
     List<EntryValue> values,
+    String modelName,
   ) async {
     final docId = Helper.getUuid();
     final userCollect = fireDb.collection(USER_COLLECTION).doc(userId);
     final valueCollect = userCollect.collection(VALUE_COLLECTION).doc(docId);
     final valuesCollection = EntryValueCollection(
       entryName: name,
+      modelName: modelName,
       values: values,
     );
     await valueCollect.set(valuesCollection.toJson());
@@ -42,16 +44,13 @@ class FirestoreFacade {
   }
 
   Stream<List<dynamic>> readBackupValues(String userId) => fireDb
-          .collection(USER_COLLECTION)
-          .doc(userId)
-          .collection(VALUE_COLLECTION)
-          .snapshots()
-          .map((snapshot) {
-        final docs = snapshot.docs
-            .map((doc) => {'docId': doc.id, 'data': doc.data()})
-            .toList();
-        return docs.reversed.toList();
-      });
+      .collection(USER_COLLECTION)
+      .doc(userId)
+      .collection(VALUE_COLLECTION)
+      .snapshots()
+      .map((snapshot) => snapshot.docs
+          .map((doc) => {'docId': doc.id, 'data': doc.data()})
+          .toList());
 
   Future addModelForm(modelData) async {
     final modelCollect = fireDb.collection(MODEL_COLLECTION);

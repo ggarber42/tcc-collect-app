@@ -11,6 +11,7 @@ class Entry {
   int? modelId;
   List<EntryValue>? values;
   List<EntryImage>? images;
+  String? docId;
 
   static final tableName = 'Entry';
   static final tableColumns = {
@@ -32,7 +33,11 @@ class Entry {
 
   Entry(this.name);
 
-  Entry.withValidation(this.entryId, this.name, this.validation);
+  Entry.withValidation(this.entryId, this.name, this.validation, this.modelId);
+
+  Entry.withFieldValues(this.name, this.values);
+
+  Entry.fromFirestore(this.name, this.values, this.docId);
 
   Entry.withValues(this.name, this.modelId, this.values, this.images);
 
@@ -40,13 +45,18 @@ class Entry {
 
   get getId => entryId as int;
 
-  set setValidation(BackupValidation newValidation) => validation = newValidation;
+  set setValidation(BackupValidation newValidation) =>
+      validation = newValidation;
 
   get getValidation => validation;
 
   get getValues => values as List<EntryValue>;
 
   get getImages => images as List<EntryImage>;
+
+  get getModelId => modelId;
+
+  get getDocId => docId;
 
   Map<String, Object?> getData() {
     return {

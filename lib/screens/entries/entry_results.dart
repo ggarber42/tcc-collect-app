@@ -33,7 +33,6 @@ class _EntrysResultScreenState extends State<EntryResultScreen> {
     return [...await imageDao.readAll(widget.entry.entryId)];
   }
 
-
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;

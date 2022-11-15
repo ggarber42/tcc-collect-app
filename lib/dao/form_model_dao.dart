@@ -48,7 +48,6 @@ class FormModelDAO {
     );
   }
 
-  
   Future<List<FormModel>> readAll(_) async {
     final db = await DataBaseConnector.instance.database;
     List<FormModel> models = [];
@@ -80,5 +79,16 @@ class FormModelDAO {
       },
     );
     return model as FormModel;
+  }
+
+  Future<String> getNameFromModel(int modelId) async {
+    final db = await DataBaseConnector.instance.database;
+    var queryResult = await db.query(
+      FormModel.tableName,
+      columns: ['${FormModel.tableColumns['name']}'],
+      where: '${FormModel.tableColumns['id'] as String}=?',
+      whereArgs: [modelId],
+    );
+    return queryResult.first['name'] as String;
   }
 }
