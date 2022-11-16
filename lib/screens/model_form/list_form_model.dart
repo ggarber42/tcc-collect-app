@@ -8,7 +8,6 @@ import '../../providers/form_models.dart';
 import '../../screens/model_form/choose_create_method.dart';
 import '../../widgets/custom_widgets/main_bar.dart';
 import '../../widgets/custom_widgets/main_bottom.dart';
-import '../../widgets/custom_widgets/main_drawer.dart';
 import '../../widgets/custom_widgets/model_tile.dart';
 import '../../utils/helper.dart';
 
@@ -78,7 +77,6 @@ class _ListFormModelsScreenState extends State<ListFormModelsScreen> {
           },
         ),
       ),
-      drawer: MainDrawer(),
       bottomNavigationBar: MainBottom(),
       floatingActionButton: FloatingActionButton.extended(
         label: Text("Modelo"),

@@ -11,7 +11,6 @@ import '../../models/entry_value.dart';
 import '../../providers/auth_firebase.dart';
 import '../../widgets/base_widgets/error_warning.dart';
 import '../../widgets/custom_widgets/main_bottom.dart';
-import '../../widgets/custom_widgets/main_drawer.dart';
 import '../../widgets/custom_widgets/main_bar.dart';
 import 'list_image_files.dart';
 
@@ -150,7 +149,6 @@ class _ListBackupValuesScreenState extends State<ListBackupValuesScreen> {
     final userId = auth.getUserId();
     return Scaffold(
       appBar: MainBar(),
-      drawer: MainDrawer(),
       body: (userId == null) ? _notAuthWarning() : _listModels(userId),
       bottomNavigationBar: MainBottom(currentIndex: 2),
     );

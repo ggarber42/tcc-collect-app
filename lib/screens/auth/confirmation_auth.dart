@@ -7,7 +7,6 @@ import '../../widgets/custom_widgets/main_bottom.dart';
 import '../../providers/auth_firebase.dart';
 import '../../utils/helper.dart';
 import '../../widgets/custom_widgets/main_bar.dart';
-import '../../widgets/custom_widgets/main_drawer.dart';
 
 class ConfirmationAuthScreen extends StatefulWidget {
   const ConfirmationAuthScreen({Key? key}) : super(key: key);
@@ -37,7 +36,6 @@ class _ConfirmationAuthScreenState extends State<ConfirmationAuthScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: MainBar(),
-        drawer: MainDrawer(),
         bottomNavigationBar: MainBottom(
           currentIndex: 1,
         ),

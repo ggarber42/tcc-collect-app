@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import '../../providers/auth_firebase.dart';
 import '../../widgets/base_widgets/button_loading.dart';
 import '../../widgets/custom_widgets/main_bottom.dart';
-import '../../widgets/custom_widgets/main_drawer.dart';
 import '../../widgets/custom_widgets/main_bar.dart';
 import '../../screens/auth/auth_check.dart';
 import '../../utils/helper.dart';
@@ -79,7 +78,6 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MainBar(),
-      drawer: MainDrawer(),
       bottomNavigationBar: MainBottom(
         currentIndex: 1,
       ),

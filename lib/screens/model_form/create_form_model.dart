@@ -12,7 +12,6 @@ import '../../models/form_model.dart';
 import '../../providers/form_models.dart';
 import '../../widgets/custom_widgets/main_bar.dart';
 import '../../widgets/base_widgets/bottom_button.dart';
-import '../../widgets/custom_widgets/main_drawer.dart';
 import '../../widgets/dialog_widgets/confirmation_dialog.dart';
 import '../../widgets/dialog_widgets/dialog_new_field.dart';
 import '../../utils/helper.dart';
@@ -199,7 +198,6 @@ class _CreateFormModelsScreenState extends State<CreateFormModelsScreen> {
             ],
           ),
         ),
-        drawer: MainDrawer(),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: Padding(
           padding: const EdgeInsets.only(bottom: 30),

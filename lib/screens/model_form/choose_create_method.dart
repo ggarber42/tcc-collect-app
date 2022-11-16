@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'list_online_models.dart';
 import '../../widgets/custom_widgets/main_bar.dart';
 import '../../widgets/custom_widgets/main_bottom.dart';
-import '../../widgets/custom_widgets/main_drawer.dart';
 
 class ChooseCreateModelsScreen extends StatefulWidget {
   @override
@@ -69,7 +68,6 @@ class _ChooseCreateModelsScreenState extends State<ChooseCreateModelsScreen> {
           ),
         ),
       ),
-      drawer: MainDrawer(),
     );
   }
 }
