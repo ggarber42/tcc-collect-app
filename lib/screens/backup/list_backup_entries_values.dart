@@ -86,7 +86,7 @@ class _ListBackupValuesScreenState extends State<ListBackupValuesScreen> {
   Widget _imageTile(String userId) {
     return Card(
       child: ListTile(
-        leading: Icon(Icons.check_box),
+        leading: Icon(Icons.image),
         title: Text('Imagens'),
         trailing: Icon(Icons.more_vert),
         onTap: () {
@@ -138,7 +138,7 @@ class _ListBackupValuesScreenState extends State<ListBackupValuesScreen> {
         } else if (snapshot.hasError) {
           return ErrorWarning();
         } else {
-          return CircularProgressIndicator();
+          return Center(child: CircularProgressIndicator());
         }
       }),
     );

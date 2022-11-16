@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../facades/share.dart';
 import '../../facades/firestore.dart';
 import '../../utils/helper.dart';
 import '../dialog_widgets/delete_model_dialog.dart';
@@ -8,6 +9,7 @@ class UploadedImageTile extends StatelessWidget {
   final String imageUrl;
   final VoidCallback updateState;
   final fireFacade = FirestoreFacade();
+  final shareFacade = ShareFacade();
 
   UploadedImageTile(this.imageUrl, this.updateState);
 
@@ -39,6 +41,13 @@ class UploadedImageTile extends StatelessWidget {
                     }
                   },
                   icon: Icon(Icons.delete_forever),
+                  label: Text(''),
+                ),
+                TextButton.icon(
+                  onPressed: () {
+                    shareFacade.shareImageFromNetwork(imageUrl);
+                  },
+                  icon: Icon(Icons.download),
                   label: Text(''),
                 )
               ]),

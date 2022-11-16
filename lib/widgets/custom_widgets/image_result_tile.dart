@@ -1,8 +1,6 @@
-import 'dart:io';
+import 'package:collect_app/facades/share.dart';
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:share_plus/share_plus.dart';
 
 import '../../facades/firestore.dart';
 import '../../models/entry_image.dart';
@@ -23,6 +21,8 @@ class ImageResultTile extends StatefulWidget {
 
 class _ImageResultTileState extends State<ImageResultTile> {
   final FirestoreFacade fireFacade = FirestoreFacade();
+  final shareFacade = ShareFacade();
+
   var _tapPosition;
 
   showUploadWarning() {
@@ -48,14 +48,7 @@ class _ImageResultTileState extends State<ImageResultTile> {
   }
 
   shareValues() async {
-    Image currentImg = widget.image.getImage;
-    MemoryImage memory = currentImg.image as MemoryImage;
-    final list = memory.bytes.buffer.asUint8List();
-    final tempDir = await getTemporaryDirectory();
-    final file =
-        await File('${tempDir.path}/${widget.image.getName}.jpg').create();
-    file.writeAsBytesSync(list);
-    Share.shareFiles([file.path]);
+    shareFacade.shareImage(widget.image);
   }
 
   _getTapPosition(details) {

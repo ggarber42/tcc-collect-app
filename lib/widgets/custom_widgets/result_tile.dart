@@ -1,19 +1,18 @@
-import 'dart:io';
-import 'package:collect_app/dao/backup_validation_dao.dart';
-import 'package:collect_app/dao/entry_dao.dart';
-import 'package:collect_app/dao/form_model_dao.dart';
-import 'package:collect_app/facades/firestore.dart';
-import 'package:collect_app/widgets/dialog_widgets/dialog_share.dart';
 import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../../dao/backup_validation_dao.dart';
+import '../../dao/entry_dao.dart';
+import '../../facades/firestore.dart';
+import '../../facades/share.dart';
+import '../../dao/form_model_dao.dart';
+import '../../providers/auth_firebase.dart';
 import '../../models/backup_validation.dart';
 import '../../models/entry.dart';
 import '../../models/entry_value.dart';
-import '../../providers/auth_firebase.dart';
+import '../../widgets/dialog_widgets/dialog_share.dart';
 import '../../screens/entries/entry_result_values.dart';
 import '../../utils/arguments.dart';
 import '../../utils/constants.dart';
@@ -32,6 +31,7 @@ class ResultTile extends StatefulWidget {
 
 class _ResultTileState extends State<ResultTile> {
   final fireFacade = FirestoreFacade();
+  final shareFacade = ShareFacade();
   final entryDao = EntryDAO();
   final modelDao = FormModelDAO();
   final validationDao = BackupValidationDAO();
@@ -90,13 +90,8 @@ class _ResultTileState extends State<ResultTile> {
       );
     }
     final modelName = await modelDao.getNameFromModel(widget.entry.getModelId);
-    await fireFacade.addBackupFile(
-      userId,
-      widget.entry.entryId as int,
-      widget.entry.getName,
-      widget.values,
-      modelName
-    );
+    await fireFacade.addBackupFile(userId, widget.entry.entryId as int,
+        widget.entry.getName, widget.values, modelName);
     Helper.showSnack(context, 'Backup realizado');
     widget.updateState();
     setState(() => hasBackupValue = true);
@@ -117,10 +112,7 @@ class _ResultTileState extends State<ResultTile> {
     switch (selectedValue) {
       case 'csv':
         final csv = await _generateCSV();
-        final tempDir = await getTemporaryDirectory();
-        final file = await File('${tempDir.path}/values.txt').create();
-        await file.writeAsString(csv);
-        Share.shareFiles([file.path]);
+        shareFacade.shareCSV(csv);
         break;
       default:
         final valuesAsText = _getValuesAsText();
