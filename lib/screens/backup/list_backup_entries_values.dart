@@ -117,8 +117,8 @@ class _ListBackupValuesScreenState extends State<ListBackupValuesScreen> {
                         child: ListTile(
                           title: Text(modelList[index].getModelName),
                           trailing: Icon(Icons.more_vert),
-                          onTap: () {
-                            Navigator.push(
+                          onTap: () async {
+                            await Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: ((context) => ListBackupEntriesScreen(
@@ -148,7 +148,9 @@ class _ListBackupValuesScreenState extends State<ListBackupValuesScreen> {
     AuthProvider auth = Provider.of<AuthProvider>(context, listen: false);
     final userId = auth.getUserId();
     return Scaffold(
-      appBar: MainBar(),
+      appBar: MainBar(
+        windowTitle: 'Backups',
+      ),
       body: (userId == null) ? _notAuthWarning() : _listModels(userId),
       bottomNavigationBar: MainBottom(currentIndex: 2),
     );

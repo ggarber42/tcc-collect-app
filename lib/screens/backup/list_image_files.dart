@@ -26,7 +26,9 @@ class _ListImageFielsScreenState extends State<ListImageFielsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MainBar(),
+      appBar: MainBar(
+        windowTitle: 'Backup - imagens',
+      ),
       bottomNavigationBar: MainBottom(currentIndex: 2,),
       body: FutureBuilder(
           future: fireFacade.getImagesFromUser(widget.userId),

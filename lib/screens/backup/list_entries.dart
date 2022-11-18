@@ -26,7 +26,9 @@ class _ListBackupEntriesScreenState extends State<ListBackupEntriesScreen> {
     final userId = auth.getUserId();
     final size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: MainBar(),
+      appBar: MainBar(
+        windowTitle: 'Backups - ${widget.modelName}',
+      ),
       bottomNavigationBar: MainBottom(currentIndex: 2),
       body: Container(
         height: size.height * 0.8,
