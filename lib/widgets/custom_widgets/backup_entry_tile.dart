@@ -23,6 +23,7 @@ class _BackupEntryTileState extends State<BackupEntryTile> {
   deleteCollection() async {
     Helper.showSnack(context, 'Documento deletado');
     await fireFacade.deleteBackup(widget.userId, widget.entry.getDocId);
+    Navigator.pop(context);
     // await entryDao.deleteDocValuesId(widget.docId);
   }
 
