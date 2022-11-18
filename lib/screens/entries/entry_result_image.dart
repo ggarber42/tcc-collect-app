@@ -1,3 +1,4 @@
+import 'package:collect_app/widgets/custom_widgets/main_bottom.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/entry_image.dart';
@@ -23,6 +24,7 @@ class EntryResultImageScreen extends StatelessWidget {
         hasBackup: true,
         backupFunction: backupImage,
       ),
+      bottomNavigationBar: MainBottom(),
       body: Container(
         margin: EdgeInsets.fromLTRB(10, currentHeigth * 0.05, 10, 0),
         child: Card(

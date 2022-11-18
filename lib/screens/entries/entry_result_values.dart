@@ -1,3 +1,4 @@
+import 'package:collect_app/widgets/custom_widgets/main_bottom.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/entry_value.dart';
@@ -57,6 +58,7 @@ class EntryValuesResultScreen extends StatelessWidget {
         shareFunction: shareValues,
         backupFunction: backupEntryValues,
       ),
+      bottomNavigationBar: MainBottom(),
       body: SingleChildScrollView(
         child: Container(
           constraints: BoxConstraints(
